@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfaf6;
+  --foreground: #292524;
+  --shadow-card: 0 1px 2px rgba(120, 53, 15, 0.04), 0 8px 20px -6px rgba(120, 53, 15, 0.08);
+  --shadow-card-lg: 0 2px 4px rgba(120, 53, 15, 0.05), 0 16px 32px -8px rgba(120, 53, 15, 0.12);
+  --shadow-float: 0 4px 16px -2px rgba(120, 53, 15, 0.18);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(180deg, #fffdfb 0%, var(--background) 320px);
+  color: var(--foreground);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection {
+  background: #fed7aa;
+  color: #7c2d12;
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+.shadow-card-lg {
+  box-shadow: var(--shadow-card-lg);
+}
+
+.shadow-float {
+  box-shadow: var(--shadow-float);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,321 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Praticidade {
+  MUITO_RAPIDO
+  EQUILIBRADO
+  PODE_COZINHAR_MAIS
+}
+
+enum Objetivo {
+  ORGANIZAR_ROTINA
+  VARIAR_CARDAPIO
+  APRESENTAR_NOVOS_ALIMENTOS
+  REDUZIR_IMPROVISO
+}
+
+enum TipoRefeicao {
+  CAFE_DA_MANHA
+  ALMOCO
+  LANCHE
+  JANTAR
+}
+
+enum StatusPreferencia {
+  ACEITA
+  RECUSA
+  DESEJADA
+  RESTRICAO
+}
+
+enum EstadoFeedback {
+  GOSTOU
+  ACEITOU
+  EXPERIMENTOU
+  RECUSOU
+}
+
+enum StatusSlot {
+  PLANEJADO
+  TROCADO
+  FORA_DE_CASA
+  SEM_TEMPO
+  CONCLUIDO
+}
+
+enum PlanoAssinatura {
+  ESSENCIAL
+  FAMILIA
+}
+
+enum StatusAssinatura {
+  TESTE
+  ATIVA
+  CANCELADA
+  CARENCIA
+}
+
+enum PapelUsuario {
+  RESPONSAVEL
+  ADMIN
+}
+
+enum QualidadeSono {
+  BOA
+  REGULAR
+  RUIM
+}
+
+enum NivelDisposicao {
+  BAIXA
+  NORMAL
+  ALTA
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          PapelUsuario @default(RESPONSAVEL)
+  lembretes     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  children      ChildProfile[]
+  subscription  Subscription?
+  auditLogs     AuditLog[]
+}
+
+model ChildProfile {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nome                String
+  faixaEtaria         String
+  refeicoesPorDia     Int      @default(4)
+  tempoDisponivel     Int      @default(30)
+  praticidade         Praticidade @default(EQUILIBRADO)
+  objetivo            Objetivo @default(ORGANIZAR_ROTINA)
+  equipamentos        String?
+  horarioDormirHabitual  String?
+  horarioAcordarHabitual String?
+  consentimentoLgpd   Boolean  @default(false)
+  onboardingCompleto  Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  preferences   FoodPreference[]
+  mealPlans     MealPlan[]
+  favorites     Favorite[]
+  pantryItems   PantryItem[]
+  foodJourneys  FoodJourney[]
+  reports       MonthlyReport[]
+  shoppingChecks ShoppingCheck[]
+  routineEntries RoutineEntry[]
+}
+
+model Ingredient {
+  id        String   @id @default(cuid())
+  nome      String   @unique
+  categoria String
+
+  foodPreferences FoodPreference[]
+  recipeItems     RecipeIngredient[]
+  pantryItems     PantryItem[]
+  foodJourneys    FoodJourney[]
+  shoppingChecks  ShoppingCheck[]
+}
+
+model FoodPreference {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  ingredientId   String
+  ingredient     Ingredient @relation(fields: [ingredientId], references: [id])
+  status         StatusPreferencia
+  observacao     String?
+  createdAt      DateTime @default(now())
+
+  @@unique([childProfileId, ingredientId, status])
+}
+
+model Recipe {
+  id             String   @id @default(cuid())
+  nome           String
+  resumo         String
+  tipoRefeicao   TipoRefeicao
+  tempoPreparoMin Int
+  dificuldade    String
+  rendimento     String
+  passos         String
+  tags           String
+  restricoes     String
+  nutricao       String   @default("")
+  idadeMinimaMeses Int    @default(6)
+  ativo          Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  ingredients   RecipeIngredient[]
+  mealSlots     MealSlot[]
+  favorites     Favorite[]
+}
+
+model RecipeIngredient {
+  id           String   @id @default(cuid())
+  recipeId     String
+  recipe       Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredientId String
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  quantidade   String
+
+  @@unique([recipeId, ingredientId])
+}
+
+model MealPlan {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  cicloNumero    Int
+  dataInicio     DateTime
+  dataFim        DateTime
+  ativo          Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  slots   MealSlot[]
+  reports MonthlyReport[]
+}
+
+model MealSlot {
+  id           String   @id @default(cuid())
+  mealPlanId   String
+  mealPlan     MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  data         DateTime
+  tipo         TipoRefeicao
+  recipeId     String?
+  recipe       Recipe?  @relation(fields: [recipeId], references: [id])
+  status       StatusSlot @default(PLANEJADO)
+  explicacao   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  feedback MealFeedback?
+
+  @@unique([mealPlanId, data, tipo])
+}
+
+model MealFeedback {
+  id         String   @id @default(cuid())
+  mealSlotId String   @unique
+  mealSlot   MealSlot @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+  estado     EstadoFeedback
+  observacao String?
+  createdAt  DateTime @default(now())
+}
+
+model PantryItem {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  ingredientId   String
+  ingredient     Ingredient @relation(fields: [ingredientId], references: [id])
+  createdAt      DateTime @default(now())
+
+  @@unique([childProfileId, ingredientId])
+}
+
+model FoodJourney {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  ingredientId   String
+  ingredient     Ingredient @relation(fields: [ingredientId], references: [id])
+  exposicoes     Int      @default(0)
+  ultimoEstado   EstadoFeedback?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([childProfileId, ingredientId])
+}
+
+model Favorite {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  recipeId       String
+  recipe         Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  origem         String   @default("manual")
+  createdAt      DateTime @default(now())
+
+  @@unique([childProfileId, recipeId])
+}
+
+model MonthlyReport {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  mealPlanId     String
+  mealPlan       MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  diasAcompanhados Int
+  receitasDiferentes Int
+  alimentosApresentados Int
+  alimentosAceitos Int
+  createdAt      DateTime @default(now())
+}
+
+model RoutineEntry {
+  id               String   @id @default(cuid())
+  childProfileId   String
+  child            ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  data             DateTime
+  horasSono        Float?
+  qualidadeSono    QualidadeSono?
+  atividadeMinutos Int?
+  tipoAtividade    String?
+  disposicao       NivelDisposicao?
+  observacao       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([childProfileId, data])
+}
+
+model Subscription {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plano        PlanoAssinatura @default(ESSENCIAL)
+  status       StatusAssinatura @default(TESTE)
+  renovaEm     DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ShoppingCheck {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  semanaInicio   DateTime
+  ingredientId   String
+  ingredient     Ingredient @relation(fields: [ingredientId], references: [id])
+  comprado       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  @@unique([childProfileId, semanaInicio, ingredientId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  evento    String
+  detalhes  String?
+  createdAt DateTime @default(now())
+}
