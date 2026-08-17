@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { UtensilsCrossed } from "lucide-react";
+import UserMenu from "@/components/UserMenu";
 
 export default function TopBar({
   title,
@@ -25,6 +26,7 @@ export default function TopBar({
           {subtitle && <p className="truncate text-xs text-stone-500">{subtitle}</p>}
         </div>
         {right}
+        <UserMenu />
       </div>
     </header>
   );

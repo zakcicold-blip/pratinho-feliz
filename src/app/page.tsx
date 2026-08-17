@@ -11,12 +11,22 @@ import {
   CalendarCheck,
   Check,
   Quote,
+  ArrowRight,
   type LucideIcon,
 } from "lucide-react";
 
-export default async function LandingPage() {
+export default async function LandingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ site?: string }>;
+}) {
+  const { site } = await searchParams;
   const session = await auth();
-  if (session?.user) redirect("/hoje");
+
+  // Quem já está logado vai direto para o app, a menos que peça explicitamente
+  // para ver a página inicial (link "Página inicial" no menu da conta).
+  const logado = !!session?.user;
+  if (logado && site !== "1") redirect("/hoje");
 
   return (
     <main className="flex-1 overflow-x-hidden">
@@ -29,15 +39,29 @@ export default async function LandingPage() {
             Pratinho Feliz
           </div>
           <nav className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium text-stone-600 hover:text-stone-900">
-              Entrar
-            </Link>
-            <Link
-              href="/cadastro"
-              className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
-            >
-              Começar grátis
-            </Link>
+            {logado ? (
+              <Link
+                href="/hoje"
+                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
+              >
+                Voltar ao app <ArrowRight size={14} />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-stone-600 hover:text-stone-900"
+                >
+                  Entrar
+                </Link>
+                <Link
+                  href="/cadastro"
+                  className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
+                >
+                  Começar grátis
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </header>
@@ -66,18 +90,29 @@ export default async function LandingPage() {
               organizada, adaptável e cada vez mais personalizada conforme o uso.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/cadastro"
-                className="rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
-              >
-                Montar o plano do meu filho
-              </Link>
-              <Link
-                href="/login"
-                className="rounded-full border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 transition hover:bg-stone-50"
-              >
-                Já tenho conta
-              </Link>
+              {logado ? (
+                <Link
+                  href="/hoje"
+                  className="flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
+                >
+                  Ver o plano de hoje <ArrowRight size={16} />
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/cadastro"
+                    className="rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
+                  >
+                    Montar o plano do meu filho
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="rounded-full border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 transition hover:bg-stone-50"
+                  >
+                    Já tenho conta
+                  </Link>
+                </>
+              )}
             </div>
             <div className="mt-5 flex flex-wrap gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500">
               <span className="flex items-center gap-1">
@@ -161,17 +196,24 @@ export default async function LandingPage() {
       <section className="mx-auto w-full max-w-5xl px-6 py-10">
         <div className="rounded-3xl bg-stone-900 px-8 py-12 text-center">
           <h2 className="text-2xl font-bold text-white">
-            Comece o primeiro plano de {" "}
-            <span className="text-orange-400">30 dias</span> hoje.
+            {logado ? (
+              <>
+                Seu plano de <span className="text-orange-400">30 dias</span> está te esperando.
+              </>
+            ) : (
+              <>
+                Comece o primeiro plano de <span className="text-orange-400">30 dias</span> hoje.
+              </>
+            )}
           </h2>
           <p className="mx-auto mt-2 max-w-sm text-sm text-stone-300">
             Sem planilhas, sem grupo de WhatsApp de receitas perdidas. Só a rotina organizada.
           </p>
           <Link
-            href="/cadastro"
+            href={logado ? "/hoje" : "/cadastro"}
             className="mt-6 inline-block rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-orange-600"
           >
-            Criar conta grátis
+            {logado ? "Voltar ao app" : "Criar conta grátis"}
           </Link>
         </div>
       </section>
