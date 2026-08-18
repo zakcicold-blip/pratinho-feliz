@@ -355,6 +355,17 @@ model Subscription {
   plano        PlanoAssinatura @default(ESSENCIAL)
   status       StatusAssinatura @default(TESTE)
   renovaEm     DateTime?
+
+  // Vinculo com o Stripe. Ausentes ate a pessoa passar pelo Checkout.
+  // Um TESTE so libera o app quando ha stripeSubscriptionId de verdade;
+  // sem isso, o cadastro novo cai no paywall.
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+  stripePriceId        String?
+  currentPeriodEnd     DateTime?
+  trialEnd             DateTime?
+  cancelAtPeriodEnd    Boolean  @default(false)
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

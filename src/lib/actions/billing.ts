@@ -1,0 +1,101 @@
+"use server";
+
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { requireSession } from "@/lib/currentChild";
+import { getStripe, DIAS_TESTE_GRATIS } from "@/lib/stripe";
+
+/** Origem da requisição (https://host), para montar as URLs de retorno. */
+async function origem(): Promise<string> {
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "https";
+  if (host) return `${proto}://${host}`;
+  return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+}
+
+/**
+ * Garante um Customer do Stripe para o responsável e devolve o id.
+ * Guarda o id na assinatura local para não recriar a cada visita.
+ */
+async function garantirCustomer(userId: string, email: string, nome: string): Promise<string> {
+  const assinatura = await db.subscription.findUnique({ where: { userId } });
+  if (assinatura?.stripeCustomerId) return assinatura.stripeCustomerId;
+
+  const stripe = getStripe();
+  const customer = await stripe.customers.create({
+    email,
+    name: nome,
+    metadata: { userId },
+  });
+
+  await db.subscription.upsert({
+    where: { userId },
+    update: { stripeCustomerId: customer.id },
+    create: { userId, stripeCustomerId: customer.id },
+  });
+
+  return customer.id;
+}
+
+/**
+ * Cria a sessão de Checkout do trial e devolve a URL hospedada do Stripe.
+ *
+ * - modo assinatura, com o preço recorrente definido em STRIPE_PRICE_ID
+ * - 7 dias de teste grátis (trial_period_days)
+ * - cartão exigido já na entrada (payment_method_collection: "always"), então a
+ *   cobrança acontece sozinha quando o trial termina
+ */
+export async function criarCheckoutTrial(): Promise<{ url: string } | { error: string }> {
+  const session = await requireSession();
+
+  const priceId = process.env.STRIPE_PRICE_ID;
+  if (!priceId) {
+    return { error: "Assinatura ainda não configurada (falta STRIPE_PRICE_ID)." };
+  }
+
+  const user = await db.user.findUniqueOrThrow({
+    where: { id: session.user.id },
+    select: { email: true, name: true },
+  });
+
+  // Se já existe assinatura utilizável, não faz sentido abrir novo checkout.
+  const atual = await db.subscription.findUnique({ where: { userId: session.user.id } });
+  if (atual?.status === "ATIVA" || (atual?.status === "TESTE" && atual.stripeSubscriptionId)) {
+    return { error: "Você já tem uma assinatura ativa." };
+  }
+
+  const customerId = await garantirCustomer(session.user.id, user.email, user.name);
+  const base = await origem();
+
+  const stripe = getStripe();
+  const checkout = await stripe.checkout.sessions.create({
+    mode: "subscription",
+    customer: customerId,
+    line_items: [{ price: priceId, quantity: 1 }],
+    payment_method_collection: "always",
+    subscription_data: {
+      trial_period_days: DIAS_TESTE_GRATIS,
+      metadata: { userId: session.user.id },
+    },
+    // Deixa claro o que acontece quando o trial acabar.
+    custom_text: {
+      submit: {
+        message: `Você não será cobrado agora. Após ${DIAS_TESTE_GRATIS} dias de teste grátis, a assinatura é renovada automaticamente. Cancele quando quiser.`,
+      },
+    },
+    success_url: `${base}/hoje?assinatura=ok`,
+    cancel_url: `${base}/assinar?cancelado=1`,
+  });
+
+  if (!checkout.url) return { error: "Não foi possível iniciar o checkout." };
+  return { url: checkout.url };
+}
+
+/** Ação de formulário: cria o checkout e redireciona para o Stripe. */
+export async function irParaCheckout() {
+  const res = await criarCheckoutTrial();
+  if ("url" in res) redirect(res.url);
+  redirect(`/assinar?erro=${encodeURIComponent(res.error)}`);
+}
