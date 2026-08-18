@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 import type { LucideIcon } from "lucide-react";
 
-type Tone = "orange" | "emerald" | "blue" | "indigo" | "amber";
+type Tone = "orange" | "emerald" | "blue" | "indigo" | "amber" | "red";
 
 const TONE_BG: Record<Tone, string> = {
   orange: "bg-orange-50 text-orange-500",
@@ -9,6 +9,7 @@ const TONE_BG: Record<Tone, string> = {
   blue: "bg-blue-50 text-blue-500",
   indigo: "bg-indigo-50 text-indigo-500",
   amber: "bg-amber-50 text-amber-600",
+  red: "bg-red-50 text-red-500",
 };
 
 export default function StatCard({

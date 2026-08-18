@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { completarOnboarding, type OnboardingInput } from "@/lib/actions/onboarding";
 import {
   CATEGORIA_INGREDIENTE_LABEL,
@@ -76,15 +77,26 @@ const initialDraft: Draft = {
   consentimento: false,
 };
 
-export default function OnboardingWizard({ grupos: gruposIniciais }: { grupos: Grupo[] }) {
+export default function OnboardingWizard({
+  grupos: gruposIniciais,
+  userId,
+}: {
+  grupos: Grupo[];
+  userId: string;
+}) {
+  const router = useRouter();
+  // Rascunho é por usuário: uma conta nunca herda o que outra deixou no navegador.
+  const draftKey = `${DRAFT_KEY}_${userId}`;
+
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<Draft>(initialDraft);
+  const [hidratado, setHidratado] = useState(false);
   const [catalogo, setCatalogo] = useState<Grupo[]>(gruposIniciais);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem(DRAFT_KEY);
+    const saved = localStorage.getItem(draftKey);
     if (saved) {
       try {
         // eslint-disable-next-line react-hooks/set-state-in-effect -- hidrata rascunho do localStorage uma única vez, no mount
@@ -93,11 +105,14 @@ export default function OnboardingWizard({ grupos: gruposIniciais }: { grupos: G
         // ignora rascunho corrompido
       }
     }
-  }, []);
+    setHidratado(true);
+  }, [draftKey]);
 
   useEffect(() => {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-  }, [draft]);
+    // Só persiste depois de hidratar, para não sobrescrever o rascunho salvo
+    // com o estado inicial em branco no primeiro render.
+    if (hidratado) localStorage.setItem(draftKey, JSON.stringify(draft));
+  }, [draft, draftKey, hidratado]);
 
   const todosIngredientes = useMemo(() => catalogo.flatMap((g) => g.itens), [catalogo]);
   const nomePorId = useMemo(
@@ -155,7 +170,11 @@ export default function OnboardingWizard({ grupos: gruposIniciais }: { grupos: G
       setSubmitting(false);
       return;
     }
-    localStorage.removeItem(DRAFT_KEY);
+    // Sucesso: limpa o rascunho ANTES de sair. Antes o redirect acontecia no
+    // servidor e esta linha nunca rodava, deixando o rascunho vazar para a
+    // próxima conta criada no mesmo navegador.
+    localStorage.removeItem(draftKey);
+    router.push("/hoje");
   }
 
   const StepIcon = STEPS[step].icon;

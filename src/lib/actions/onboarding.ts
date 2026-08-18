@@ -87,5 +87,8 @@ export async function completarOnboarding(input: OnboardingInput) {
     },
   });
 
-  redirect("/hoje");
+  // Retorna em vez de redirecionar: assim o cliente limpa o rascunho do
+  // localStorage antes de navegar (o redirect no servidor pulava essa limpeza,
+  // e o rascunho vazava para a próxima conta criada no mesmo navegador).
+  return { ok: true as const };
 }

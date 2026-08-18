@@ -47,12 +47,27 @@ async function garantirCustomer(userId: string, email: string, nome: string): Pr
  * - cartão exigido já na entrada (payment_method_collection: "always"), então a
  *   cobrança acontece sozinha quando o trial termina
  */
-export async function criarCheckoutTrial(): Promise<{ url: string } | { error: string }> {
+export type PlanoAssinado = "MENSAL" | "TRIMESTRAL";
+
+function priceIdDoPlano(plano: PlanoAssinado): string | undefined {
+  return plano === "TRIMESTRAL"
+    ? process.env.STRIPE_PRICE_ID_TRIMESTRAL
+    : process.env.STRIPE_PRICE_ID;
+}
+
+export async function criarCheckoutTrial(
+  plano: PlanoAssinado = "MENSAL"
+): Promise<{ url: string } | { error: string }> {
   const session = await requireSession();
 
-  const priceId = process.env.STRIPE_PRICE_ID;
+  const priceId = priceIdDoPlano(plano);
   if (!priceId) {
-    return { error: "Assinatura ainda não configurada (falta STRIPE_PRICE_ID)." };
+    return {
+      error:
+        plano === "TRIMESTRAL"
+          ? "Plano trimestral ainda não configurado (falta STRIPE_PRICE_ID_TRIMESTRAL)."
+          : "Assinatura ainda não configurada (falta STRIPE_PRICE_ID).",
+    };
   }
 
   const user = await db.user.findUniqueOrThrow({
@@ -93,9 +108,9 @@ export async function criarCheckoutTrial(): Promise<{ url: string } | { error: s
   return { url: checkout.url };
 }
 
-/** Ação de formulário: cria o checkout e redireciona para o Stripe. */
-export async function irParaCheckout() {
-  const res = await criarCheckoutTrial();
+/** Ação de formulário: cria o checkout do plano escolhido e vai para o Stripe. */
+export async function irParaCheckout(plano: PlanoAssinado = "MENSAL") {
+  const res = await criarCheckoutTrial(plano);
   if ("url" in res) redirect(res.url);
   redirect(`/assinar?erro=${encodeURIComponent(res.error)}`);
 }

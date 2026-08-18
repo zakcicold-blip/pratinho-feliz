@@ -27,8 +27,12 @@ const raizProjeto = path.resolve(__dirname, "..");
 const PRODUTO_NOME = "Pratinho Feliz";
 const PRODUTO_TAG = "pratinho-feliz"; // marca em metadata para achar de novo
 const MOEDA = "brl";
-const VALOR_CENTAVOS = 2990; // R$ 29,90
-const INTERVALO = "month";
+
+// Planos oferecidos. Cada um vira um Price recorrente no mesmo produto.
+const PLANOS = [
+  { envVar: "STRIPE_PRICE_ID", rotulo: "Mensal", valorCentavos: 2990, intervalo: "month", intervaloCount: 1 },
+  { envVar: "STRIPE_PRICE_ID_TRIMESTRAL", rotulo: "Trimestral", valorCentavos: 5990, intervalo: "month", intervaloCount: 3 },
+];
 const URL_APP = process.env.NEXT_PUBLIC_APP_URL || "https://pratinho-feliz.vercel.app";
 const URL_WEBHOOK = `${URL_APP.replace(/\/$/, "")}/api/stripe/webhook`;
 const EVENTOS_WEBHOOK = [
@@ -99,26 +103,28 @@ async function acharOuCriarProduto() {
   return produto;
 }
 
-async function acharOuCriarPreco(produtoId) {
+async function acharOuCriarPreco(produtoId, plano) {
   const precos = await stripe.prices.list({ product: produtoId, active: true, limit: 100 });
   const existente = precos.data.find(
     (p) =>
       p.currency === MOEDA &&
-      p.unit_amount === VALOR_CENTAVOS &&
-      p.recurring?.interval === INTERVALO
+      p.unit_amount === plano.valorCentavos &&
+      p.recurring?.interval === plano.intervalo &&
+      (p.recurring?.interval_count ?? 1) === plano.intervaloCount
   );
+  const sufixo = plano.intervaloCount > 1 ? `a cada ${plano.intervaloCount} meses` : "/mês";
   if (existente) {
-    console.log(`• Preço já existia: ${existente.id} (${brl(VALOR_CENTAVOS)}/mês)`);
+    console.log(`• Preço ${plano.rotulo} já existia: ${existente.id} (${brl(plano.valorCentavos)} ${sufixo})`);
     return existente;
   }
   const preco = await stripe.prices.create({
     product: produtoId,
     currency: MOEDA,
-    unit_amount: VALOR_CENTAVOS,
-    recurring: { interval: INTERVALO },
-    metadata: { app: PRODUTO_TAG },
+    unit_amount: plano.valorCentavos,
+    recurring: { interval: plano.intervalo, interval_count: plano.intervaloCount },
+    metadata: { app: PRODUTO_TAG, plano: plano.rotulo },
   });
-  console.log(`• Preço criado: ${preco.id} (${brl(VALOR_CENTAVOS)}/mês)`);
+  console.log(`• Preço ${plano.rotulo} criado: ${preco.id} (${brl(plano.valorCentavos)} ${sufixo})`);
   return preco;
 }
 
@@ -143,19 +149,27 @@ async function main() {
   console.log(`Webhook apontando para: ${URL_WEBHOOK}\n`);
 
   const produto = await acharOuCriarProduto();
-  const preco = await acharOuCriarPreco(produto.id);
+
+  const precosPorEnv = {};
+  for (const plano of PLANOS) {
+    const preco = await acharOuCriarPreco(produto.id, plano);
+    precosPorEnv[plano.envVar] = preco.id;
+  }
+
   const { segredo } = await acharOuCriarWebhook();
 
   // Grava direto no .env em vez de imprimir — o webhook secret é sensível e
   // não deve aparecer em logs/terminal compartilhado.
-  gravarNoEnv("STRIPE_PRICE_ID", preco.id);
+  for (const [envVar, id] of Object.entries(precosPorEnv)) gravarNoEnv(envVar, id);
   if (segredo) gravarNoEnv("STRIPE_WEBHOOK_SECRET", segredo);
 
   console.log("\n" + "─".repeat(60));
   console.log("PRONTO. Já gravei no seu .env:\n");
-  console.log(`  STRIPE_PRICE_ID       = ${preco.id}   (não é segredo)`);
+  for (const [envVar, id] of Object.entries(precosPorEnv)) {
+    console.log(`  ${envVar.padEnd(26)} = ${id}   (não é segredo)`);
+  }
   if (segredo) {
-    console.log(`  STRIPE_WEBHOOK_SECRET = whsec_******  (gravado, não exibido)`);
+    console.log(`  ${"STRIPE_WEBHOOK_SECRET".padEnd(26)} = whsec_******  (gravado, não exibido)`);
   } else {
     console.log(
       "  STRIPE_WEBHOOK_SECRET = <o webhook já existia; pegue o 'Signing secret'\n" +
@@ -163,8 +177,8 @@ async function main() {
     );
   }
   console.log(
-    "\nPróximo passo: copie STRIPE_SECRET_KEY, STRIPE_PRICE_ID e\n" +
-      "STRIPE_WEBHOOK_SECRET do seu .env para as Environment Variables da Vercel."
+    "\nPróximo passo: copie STRIPE_SECRET_KEY, STRIPE_PRICE_ID,\n" +
+      "STRIPE_PRICE_ID_TRIMESTRAL e STRIPE_WEBHOOK_SECRET do .env para a Vercel."
   );
   console.log("─".repeat(60) + "\n");
 }

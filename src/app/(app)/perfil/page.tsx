@@ -5,10 +5,11 @@ import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import PerfilForm from "./PerfilForm";
 import SeletorCrianca from "./SeletorCrianca";
-import { ChartColumn, Sparkles, ShoppingCart, Settings } from "lucide-react";
+import { ChartColumn, Sparkles, ShoppingCart, Settings, ShieldCheck } from "lucide-react";
 
 export default async function PerfilPage() {
   const { session, child } = await getCurrentChild();
+  const ehAdmin = (session.user as { role?: string }).role === "ADMIN";
   const criancas = await listarCriancas(session.user.id);
 
   const ingredientes = await db.ingredient.findMany({ orderBy: { nome: "asc" } });
@@ -35,6 +36,15 @@ export default async function PerfilPage() {
           <QuickLink href="/compras" label="Compras" Icon={ShoppingCart} />
           <QuickLink href="/configuracoes" label="Ajustes" Icon={Settings} />
         </div>
+
+        {ehAdmin && (
+          <Link
+            href="/admin"
+            className="mb-5 flex items-center justify-center gap-2 rounded-2xl border border-stone-800 bg-stone-800 py-3 text-sm font-semibold text-white transition-colors hover:bg-stone-900"
+          >
+            <ShieldCheck size={16} /> Painel administrativo
+          </Link>
+        )}
 
         <PerfilForm
           child={{
