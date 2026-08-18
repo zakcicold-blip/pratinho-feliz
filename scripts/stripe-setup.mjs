@@ -39,6 +39,21 @@ const EVENTOS_WEBHOOK = [
   "customer.subscription.trial_will_end",
 ];
 
+/** Grava (ou atualiza) uma variável no .env, sem imprimir o valor na tela. */
+function gravarNoEnv(chaveVar, valor) {
+  const envPath = path.join(raizProjeto, ".env");
+  let conteudo = fs.existsSync(envPath) ? fs.readFileSync(envPath, "utf8") : "";
+  const linha = `${chaveVar}=${valor}`;
+  const re = new RegExp(`^\\s*${chaveVar}\\s*=.*$`, "m");
+  if (re.test(conteudo)) {
+    conteudo = conteudo.replace(re, linha);
+  } else {
+    if (conteudo.length && !conteudo.endsWith("\n")) conteudo += "\n";
+    conteudo += linha + "\n";
+  }
+  fs.writeFileSync(envPath, conteudo);
+}
+
 /** Carrega STRIPE_SECRET_KEY do .env se ainda não estiver no ambiente. */
 function carregarChave() {
   if (process.env.STRIPE_SECRET_KEY) return process.env.STRIPE_SECRET_KEY;
@@ -131,19 +146,26 @@ async function main() {
   const preco = await acharOuCriarPreco(produto.id);
   const { segredo } = await acharOuCriarWebhook();
 
+  // Grava direto no .env em vez de imprimir — o webhook secret é sensível e
+  // não deve aparecer em logs/terminal compartilhado.
+  gravarNoEnv("STRIPE_PRICE_ID", preco.id);
+  if (segredo) gravarNoEnv("STRIPE_WEBHOOK_SECRET", segredo);
+
   console.log("\n" + "─".repeat(60));
-  console.log("PRONTO. Cole estas variáveis no .env e na Vercel:\n");
-  console.log(`STRIPE_PRICE_ID=${preco.id}`);
+  console.log("PRONTO. Já gravei no seu .env:\n");
+  console.log(`  STRIPE_PRICE_ID       = ${preco.id}   (não é segredo)`);
   if (segredo) {
-    console.log(`STRIPE_WEBHOOK_SECRET=${segredo}`);
+    console.log(`  STRIPE_WEBHOOK_SECRET = whsec_******  (gravado, não exibido)`);
   } else {
     console.log(
-      "STRIPE_WEBHOOK_SECRET=<o webhook já existia; pegue o 'Signing secret'\n" +
-        "  em Developers > Webhooks no painel do Stripe, ou apague o endpoint\n" +
-        "  antigo e rode este script de novo para gerar um novo segredo>"
+      "  STRIPE_WEBHOOK_SECRET = <o webhook já existia; pegue o 'Signing secret'\n" +
+        "    em Developers > Webhooks no painel, ou apague o endpoint e rode de novo>"
     );
   }
-  console.log("\nA STRIPE_SECRET_KEY você já tem (é a que usou para rodar isto).");
+  console.log(
+    "\nPróximo passo: copie STRIPE_SECRET_KEY, STRIPE_PRICE_ID e\n" +
+      "STRIPE_WEBHOOK_SECRET do seu .env para as Environment Variables da Vercel."
+  );
   console.log("─".repeat(60) + "\n");
 }
 
