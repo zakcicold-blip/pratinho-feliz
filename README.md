@@ -14,6 +14,8 @@ técnico (v1.0).
   explicação curta.
 - PWA: pode ser instalado na tela de início (iOS/Android) via `manifest.webmanifest` + ícones em
   `public/icons` (gerados por `npm run icons:generate`).
+- Informação nutricional real, calculada a partir da
+  [TACO](https://www.nepa.unicamp.br/taco/) (NEPA/UNICAMP, 4ª ed.).
 
 ## Rodando localmente
 
@@ -24,11 +26,36 @@ técnico (v1.0).
 ```bash
 npm install
 npx prisma migrate dev --name init   # cria as tabelas
-npm run db:seed                      # popula receitas, ingredientes e a conta admin
+npm run db:seed                      # receitas, ingredientes e a conta admin
+npm run db:nutricao                  # composição TACO nos ingredientes
+npm run db:gramas                    # converte medidas caseiras em gramas
 npm run dev
 ```
 
 Abra http://localhost:3000.
+
+## Conteúdo: como alimentar o app
+
+**Uma receita por vez** — `/admin/receitas/nova`.
+
+**Em massa** — `/admin/receitas/importar` aceita CSV ou JSON. O arquivo é validado e
+pré-visualizado antes de gravar qualquer coisa; linhas com erro são listadas e ignoradas, e
+receitas com nome já existente são puladas (o import é seguro de repetir). Ingrediente
+desconhecido é criado em "Outros" — depois ajuste a categoria e rode `npm run db:nutricao`
+para ele entrar no cálculo nutricional.
+
+**Fotos** — campo "Foto da receita" no formulário do admin, ou coluna `imagemUrl` no import.
+Aceita apenas URLs `https`. Sem foto, o app usa o ícone do tipo de refeição.
+
+### Como a nutrição é calculada
+
+1. `prisma/tacoMap.ts` liga cada ingrediente do catálogo a um alimento da TACO (`tacoId`), e
+   guarda o peso de 1 medida usual (`gramasPorUnidade`).
+2. `src/lib/medidas.ts` converte "1 xícara", "2 fatias", "200 ml" em gramas.
+3. `src/lib/nutricao.ts` soma a composição e divide pelo número de porções.
+
+Ingrediente sem correspondente na TACO ou com medida não convertível ("a gosto") fica de fora,
+e a interface avisa que o cálculo é parcial. Hoje: 56 dos 63 ingredientes têm dado real.
 
 ## Deploy (Vercel)
 

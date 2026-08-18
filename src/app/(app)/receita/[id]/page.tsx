@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
@@ -32,14 +33,30 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
     <>
       <TopBar title="Receita" />
       <div className="px-4 py-4">
+        {recipe.imagemUrl && (
+          <div className="relative mb-3 h-48 w-full overflow-hidden rounded-2xl bg-stone-100 shadow-card">
+            <Image
+              src={recipe.imagemUrl}
+              alt={recipe.nome}
+              fill
+              sizes="(max-width: 672px) 100vw, 672px"
+              className="object-cover"
+              priority
+            />
+          </div>
+        )}
+
         <Card padding="lg">
           <div className="flex items-start justify-between">
-            <span
-              className={`flex h-16 w-16 items-center justify-center rounded-2xl ${cor.bg}`}
-            >
-              <MealTypeIcon tipo={recipe.tipoRefeicao} size={30} />
-            </span>
-            <FavoriteButton childId={child.id} recipeId={recipe.id} favoritoInicial={!!favorito} />
+            {!recipe.imagemUrl && (
+              <span className={`flex h-16 w-16 items-center justify-center rounded-2xl ${cor.bg}`}>
+                <MealTypeIcon tipo={recipe.tipoRefeicao} size={30} />
+              </span>
+            )}
+            {/* Sem a miniatura do ícone, a estrela precisa ser empurrada para a direita. */}
+            <div className={recipe.imagemUrl ? "ml-auto" : ""}>
+              <FavoriteButton childId={child.id} recipeId={recipe.id} favoritoInicial={!!favorito} />
+            </div>
           </div>
           <h1 className="mt-3 text-xl font-bold text-stone-900">{recipe.nome}</h1>
           <p className="mt-1 text-sm text-stone-500">{recipe.resumo}</p>

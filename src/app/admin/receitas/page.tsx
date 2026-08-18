@@ -4,7 +4,7 @@ import { TIPO_REFEICAO_LABEL } from "@/lib/constants";
 import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
 import ToggleAtivoButton from "./ToggleAtivoButton";
 import Button from "@/components/ui/Button";
-import { Plus, Pencil } from "lucide-react";
+import { Plus, Pencil, Upload } from "lucide-react";
 
 export default async function AdminReceitasPage() {
   const receitas = await db.recipe.findMany({ orderBy: { nome: "asc" } });
@@ -13,9 +13,14 @@ export default async function AdminReceitasPage() {
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-bold text-stone-800">Receitas ({receitas.length})</h1>
-        <Button href="/admin/receitas/nova">
-          <Plus size={15} /> Nova receita
-        </Button>
+        <div className="flex gap-2">
+          <Button href="/admin/receitas/importar" variant="outline">
+            <Upload size={15} /> Importar
+          </Button>
+          <Button href="/admin/receitas/nova">
+            <Plus size={15} /> Nova receita
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-stone-200/70 bg-white shadow-card">

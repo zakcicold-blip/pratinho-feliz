@@ -14,6 +14,7 @@ import { registrarFeedback } from "@/lib/actions/feedback";
 import { alternarFavorito } from "@/lib/actions/favorites";
 import { ESTADO_FEEDBACK_LABEL, STATUS_SLOT_LABEL } from "@/lib/constants";
 import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
+import RecipeThumb from "@/components/RecipeThumb";
 import { REACTION_ACTIVE_BG, ReactionIcon } from "@/components/reactionIcons";
 import {
   Star,
@@ -59,6 +60,7 @@ export type MealCardData = {
     resumo: string;
     tempoPreparoMin: number;
     dificuldade: string;
+    imagemUrl: string | null;
   } | null;
   favorito: boolean;
   feedbackEstado: string | null;
@@ -176,14 +178,12 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
         ) : data.recipe ? (
           <>
             <div className="mt-3 flex items-center gap-3">
-              <span
-                className={cn(
-                  "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
-                  cor.bg
-                )}
-              >
-                <MealTypeIcon tipo={data.tipo} size={22} />
-              </span>
+              <RecipeThumb
+                tipo={data.tipo}
+                imagemUrl={data.recipe.imagemUrl}
+                nome={data.recipe.nome}
+                size={44}
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[15px] font-semibold text-stone-800">
                   {data.recipe.nome}

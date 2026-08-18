@@ -71,6 +71,7 @@ export default async function HojePage() {
             resumo: slot.recipe.resumo,
             tempoPreparoMin: slot.recipe.tempoPreparoMin,
             dificuldade: slot.recipe.dificuldade,
+            imagemUrl: slot.recipe.imagemUrl,
           }
         : null,
       favorito: slot.recipeId ? favoritoIds.has(slot.recipeId) : false,

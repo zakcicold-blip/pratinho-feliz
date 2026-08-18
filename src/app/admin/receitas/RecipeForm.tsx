@@ -27,6 +27,8 @@ export default function RecipeForm({
     restricoes: string;
     nutricao: string;
     idadeMinimaMeses: number;
+    imagemUrl: string;
+    fonte: string;
     ingredientes: { ingredientId: string; quantidade: string }[];
   };
 }) {
@@ -42,6 +44,8 @@ export default function RecipeForm({
   const [restricoes, setRestricoes] = useState(receita?.restricoes ?? "");
   const [nutricao, setNutricao] = useState(receita?.nutricao ?? "");
   const [idadeMinimaMeses, setIdadeMinimaMeses] = useState(receita?.idadeMinimaMeses ?? 6);
+  const [imagemUrl, setImagemUrl] = useState(receita?.imagemUrl ?? "");
+  const [fonte, setFonte] = useState(receita?.fonte ?? "");
   const [ingredientes, setIngredientes] = useState(
     receita?.ingredientes.length ? receita.ingredientes : [{ ingredientId: "", quantidade: "" }]
   );
@@ -67,6 +71,8 @@ export default function RecipeForm({
       restricoes,
       nutricao,
       idadeMinimaMeses,
+      imagemUrl,
+      fonte,
       ingredientes: ingredientes.filter((i) => i.ingredientId),
     };
 
@@ -134,9 +140,44 @@ export default function RecipeForm({
           />
         </Field>
       </div>
-      <Field label="Nota nutricional (ex.: Rica em ferro e vitamina C)">
-        <input value={nutricao} onChange={(e) => setNutricao(e.target.value)} className="input" />
+      <Field label="Foto da receita (URL https)">
+        <input
+          value={imagemUrl}
+          onChange={(e) => setImagemUrl(e.target.value)}
+          placeholder="https://..."
+          className="input"
+        />
+        {imagemUrl.trim() !== "" &&
+          (/^https:\/\//i.test(imagemUrl.trim()) ? (
+            <div className="mt-2 flex items-start gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element -- pré-visualização de URL arbitrária no admin, sem otimização */}
+              <img
+                src={imagemUrl.trim()}
+                alt="Pré-visualização"
+                className="h-24 w-32 rounded-xl border border-stone-200 object-cover"
+              />
+              <p className="text-xs text-stone-500">
+                Se a imagem não aparecer, o site de origem pode estar bloqueando o uso em outro
+                domínio. Nesse caso, hospede o arquivo em outro lugar.
+              </p>
+            </div>
+          ) : (
+            <p className="mt-1 text-xs text-red-600">A URL precisa começar com https://</p>
+          ))}
       </Field>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Nota nutricional (usada só quando não há cálculo da TACO)">
+          <input value={nutricao} onChange={(e) => setNutricao(e.target.value)} className="input" />
+        </Field>
+        <Field label="Fonte / autoria (opcional)">
+          <input
+            value={fonte}
+            onChange={(e) => setFonte(e.target.value)}
+            placeholder="Ex.: Receita da casa"
+            className="input"
+          />
+        </Field>
+      </div>
       <Field label="Passos (um por linha)">
         <textarea
           value={passos}

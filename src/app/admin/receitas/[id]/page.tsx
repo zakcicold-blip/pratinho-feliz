@@ -28,6 +28,8 @@ export default async function EditarReceitaPage({ params }: { params: Promise<{ 
           restricoes: receita.restricoes,
           nutricao: receita.nutricao,
           idadeMinimaMeses: receita.idadeMinimaMeses,
+          imagemUrl: receita.imagemUrl ?? "",
+          fonte: receita.fonte ?? "",
           ingredientes: receita.ingredients.map((i) => ({
             ingredientId: i.ingredientId,
             quantidade: i.quantidade,

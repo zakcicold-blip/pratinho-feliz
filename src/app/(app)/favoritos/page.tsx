@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
 import TopBar from "@/components/TopBar";
-import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
+import RecipeThumb from "@/components/RecipeThumb";
 import EmptyState from "@/components/ui/EmptyState";
 
 export default async function FavoritosPage() {
@@ -33,11 +33,12 @@ export default async function FavoritosPage() {
                 href={`/receita/${f.recipeId}`}
                 className="rounded-2xl border border-stone-200/70 bg-white p-4 shadow-card transition hover:border-orange-200"
               >
-                <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl ${MEAL_COLOR[f.recipe.tipoRefeicao].bg}`}
-                >
-                  <MealTypeIcon tipo={f.recipe.tipoRefeicao} size={18} />
-                </span>
+                <RecipeThumb
+                  tipo={f.recipe.tipoRefeicao}
+                  imagemUrl={f.recipe.imagemUrl}
+                  nome={f.recipe.nome}
+                  size={40}
+                />
                 <p className="mt-2 text-sm font-semibold text-stone-800">{f.recipe.nome}</p>
                 <p className="text-xs text-stone-400">
                   {f.recipe.tempoPreparoMin} min · {f.recipe.dificuldade}
