@@ -7,6 +7,9 @@ import {
   TipoRefeicao,
 } from "@prisma/client";
 import { TIPO_REFEICAO_ORDEM } from "@/lib/constants";
+import { faixaEtariaEmMeses } from "@/lib/idade";
+import { campoDoObjetivo, lerRotina, type ObjetivoRotina } from "@/lib/objetivosRotina";
+import { lerSinaisRotina } from "@/lib/rotinaSinais";
 
 const REPETITION_WINDOW_DIAS = 4;
 
@@ -16,6 +19,10 @@ type RecipeWithIngredients = {
   tipoRefeicao: TipoRefeicao;
   tempoPreparoMin: number;
   restricoes: string;
+  idadeMinimaMeses: number;
+  scoreSono: number | null;
+  scoreEnergia: number | null;
+  scoreCalma: number | null;
   ingredients: { ingredient: { id: string; nome: string } }[];
 };
 
@@ -24,6 +31,8 @@ type ChildContext = {
   praticidade: Praticidade;
   objetivo: Objetivo;
   tempoDisponivel: number;
+  idadeMeses: number;
+  objetivoRotina: ObjetivoRotina;
   restricaoNomes: Set<string>;
   aceitaIds: Set<string>;
   desejadaIds: Set<string>;
@@ -85,11 +94,16 @@ async function buildChildContext(childId: string): Promise<ChildContext> {
     feedbackByRecipe.set(recipeId, list);
   });
 
+  const sinais = await lerSinaisRotina(childId);
+  const objetivoRotina = lerRotina(sinais).objetivo;
+
   return {
     childId,
     praticidade: child.praticidade,
     objetivo: child.objetivo,
     tempoDisponivel: child.tempoDisponivel,
+    idadeMeses: faixaEtariaEmMeses(child.faixaEtaria),
+    objetivoRotina,
     restricaoNomes,
     aceitaIds,
     desejadaIds,
@@ -100,6 +114,10 @@ async function buildChildContext(childId: string): Promise<ChildContext> {
 }
 
 function passaRegrasDuras(recipe: RecipeWithIngredients, ctx: ChildContext): boolean {
+  // Idade é bloqueio duro: cobre mel antes de 1 ano (botulismo infantil) e
+  // oleaginosas inteiras antes dos 3 anos (risco de engasgo).
+  if (recipe.idadeMinimaMeses > ctx.idadeMeses) return false;
+
   const tagsRestricao = recipe.restricoes
     .split(",")
     .map((t) => norm(t))
@@ -161,6 +179,20 @@ function scoreRecipe(
     score += 1;
   }
 
+  // Objetivo vindo da rotina (sono / disposição / regulação).
+  // Peso deliberadamente forte, mas abaixo de favoritos: a família ainda manda
+  // mais que o algoritmo no que a criança já aceita.
+  const campo = campoDoObjetivo(ctx.objetivoRotina);
+  if (campo) {
+    const valor = recipe[campo];
+    if (valor !== null) {
+      score += (valor / 100) * 5;
+      if (valor >= 65 && !motivoForte) {
+        motivoForte = MOTIVO_ROTINA[ctx.objetivoRotina];
+      }
+    }
+  }
+
   const vezesRecentes = recentUsados.filter((id) => id === recipe.id).length;
   score -= vezesRecentes * 50;
 
@@ -168,6 +200,13 @@ function scoreRecipe(
 
   return { score, motivo: motivoForte ?? "Selecionado para variar o cardápio do mês" };
 }
+
+const MOTIVO_ROTINA: Record<ObjetivoRotina, string> = {
+  SONO: "Escolhida para apoiar o sono",
+  ENERGIA: "Escolhida para dar mais disposição",
+  CALMA: "Escolhida para ajudar a regular o dia",
+  EQUILIBRIO: "Selecionado para variar o cardápio do mês",
+};
 
 async function getRecipePool(tipo: TipoRefeicao): Promise<RecipeWithIngredients[]> {
   return db.recipe.findMany({
@@ -342,4 +381,44 @@ export async function gerarAlternativasComDespensa(mealSlotId: string, quantidad
       completo: r.completo,
     })),
   };
+}
+
+/**
+ * Receitas que melhor atendem ao objetivo lido da rotina, uma por tipo de
+ * refeição. Usada na tela de Rotina para mostrar, de forma concreta, o que a
+ * leitura de sono/atividade/disposição muda no cardápio.
+ *
+ * Passa pelas mesmas regras duras do plano (idade, restrições, recusas), então
+ * o que aparece aqui é sempre algo que a criança pode de fato comer.
+ */
+export async function sugestoesDaRotina(childId: string) {
+  const ctx = await buildChildContext(childId);
+  const campo = campoDoObjetivo(ctx.objetivoRotina);
+
+  const sugestoes: {
+    tipo: TipoRefeicao;
+    recipeId: string;
+    nome: string;
+    tempoPreparoMin: number;
+    aderencia: number | null;
+  }[] = [];
+
+  for (const tipo of TIPO_REFEICAO_ORDEM as TipoRefeicao[]) {
+    const pool = (await getRecipePool(tipo)).filter((r) => passaRegrasDuras(r, ctx));
+    if (pool.length === 0) continue;
+
+    const melhor = pool
+      .map((r) => ({ recipe: r, ...scoreRecipe(r, ctx, []) }))
+      .sort((a, b) => b.score - a.score)[0];
+
+    sugestoes.push({
+      tipo,
+      recipeId: melhor.recipe.id,
+      nome: melhor.recipe.nome,
+      tempoPreparoMin: melhor.recipe.tempoPreparoMin,
+      aderencia: campo ? melhor.recipe[campo] : null,
+    });
+  }
+
+  return { objetivo: ctx.objetivoRotina, sugestoes };
 }

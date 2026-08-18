@@ -7,6 +7,8 @@ import TopBar from "@/components/TopBar";
 import ShoppingItemRow from "./ShoppingItemRow";
 import PantryChip from "./PantryChip";
 import CopiarListaButton from "./CopiarListaButton";
+import ItemManualForm from "./ItemManualForm";
+import ExtraItemRow from "./ExtraItemRow";
 import Card from "@/components/ui/Card";
 import EmptyState from "@/components/ui/EmptyState";
 import ProgressBar from "@/components/ui/ProgressBar";
@@ -60,6 +62,11 @@ export default async function ComprasPage({
   });
   const pantryIds = new Set(pantryItems.map((p) => p.ingredientId));
 
+  const extras = await db.shoppingExtra.findMany({
+    where: { childProfileId: child.id, semanaInicio },
+    orderBy: { createdAt: "asc" },
+  });
+
   const checks = await db.shoppingCheck.findMany({
     where: { childProfileId: child.id, semanaInicio },
   });
@@ -96,16 +103,23 @@ export default async function ComprasPage({
     itens: Array.from(itensMap.values())
       .filter((i) => i.categoria === categoria)
       .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR")),
-  })).filter((g) => g.itens.length > 0);
+    extras: extras.filter((e) => e.categoria === categoria),
+  })).filter((g) => g.itens.length > 0 || g.extras.length > 0);
 
-  const totalItens = Array.from(itensMap.keys()).length;
-  const totalComprados = Array.from(itensMap.keys()).filter((id) => compradoMap.get(id)).length;
+  // Itens manuais entram na contagem: para a familia, e tudo a mesma lista.
+  const totalItens = itensMap.size + extras.length;
+  const totalComprados =
+    Array.from(itensMap.keys()).filter((id) => compradoMap.get(id)).length +
+    extras.filter((e) => e.comprado).length;
 
   const textoLista = grupos
     .map(
       (g) =>
         `${CATEGORIA_INGREDIENTE_LABEL[g.categoria]}\n` +
-        g.itens.map((i) => `- ${i.nome} (${i.quantidades.length}x)`).join("\n")
+        [
+          ...g.itens.map((i) => `- ${i.nome} (${i.quantidades.length}x)`),
+          ...g.extras.map((e) => `- ${e.nome}${e.quantidade ? ` (${e.quantidade})` : ""}`),
+        ].join("\n")
     )
     .join("\n\n");
 
@@ -179,11 +193,22 @@ export default async function ComprasPage({
                       compradoInicial={compradoMap.get(item.ingredientId) ?? false}
                     />
                   ))}
+                  {g.extras.map((e) => (
+                    <ExtraItemRow
+                      key={e.id}
+                      extraId={e.id}
+                      nome={e.nome}
+                      quantidade={e.quantidade}
+                      compradoInicial={e.comprado}
+                    />
+                  ))}
                 </div>
               </Card>
             ))}
           </div>
         )}
+
+        <ItemManualForm childId={child.id} semanaInicioISO={semanaInicio.toISOString()} />
 
         {pantryItems.length > 0 && (
           <div>

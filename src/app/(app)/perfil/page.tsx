@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import PerfilForm from "./PerfilForm";
-import { ChartColumn, Sparkles, Moon, Settings } from "lucide-react";
+import { ChartColumn, Sparkles, ShoppingCart, Settings } from "lucide-react";
 
 export default async function PerfilPage() {
   const { child } = await getCurrentChild();
@@ -26,7 +26,7 @@ export default async function PerfilPage() {
         <div className="mb-5 grid grid-cols-4 gap-2">
           <QuickLink href="/relatorio" label="Relatório" Icon={ChartColumn} />
           <QuickLink href="/descobertas" label="Descobertas" Icon={Sparkles} />
-          <QuickLink href="/rotina" label="Rotina" Icon={Moon} />
+          <QuickLink href="/compras" label="Compras" Icon={ShoppingCart} />
           <QuickLink href="/configuracoes" label="Ajustes" Icon={Settings} />
         </div>
 

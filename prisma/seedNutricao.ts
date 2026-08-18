@@ -26,6 +26,13 @@ type TacoRow = {
   sodium_mg: number | string;
   vitaminC_mg: number | string;
   zinc_mg: number | string;
+  tryptophan_g: number | string;
+  magnesium_mg: number | string;
+  potassium_mg: number | string;
+  thiamine_mg: number | string;
+  riboflavin_mg: number | string;
+  pyridoxine_mg: number | string;
+  niacin_mg: number | string;
 };
 
 /**
@@ -96,6 +103,13 @@ async function main() {
         sodioMg: num(t.sodium_mg),
         vitaminaCMg: num(t.vitaminC_mg),
         zincoMg: num(t.zinc_mg),
+        triptofanoG: num(t.tryptophan_g),
+        magnesioMg: num(t.magnesium_mg),
+        potassioMg: num(t.potassium_mg),
+        tiaminaMg: num(t.thiamine_mg),
+        riboflavinaMg: num(t.riboflavin_mg),
+        piridoxinaMg: num(t.pyridoxine_mg),
+        niacinaMg: num(t.niacin_mg),
         gramasPorUnidade: entry.gramasPorUnidade ?? null,
       },
     });

@@ -14,6 +14,12 @@ type RecipeSeed = {
   rendimento: string;
   passos: string[];
   tags: string[];
+  /**
+   * Idade mínima explícita, em meses. Quando ausente, é derivada dos
+   * ingredientes. Usada nas receitas de primeiros sólidos, que são preparadas
+   * em consistência apropriada e por isso valem desde os 6 meses.
+   */
+  idadeMinimaMeses?: number;
   ingredientes: RecipeIngredienteSeed[];
 };
 
@@ -86,6 +92,27 @@ const INGREDIENTES: IngredienteSeed[] = [
   { nome: "Chia", categoria: "MERCEARIA" },
   { nome: "Linhaça", categoria: "MERCEARIA" },
   { nome: "Coco ralado", categoria: "MERCEARIA" },
+
+  // Itens comuns da feira brasileira, para enriquecer despensa,
+  // preferencias e lista de compras.
+  { nome: "Berinjela", categoria: "HORTIFRUTI" },
+  { nome: "Vagem", categoria: "HORTIFRUTI" },
+  { nome: "Repolho", categoria: "HORTIFRUTI" },
+  { nome: "Alface", categoria: "HORTIFRUTI" },
+  { nome: "Couve-flor", categoria: "HORTIFRUTI" },
+  { nome: "Pimentão", categoria: "HORTIFRUTI" },
+  { nome: "Inhame", categoria: "HORTIFRUTI" },
+  { nome: "Goiaba", categoria: "HORTIFRUTI" },
+  { nome: "Melão", categoria: "HORTIFRUTI" },
+  { nome: "Tangerina", categoria: "HORTIFRUTI" },
+  { nome: "Ameixa", categoria: "HORTIFRUTI" },
+  { nome: "Kiwi", categoria: "HORTIFRUTI" },
+  { nome: "Atum em lata", categoria: "PROTEINA" },
+  { nome: "Sardinha", categoria: "PROTEINA" },
+  { nome: "Patinho bovino", categoria: "PROTEINA" },
+  { nome: "Ricota", categoria: "LATICINIOS" },
+  { nome: "Gergelim", categoria: "MERCEARIA" },
+  { nome: "Polvilho doce", categoria: "MERCEARIA" },
 ];
 
 const ALERGENOS_POR_INGREDIENTE: Record<string, string> = {
@@ -119,10 +146,17 @@ function deriveRestricoes(ingredientes: RecipeIngredienteSeed[]): string[] {
  * mel é contraindicado antes dos 12 meses (risco de botulismo infantil) e alimentos duros/
  * inteiros como amendoim e castanhas são risco de engasgo antes dos 3 anos quando não moídos.
  */
-function deriveIdadeMinimaMeses(ingredientes: RecipeIngredienteSeed[]): number {
-  const nomes = new Set(ingredientes.map((i) => i.nome));
+function deriveIdadeMinimaMeses(receita: RecipeSeed): number {
+  const nomes = new Set(receita.ingredientes.map((i) => i.nome));
+  // Regras de seguranca vem primeiro e nao podem ser afrouxadas pelo seed:
+  // mel antes de 1 ano (botulismo infantil) e oleaginosas inteiras antes dos
+  // 3 anos (engasgo).
   if (nomes.has("Mel")) return 12;
   if (nomes.has("Amendoim") || nomes.has("Castanhas")) return 36;
+  // Pipoca: formato e textura fazem dela um dos maiores riscos de engasgo.
+  // Sociedades de pediatria recomendam evitar antes dos 4 anos.
+  if (nomes.has("Milho de pipoca")) return 48;
+  if (receita.idadeMinimaMeses !== undefined) return receita.idadeMinimaMeses;
   return 8;
 }
 
@@ -1138,6 +1172,7 @@ const RECEITAS: RecipeSeed[] = [
       "Misture a aveia e a chia até formar uma papa homogênea.",
       "Sirva em temperatura ambiente.",
     ],
+    idadeMinimaMeses: 6,
     tags: ["papinha", "primeiros_solidos", "vegetariano"],
     ingredientes: [
       { nome: "Banana", quantidade: "1 unidade" },
@@ -1289,6 +1324,7 @@ const RECEITAS: RecipeSeed[] = [
       "Amasse ou processe até virar uma papa.",
       "Sirva morno.",
     ],
+    idadeMinimaMeses: 6,
     tags: ["papinha", "primeiros_solidos", "proteina"],
     ingredientes: [
       { nome: "Mandioquinha", quantidade: "1 unidade" },
@@ -1655,6 +1691,7 @@ const RECEITAS: RecipeSeed[] = [
       "Refogue a carne moída e cozinhe até desmanchar.",
       "Amasse ou processe tudo junto.",
     ],
+    idadeMinimaMeses: 6,
     tags: ["papinha", "primeiros_solidos", "proteina"],
     ingredientes: [
       { nome: "Abóbora", quantidade: "1 xícara" },
@@ -1833,6 +1870,189 @@ const RECEITAS: RecipeSeed[] = [
       { nome: "Molho de tomate", quantidade: "1/2 xícara" },
     ],
   },
+
+  // ---------------------------------------------------------------------
+  // PRIMEIROS SÓLIDOS (a partir dos 6 meses)
+  //
+  // Preparos em consistência de papa/amassado, sem sal e sem açúcar
+  // adicionados, seguindo o Guia Alimentar para Crianças Brasileiras
+  // Menores de 2 Anos (Ministério da Saúde, 2021). Existem para que a faixa
+  // "6 meses a 1 ano" tenha as quatro refeições cobertas no plano.
+  // ---------------------------------------------------------------------
+  {
+    nome: "Papa de mamão com aveia",
+    resumo: "Fruta amassada com aveia, macia e fácil de aceitar.",
+    tipoRefeicao: TipoRefeicao.CAFE_DA_MANHA,
+    tempoPreparoMin: 5,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Amasse o mamão com um garfo até virar purê.",
+      "Misture a aveia e espere 2 minutos para hidratar.",
+      "Sirva morno ou em temperatura ambiente.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "vegetariano", "pratico"],
+    ingredientes: [
+      { nome: "Mamão", quantidade: "1/2 unidade" },
+      { nome: "Aveia", quantidade: "1 colher de sopa" },
+    ],
+  },
+  {
+    nome: "Papa de pera cozida com canela",
+    resumo: "Pera cozida e amassada, bem macia para começar.",
+    tipoRefeicao: TipoRefeicao.CAFE_DA_MANHA,
+    tempoPreparoMin: 12,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Descasque a pera e cozinhe em pouca água até ficar bem macia.",
+      "Amasse com um garfo e polvilhe uma pitada de canela.",
+      "Deixe amornar antes de servir.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "vegetariano"],
+    ingredientes: [
+      { nome: "Pera", quantidade: "1 unidade" },
+      { nome: "Canela", quantidade: "a gosto" },
+    ],
+  },
+  {
+    nome: "Abacate amassado com gotas de laranja",
+    resumo: "Gordura boa para o cérebro, pronto em minutos.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 5,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Amasse o abacate com um garfo.",
+      "Pingue algumas gotas de laranja e misture.",
+      "Sirva imediatamente para não escurecer.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "vegetariano", "pratico"],
+    ingredientes: [
+      { nome: "Abacate", quantidade: "1/2 unidade" },
+      { nome: "Laranja", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Papa de maçã cozida",
+    resumo: "Clássico primeiro lanche, sem açúcar adicionado.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 12,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Descasque a maçã e cozinhe em pouca água até desmanchar.",
+      "Amasse bem com um garfo.",
+      "Sirva morna.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "vegetariano"],
+    ingredientes: [{ nome: "Maçã", quantidade: "1 unidade" }],
+  },
+  {
+    nome: "Papa de banana com abacate",
+    resumo: "Duas frutas amassadas, cremosa e calórica na medida.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 5,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Amasse a banana e o abacate juntos até ficar homogêneo.",
+      "Sirva na hora.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "vegetariano", "pratico"],
+    ingredientes: [
+      { nome: "Banana", quantidade: "1/2 unidade" },
+      { nome: "Abacate", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Papa de batata-doce com frango e brócolis",
+    resumo: "Papa completa: raiz, proteína e verdura no mesmo prato.",
+    tipoRefeicao: TipoRefeicao.ALMOCO,
+    tempoPreparoMin: 30,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Cozinhe a batata-doce e o brócolis até ficarem bem macios.",
+      "Cozinhe o frango e desfie bem fino.",
+      "Amasse tudo com um garfo e finalize com o azeite.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "proteina", "ferro"],
+    ingredientes: [
+      { nome: "Batata-doce", quantidade: "1 unidade" },
+      { nome: "Frango", quantidade: "50 g" },
+      { nome: "Brócolis", quantidade: "2 buquês" },
+      { nome: "Azeite", quantidade: "1 colher de chá" },
+    ],
+  },
+  {
+    nome: "Papa de arroz com feijão e abobrinha",
+    resumo: "O arroz com feijão da casa, em versão amassada.",
+    tipoRefeicao: TipoRefeicao.ALMOCO,
+    tempoPreparoMin: 25,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Cozinhe a abobrinha até ficar bem macia.",
+      "Misture o arroz cozido com o feijão (grãos e um pouco do caldo).",
+      "Amasse tudo com o garfo até a consistência de papa.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "vegetariano", "ferro"],
+    ingredientes: [
+      { nome: "Arroz", quantidade: "3 colheres de sopa" },
+      { nome: "Feijão", quantidade: "2 colheres de sopa" },
+      { nome: "Abobrinha", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Papa de chuchu com peixe e cenoura",
+    resumo: "Peixe bem desfiado, macio e leve para o jantar.",
+    tipoRefeicao: TipoRefeicao.JANTAR,
+    tempoPreparoMin: 25,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Cozinhe o chuchu e a cenoura até ficarem bem macios.",
+      "Cozinhe o peixe e desfie, conferindo com cuidado se não há espinhas.",
+      "Amasse tudo junto e finalize com o azeite.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "proteina", "leve"],
+    ingredientes: [
+      { nome: "Chuchu", quantidade: "1/2 unidade" },
+      { nome: "Cenoura", quantidade: "1/2 unidade" },
+      { nome: "Filé de peixe", quantidade: "50 g" },
+      { nome: "Azeite", quantidade: "1 colher de chá" },
+    ],
+  },
+  {
+    nome: "Papa de batata com ovo e cenoura",
+    resumo: "Ovo bem cozido, uma das melhores proteínas do início.",
+    tipoRefeicao: TipoRefeicao.JANTAR,
+    tempoPreparoMin: 25,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Cozinhe a batata e a cenoura até ficarem bem macias.",
+      "Cozinhe o ovo por 10 minutos, até gema e clara firmes.",
+      "Amasse tudo junto com o azeite até virar papa.",
+    ],
+    idadeMinimaMeses: 6,
+    tags: ["papinha", "primeiros_solidos", "proteina", "vegetariano"],
+    ingredientes: [
+      { nome: "Batata", quantidade: "1 unidade" },
+      { nome: "Cenoura", quantidade: "1/2 unidade" },
+      { nome: "Ovo", quantidade: "1 unidade" },
+      { nome: "Azeite", quantidade: "1 colher de chá" },
+    ],
+  },
 ];
 
 async function main() {
@@ -1853,7 +2073,7 @@ async function main() {
   for (const receita of RECEITAS) {
     const restricoes = deriveRestricoes(receita.ingredientes);
     const nutricao = deriveNutricao(receita.ingredientes);
-    const idadeMinimaMeses = deriveIdadeMinimaMeses(receita.ingredientes);
+    const idadeMinimaMeses = deriveIdadeMinimaMeses(receita);
 
     const dadosBase = {
       resumo: receita.resumo,

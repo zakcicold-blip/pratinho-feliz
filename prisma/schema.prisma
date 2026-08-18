@@ -120,6 +120,7 @@ model ChildProfile {
   reports       MonthlyReport[]
   shoppingChecks ShoppingCheck[]
   routineEntries RoutineEntry[]
+  shoppingExtras ShoppingExtra[]
 }
 
 model Ingredient {
@@ -142,6 +143,15 @@ model Ingredient {
   sodioMg         Float?
   vitaminaCMg     Float?
   zincoMg         Float?
+
+  // Nutrientes usados nas sugestões por rotina (sono / energia / regulação).
+  triptofanoG     Float?
+  magnesioMg      Float?
+  potassioMg      Float?
+  tiaminaMg       Float?
+  riboflavinaMg   Float?
+  piridoxinaMg    Float?
+  niacinaMg       Float?
 
   // Peso médio de 1 unidade, quando o ingrediente é contado por unidade (ex.: 1 ovo ≈ 50 g).
   gramasPorUnidade Float?
@@ -182,6 +192,14 @@ model Recipe {
   imagemUrl      String?
   fonte          String?
   porcoes        Int      @default(1)
+
+  // Aptidão da receita para cada objetivo de rotina, de 0 a 100.
+  // Derivada da composição dos ingredientes por `npm run db:rotina` — não é
+  // preenchida à mão. Ver src/lib/objetivosRotina.ts para os critérios.
+  scoreSono      Float?
+  scoreEnergia   Float?
+  scoreCalma     Float?
+
   ativo          Boolean  @default(true)
   createdAt      DateTime @default(now())
 
@@ -311,6 +329,21 @@ model RoutineEntry {
   updatedAt        DateTime @updatedAt
 
   @@unique([childProfileId, data])
+}
+
+/// Item avulso que a família adiciona à lista de compras, fora do que vem do plano.
+model ShoppingExtra {
+  id             String   @id @default(cuid())
+  childProfileId String
+  child          ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  semanaInicio   DateTime
+  nome           String
+  quantidade     String?
+  categoria      String   @default("OUTROS")
+  comprado       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([childProfileId, semanaInicio])
 }
 
 model Subscription {

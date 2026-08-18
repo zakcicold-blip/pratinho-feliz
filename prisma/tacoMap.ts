@@ -98,6 +98,26 @@ export const TACO_MAP: Record<string, TacoMapEntry> = {
   "Grão de bico": { tacoId: 575, gramasPorUnidade: 80 }, // Grão-de-bico, cru
   "Milho de pipoca": { tacoId: 61, gramasPorUnidade: 30 }, // Pipoca, com óleo de soja, sem sal
   Lentilha: { tacoId: 577, gramasPorUnidade: 80 }, // Lentilha, cozida
+
+  // ---- Ampliacao do catalogo ----
+  Berinjela: { tacoId: 95, gramasPorUnidade: 250 }, // Berinjela, cozida
+  Vagem: { tacoId: 162, gramasPorUnidade: 8 }, // Vagem, crua
+  Repolho: { tacoId: 149, gramasPorUnidade: 900 }, // Repolho, branco, cru
+  Alface: { tacoId: 78, gramasPorUnidade: 8 }, // Alface, crespa, crua
+  "Couve-flor": { tacoId: 118, gramasPorUnidade: 60 }, // Couve-flor, cozida
+  Pimentão: { tacoId: 144, gramasPorUnidade: 120 }, // Pimentao, verde, cru
+  Inhame: { tacoId: 126, gramasPorUnidade: 200 }, // Inhame, cru
+  Goiaba: { tacoId: 200, gramasPorUnidade: 150 }, // Goiaba, vermelha, com casca, crua
+  Melão: { tacoId: 236, gramasPorUnidade: 100 }, // Melao, cru
+  Tangerina: { tacoId: 251, gramasPorUnidade: 120 }, // Tangerina, Ponca, crua
+  Ameixa: { tacoId: 172, gramasPorUnidade: 60 }, // Ameixa, crua
+  Kiwi: { tacoId: 207, gramasPorUnidade: 90 }, // Kiwi, cru
+  "Atum em lata": { tacoId: 277, gramasPorUnidade: 120 }, // Atum, conserva em oleo
+  Sardinha: { tacoId: 321, gramasPorUnidade: 80 }, // Sardinha, inteira, crua
+  "Patinho bovino": { tacoId: 376, gramasPorUnidade: 120 }, // Carne, bovina, patinho, sem gordura, cru
+  Ricota: { tacoId: 469, gramasPorUnidade: 30 }, // Queijo, ricota
+  Gergelim: { tacoId: 593, gramasPorUnidade: 9 }, // Gergelim, semente
+  "Polvilho doce": { tacoId: 146, gramasPorUnidade: 60 }, // Polvilho, doce
 };
 
 export const TACO_FONTE =

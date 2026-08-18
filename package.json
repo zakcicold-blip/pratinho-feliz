@@ -11,6 +11,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:nutricao": "tsx prisma/seedNutricao.ts",
     "db:gramas": "tsx prisma/seedGramas.ts",
+    "db:rotina": "tsx prisma/seedRotina.ts",
     "db:migrate": "prisma migrate deploy",
     "icons:generate": "node scripts/generate-icons.mjs"
   },

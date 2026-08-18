@@ -4,9 +4,12 @@ import { addDays, formatDiaMes, formatDiaSemana, startOfDay } from "@/lib/dates"
 import TopBar from "@/components/TopBar";
 import RotinaForm from "./RotinaForm";
 import HorariosForm from "./HorariosForm";
+import LeituraRotinaCard from "./LeituraRotinaCard";
 import Card from "@/components/ui/Card";
 import StatCard from "@/components/ui/StatCard";
 import { Moon, Bike, Clock3 } from "lucide-react";
+import { lerObjetivoRotina } from "@/lib/rotinaSinais";
+import { sugestoesDaRotina } from "@/lib/planEngine";
 
 export default async function RotinaPage() {
   const { child } = await getCurrentChild();
@@ -29,6 +32,11 @@ export default async function RotinaPage() {
       : null;
   const totalAtividade = entradas.reduce((acc, e) => acc + (e.atividadeMinutos ?? 0), 0);
 
+  const { leitura } = await lerObjetivoRotina(child.id);
+  const { sugestoes } = leitura.semDados
+    ? { sugestoes: [] }
+    : await sugestoesDaRotina(child.id);
+
   return (
     <>
       <TopBar title={`Rotina de ${child.nome}`} subtitle="Sono e atividades físicas" />
@@ -48,6 +56,8 @@ export default async function RotinaPage() {
             label="atividade total (7 dias)"
           />
         </div>
+
+        <LeituraRotinaCard childId={child.id} leitura={leitura} sugestoes={sugestoes} />
 
         <Card>
           <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-700">
