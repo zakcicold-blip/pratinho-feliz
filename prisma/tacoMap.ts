@@ -59,6 +59,12 @@ export const TACO_MAP: Record<string, TacoMapEntry> = {
   "Peito de peru": { tacoId: 425, gramasPorUnidade: 15 }, // Peru, congelado, assado (1 fatia)
 
   // ---- Laticínios ----
+  // ATENÇÃO: nesta extração da TACO, o leite de vaca fluido (ids 457 e 458) vem com "*"
+  // em energia e proteína — a linha existe, mas esses dois valores não foram extraídos.
+  // Cálcio e os demais estão presentes. Como não há substituto fiel na tabela (459 é leite
+  // em pó, 454 é leite de cabra), o leite fica sem energia e é excluído do cálculo, que
+  // então é exibido como "parcial". Preencher esses dois valores exige conferir a TACO
+  // impressa — não são inventados aqui.
   Leite: { tacoId: 458, gramasPorUnidade: 200 }, // Leite, de vaca, integral
   Queijo: { tacoId: 463, gramasPorUnidade: 20 }, // Queijo, mozarela (1 fatia)
   "Iogurte natural": { tacoId: 448, gramasPorUnidade: 170 }, // Iogurte, natural (1 pote)
