@@ -127,6 +127,25 @@ model Ingredient {
   nome      String   @unique
   categoria String
 
+  // Composição nutricional por 100 g de parte comestível.
+  // Origem: TACO — Tabela Brasileira de Composição de Alimentos (NEPA/UNICAMP, 4a ed.).
+  // `tacoDescricao` guarda o alimento exato usado, para a informação ser auditável.
+  tacoId          Int?
+  tacoDescricao   String?
+  energiaKcal     Float?
+  proteinaG       Float?
+  carboidratoG    Float?
+  lipideoG        Float?
+  fibraG          Float?
+  calcioMg        Float?
+  ferroMg         Float?
+  sodioMg         Float?
+  vitaminaCMg     Float?
+  zincoMg         Float?
+
+  // Peso médio de 1 unidade, quando o ingrediente é contado por unidade (ex.: 1 ovo ≈ 50 g).
+  gramasPorUnidade Float?
+
   foodPreferences FoodPreference[]
   recipeItems     RecipeIngredient[]
   pantryItems     PantryItem[]
@@ -160,6 +179,9 @@ model Recipe {
   restricoes     String
   nutricao       String   @default("")
   idadeMinimaMeses Int    @default(6)
+  imagemUrl      String?
+  fonte          String?
+  porcoes        Int      @default(1)
   ativo          Boolean  @default(true)
   createdAt      DateTime @default(now())
 
@@ -175,6 +197,10 @@ model RecipeIngredient {
   ingredientId String
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
   quantidade   String
+  // Peso estimado em gramas desta quantidade, usado no cálculo nutricional.
+  // Nulo quando a medida não é convertível (ex.: "a gosto") — nesse caso o
+  // ingrediente é ignorado no cálculo e a receita fica marcada como estimativa parcial.
+  gramas       Float?
 
   @@unique([recipeId, ingredientId])
 }

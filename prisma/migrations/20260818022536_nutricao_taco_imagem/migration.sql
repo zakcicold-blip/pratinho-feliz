@@ -1,0 +1,22 @@
+-- AlterTable
+ALTER TABLE "Ingredient" ADD COLUMN     "calcioMg" DOUBLE PRECISION,
+ADD COLUMN     "carboidratoG" DOUBLE PRECISION,
+ADD COLUMN     "energiaKcal" DOUBLE PRECISION,
+ADD COLUMN     "ferroMg" DOUBLE PRECISION,
+ADD COLUMN     "fibraG" DOUBLE PRECISION,
+ADD COLUMN     "gramasPorUnidade" DOUBLE PRECISION,
+ADD COLUMN     "lipideoG" DOUBLE PRECISION,
+ADD COLUMN     "proteinaG" DOUBLE PRECISION,
+ADD COLUMN     "sodioMg" DOUBLE PRECISION,
+ADD COLUMN     "tacoDescricao" TEXT,
+ADD COLUMN     "tacoId" INTEGER,
+ADD COLUMN     "vitaminaCMg" DOUBLE PRECISION,
+ADD COLUMN     "zincoMg" DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "Recipe" ADD COLUMN     "fonte" TEXT,
+ADD COLUMN     "imagemUrl" TEXT,
+ADD COLUMN     "porcoes" INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE "RecipeIngredient" ADD COLUMN     "gramas" DOUBLE PRECISION;

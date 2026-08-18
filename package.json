@@ -9,6 +9,8 @@
     "lint": "eslint",
     "postinstall": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
+    "db:nutricao": "tsx prisma/seedNutricao.ts",
+    "db:gramas": "tsx prisma/seedGramas.ts",
     "db:migrate": "prisma migrate deploy",
     "icons:generate": "node scripts/generate-icons.mjs"
   },

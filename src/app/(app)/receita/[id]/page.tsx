@@ -6,6 +6,8 @@ import FavoriteButton from "./FavoriteButton";
 import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
 import { TriangleAlert, Leaf } from "lucide-react";
 import Card from "@/components/ui/Card";
+import TabelaNutricional from "@/components/TabelaNutricional";
+import { calcularNutricao } from "@/lib/nutricao";
 
 export default async function ReceitaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -24,6 +26,7 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
   const passos = recipe.passos.split("\n").filter(Boolean);
   const restricoes = recipe.restricoes.split(",").filter(Boolean);
   const cor = MEAL_COLOR[recipe.tipoRefeicao];
+  const nutricao = calcularNutricao(recipe.ingredients, recipe.porcoes);
 
   return (
     <>
@@ -47,7 +50,12 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
             <StatBox label="Rendimento" value={recipe.rendimento} />
           </div>
 
-          {recipe.nutricao && (
+          {/*
+            A nota qualitativa ("fonte de ferro") só aparece quando não há cálculo real.
+            Quando existe composição da TACO, a tabela no fim da página é mais precisa —
+            e evita repetir uma alegação nutricional sem os valores que a sustentam.
+          */}
+          {!nutricao && recipe.nutricao && (
             <div className="mt-3 flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700">
               <Leaf size={14} className="shrink-0" />
               {recipe.nutricao}
@@ -90,6 +98,8 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
               ))}
             </ol>
           </div>
+
+          {nutricao && <TabelaNutricional resumo={nutricao} />}
         </Card>
       </div>
     </>
