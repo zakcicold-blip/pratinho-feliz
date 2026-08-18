@@ -10,6 +10,7 @@ import {
   PRATICIDADE_LABEL,
 } from "@/lib/constants";
 import AddCustomFoodInput, { type IngredienteBasico } from "@/components/AddCustomFoodInput";
+import EquipamentosSelect from "@/components/EquipamentosSelect";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
@@ -231,13 +232,15 @@ export default function OnboardingWizard({ grupos: gruposIniciais }: { grupos: G
                 className="w-full accent-orange-500"
               />
             </Field>
-            <Field label="Equipamentos disponíveis (opcional)">
-              <input
+            <Field label="O que você tem na cozinha? (opcional)">
+              <EquipamentosSelect
                 value={draft.equipamentos}
-                onChange={(e) => setDraft({ ...draft, equipamentos: e.target.value })}
-                className="input"
-                placeholder="Ex.: air fryer, liquidificador"
+                onChange={(equipamentos) => setDraft({ ...draft, equipamentos })}
               />
+              <p className="mt-2 text-xs text-stone-400">
+                Só sugerimos receitas que dá para fazer com o que você marcar. Fogão e panela já
+                entram por padrão.
+              </p>
             </Field>
           </div>
         )}

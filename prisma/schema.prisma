@@ -189,6 +189,8 @@ model Recipe {
   restricoes     String
   nutricao       String   @default("")
   idadeMinimaMeses Int    @default(6)
+  /// Equipamentos exigidos pelo modo de preparo, separados por virgula. Vazio = so fogao e panela.
+  equipamentos     String   @default("")
   imagemUrl      String?
   fonte          String?
   porcoes        Int      @default(1)

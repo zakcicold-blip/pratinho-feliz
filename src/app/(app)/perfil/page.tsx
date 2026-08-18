@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { getCurrentChild } from "@/lib/currentChild";
+import { getCurrentChild, listarCriancas } from "@/lib/currentChild";
 import { db } from "@/lib/db";
 import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import PerfilForm from "./PerfilForm";
+import SeletorCrianca from "./SeletorCrianca";
 import { ChartColumn, Sparkles, ShoppingCart, Settings } from "lucide-react";
 
 export default async function PerfilPage() {
-  const { child } = await getCurrentChild();
+  const { session, child } = await getCurrentChild();
+  const criancas = await listarCriancas(session.user.id);
 
   const ingredientes = await db.ingredient.findMany({ orderBy: { nome: "asc" } });
   const grupos = CATEGORIA_INGREDIENTE_ORDEM.map((categoria) => ({
@@ -23,6 +25,10 @@ export default async function PerfilPage() {
     <>
       <TopBar title={`Perfil de ${child.nome}`} />
       <div className="px-4 py-4">
+        <div className="mb-4">
+          <SeletorCrianca criancas={criancas} ativaId={child.id} />
+        </div>
+
         <div className="mb-5 grid grid-cols-4 gap-2">
           <QuickLink href="/relatorio" label="Relatório" Icon={ChartColumn} />
           <QuickLink href="/descobertas" label="Descobertas" Icon={Sparkles} />

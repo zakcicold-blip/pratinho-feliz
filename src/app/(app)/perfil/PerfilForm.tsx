@@ -10,6 +10,7 @@ import {
   PRATICIDADE_LABEL,
 } from "@/lib/constants";
 import AddCustomFoodInput, { type IngredienteBasico } from "@/components/AddCustomFoodInput";
+import EquipamentosSelect from "@/components/EquipamentosSelect";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -137,12 +138,12 @@ export default function PerfilForm({
             className="w-full accent-orange-500"
           />
         </Field>
-        <Field label="Equipamentos (opcional)">
-          <input
-            value={equipamentos}
-            onChange={(e) => setEquipamentos(e.target.value)}
-            className="input"
-          />
+        <Field label="O que você tem na cozinha? (opcional)">
+          <EquipamentosSelect value={equipamentos} onChange={setEquipamentos} />
+          <p className="mt-2 text-xs text-stone-400">
+            O cardápio só sugere receitas possíveis com o que estiver marcado. Fogão e panela já
+            entram por padrão.
+          </p>
         </Field>
         <Field label="Praticidade">
           <div className="grid gap-2 sm:grid-cols-3">

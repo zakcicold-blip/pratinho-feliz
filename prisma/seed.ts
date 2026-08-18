@@ -160,6 +160,38 @@ function deriveIdadeMinimaMeses(receita: RecipeSeed): number {
   return 8;
 }
 
+// Equipamentos que a receita realmente exige, lidos do modo de preparo.
+// Fogao e panela sao pressupostos e nao entram aqui.
+const EQUIPAMENTOS_DETECTAR: { id: string; palavras: string[] }[] = [
+  // Palavras ja sem acento e comparadas com limite de palavra, para "asse"/"assar"
+  // nao casarem dentro de "amasse"/"amassar".
+  { id: "FORNO", palavras: ["forno", "assadeira", "assar", "asse", "assados", "gratine", "gratinar"] },
+  { id: "AIR_FRYER", palavras: ["air fryer", "airfryer"] },
+  { id: "LIQUIDIFICADOR", palavras: ["liquidificador"] },
+  { id: "BATEDEIRA", palavras: ["batedeira"] },
+  { id: "MIXER", palavras: ["mixer", "processador"] },
+  { id: "MICRO_ONDAS", palavras: ["micro-ondas", "microondas"] },
+  { id: "PANELA_PRESSAO", palavras: ["panela de pressao"] },
+  { id: "SANDUICHEIRA", palavras: ["sanduicheira", "grill"] },
+];
+
+function semAcento(t: string): string {
+  return t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+function deriveEquipamentos(receita: RecipeSeed): string {
+  const texto = semAcento(receita.passos.join(" ") + " " + receita.resumo);
+  // \b em volta do termo evita casar dentro de outra palavra
+  // (ex.: "asse" em "amasse", "assar" em "amassar").
+  const achados = EQUIPAMENTOS_DETECTAR.filter((eq) =>
+    eq.palavras.some((pal) => {
+      const p = semAcento(pal).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return new RegExp(String.raw`\b` + p + String.raw`\b`).test(texto);
+    })
+  ).map((eq) => eq.id);
+  return achados.join(",");
+}
+
 const FONTE_PROTEINA = new Set([
   "Frango",
   "Carne moída",
@@ -2086,6 +2118,7 @@ async function main() {
       restricoes: restricoes.join(","),
       nutricao,
       idadeMinimaMeses,
+      equipamentos: deriveEquipamentos(receita),
     };
 
     const existente = await db.recipe.findFirst({ where: { nome: receita.nome } });

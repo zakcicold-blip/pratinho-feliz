@@ -59,3 +59,39 @@ export const FAIXAS_ETARIAS = [
   "6 a 8 anos",
   "9 a 12 anos",
 ];
+
+/**
+ * Equipamentos de cozinha que mudam o que dá para preparar.
+ *
+ * A lista é curta de propósito: só entram itens que realmente destravam ou
+ * bloqueiam receitas. Fogão, panela e forno de fogão são pressupostos — não
+ * fazem parte da escolha.
+ *
+ * `palavras` são os termos procurados no modo de preparo para descobrir qual
+ * equipamento a receita exige.
+ */
+export const EQUIPAMENTOS_COMUNS: { id: string; label: string; palavras: string[] }[] = [
+  { id: "FORNO", label: "Forno", palavras: ["forno", "assadeira", "assar", "asse "] },
+  { id: "AIR_FRYER", label: "Air fryer", palavras: ["air fryer", "airfryer", "fritadeira sem óleo"] },
+  { id: "LIQUIDIFICADOR", label: "Liquidificador", palavras: ["liquidificador", "bata no liquidificador"] },
+  { id: "BATEDEIRA", label: "Batedeira", palavras: ["batedeira"] },
+  { id: "MIXER", label: "Mixer ou processador", palavras: ["mixer", "processador"] },
+  { id: "MICRO_ONDAS", label: "Micro-ondas", palavras: ["micro-ondas", "microondas"] },
+  { id: "PANELA_PRESSAO", label: "Panela de pressão", palavras: ["panela de pressão"] },
+  { id: "SANDUICHEIRA", label: "Sanduicheira ou grill", palavras: ["sanduicheira", "grill", "chapa"] },
+];
+
+export const EQUIPAMENTO_LABEL: Record<string, string> = Object.fromEntries(
+  EQUIPAMENTOS_COMUNS.map((e) => [e.id, e.label])
+);
+
+/** Lê o campo de equipamentos do perfil (texto separado por vírgula). */
+export function parseEquipamentos(valor: string | null | undefined): Set<string> {
+  if (!valor) return new Set();
+  return new Set(
+    valor
+      .split(",")
+      .map((v) => v.trim().toUpperCase())
+      .filter(Boolean)
+  );
+}

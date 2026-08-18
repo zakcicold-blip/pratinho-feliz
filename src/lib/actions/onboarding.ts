@@ -1,9 +1,11 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { gerarPlano30Dias } from "@/lib/planEngine";
+import { COOKIE_CRIANCA } from "@/lib/currentChild";
 import { Objetivo, Praticidade, StatusPreferencia } from "@prisma/client";
 
 export type OnboardingInput = {
@@ -67,6 +69,15 @@ export async function completarOnboarding(input: OnboardingInput) {
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   await gerarPlano30Dias(child.id, 1, hoje);
+
+  // Quem acabou de ser cadastrado vira a crianca em foco — inclusive quando e
+  // o segundo ou terceiro filho.
+  (await cookies()).set(COOKIE_CRIANCA, child.id, {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+  });
 
   await db.auditLog.create({
     data: {

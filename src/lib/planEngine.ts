@@ -6,7 +6,7 @@ import {
   StatusPreferencia,
   TipoRefeicao,
 } from "@prisma/client";
-import { TIPO_REFEICAO_ORDEM } from "@/lib/constants";
+import { TIPO_REFEICAO_ORDEM, parseEquipamentos } from "@/lib/constants";
 import { faixaEtariaEmMeses } from "@/lib/idade";
 import { campoDoObjetivo, lerRotina, type ObjetivoRotina } from "@/lib/objetivosRotina";
 import { lerSinaisRotina } from "@/lib/rotinaSinais";
@@ -23,6 +23,7 @@ type RecipeWithIngredients = {
   scoreSono: number | null;
   scoreEnergia: number | null;
   scoreCalma: number | null;
+  equipamentos: string;
   ingredients: { ingredient: { id: string; nome: string } }[];
 };
 
@@ -39,6 +40,7 @@ type ChildContext = {
   recusaIds: Set<string>;
   favoriteRecipeIds: Set<string>;
   feedbackByRecipe: Map<string, { estado: EstadoFeedback; peso: number }[]>;
+  equipamentosDisponiveis: Set<string>;
 };
 
 function norm(text: string) {
@@ -110,6 +112,7 @@ async function buildChildContext(childId: string): Promise<ChildContext> {
     recusaIds,
     favoriteRecipeIds,
     feedbackByRecipe,
+    equipamentosDisponiveis: parseEquipamentos(child.equipamentos),
   };
 }
 
@@ -133,6 +136,16 @@ function passaRegrasDuras(recipe: RecipeWithIngredients, ctx: ChildContext): boo
 
   if (ctx.praticidade === Praticidade.MUITO_RAPIDO && recipe.tempoPreparoMin > 25) return false;
   if (recipe.tempoPreparoMin > ctx.tempoDisponivel + 20) return false;
+
+  // Equipamento: só filtra quando a família declarou o que tem. Sem declaração,
+  // não punimos (não dá para saber). Com declaração, uma receita que precisa de
+  // um aparelho não marcado sai do plano — é o "influenciável" que o produto promete.
+  if (ctx.equipamentosDisponiveis.size > 0 && recipe.equipamentos) {
+    const exigidos = parseEquipamentos(recipe.equipamentos);
+    for (const eq of exigidos) {
+      if (!ctx.equipamentosDisponiveis.has(eq)) return false;
+    }
+  }
 
   return true;
 }
