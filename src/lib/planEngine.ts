@@ -52,14 +52,23 @@ function norm(text: string) {
 }
 
 async function buildChildContext(childId: string): Promise<ChildContext> {
-  const child = await db.childProfile.findUniqueOrThrow({
-    where: { id: childId },
-  });
-
-  const preferences = await db.foodPreference.findMany({
-    where: { childProfileId: childId },
-    include: { ingredient: true },
-  });
+  // As cinco leituras dependem só do childId e são independentes entre si:
+  // buscá-las em paralelo troca 5 idas ao banco em série por 1 rodada só.
+  const [child, preferences, favorites, feedbacks, sinais] = await Promise.all([
+    db.childProfile.findUniqueOrThrow({ where: { id: childId } }),
+    db.foodPreference.findMany({
+      where: { childProfileId: childId },
+      include: { ingredient: true },
+    }),
+    db.favorite.findMany({ where: { childProfileId: childId } }),
+    db.mealFeedback.findMany({
+      where: { mealSlot: { mealPlan: { childProfileId: childId }, recipeId: { not: null } } },
+      include: { mealSlot: true },
+      orderBy: { createdAt: "desc" },
+      take: 300,
+    }),
+    lerSinaisRotina(childId),
+  ]);
 
   const restricaoNomes = new Set(
     preferences
@@ -76,15 +85,7 @@ async function buildChildContext(childId: string): Promise<ChildContext> {
     preferences.filter((p) => p.status === StatusPreferencia.RECUSA).map((p) => p.ingredientId)
   );
 
-  const favorites = await db.favorite.findMany({ where: { childProfileId: childId } });
   const favoriteRecipeIds = new Set(favorites.map((f) => f.recipeId));
-
-  const feedbacks = await db.mealFeedback.findMany({
-    where: { mealSlot: { mealPlan: { childProfileId: childId }, recipeId: { not: null } } },
-    include: { mealSlot: true },
-    orderBy: { createdAt: "desc" },
-    take: 300,
-  });
 
   const feedbackByRecipe = new Map<string, { estado: EstadoFeedback; peso: number }[]>();
   feedbacks.forEach((f, index) => {
@@ -96,7 +97,6 @@ async function buildChildContext(childId: string): Promise<ChildContext> {
     feedbackByRecipe.set(recipeId, list);
   });
 
-  const sinais = await lerSinaisRotina(childId);
   const objetivoRotina = lerRotina(sinais).objetivo;
 
   return {
@@ -229,25 +229,23 @@ async function getRecipePool(tipo: TipoRefeicao): Promise<RecipeWithIngredients[
 }
 
 export async function gerarPlano30Dias(childId: string, cicloNumero: number, dataInicio: Date) {
-  const ctx = await buildChildContext(childId);
-
   const dataFim = new Date(dataInicio);
   dataFim.setDate(dataFim.getDate() + 29);
 
-  const plano = await db.mealPlan.create({
-    data: {
-      childProfileId: childId,
-      cicloNumero,
-      dataInicio,
-      dataFim,
-      ativo: true,
-    },
-  });
+  // Contexto, criação do plano e os 4 pools de receita são independentes:
+  // dispara tudo de uma vez em vez de esperar um por um.
+  const [ctx, plano, ...pools] = await Promise.all([
+    buildChildContext(childId),
+    db.mealPlan.create({
+      data: { childProfileId: childId, cicloNumero, dataInicio, dataFim, ativo: true },
+    }),
+    ...TIPO_REFEICAO_ORDEM.map((tipo) => getRecipePool(tipo as TipoRefeicao)),
+  ]);
 
   const poolPorTipo: Record<string, RecipeWithIngredients[]> = {};
-  for (const tipo of TIPO_REFEICAO_ORDEM) {
-    poolPorTipo[tipo] = await getRecipePool(tipo as TipoRefeicao);
-  }
+  TIPO_REFEICAO_ORDEM.forEach((tipo, i) => {
+    poolPorTipo[tipo] = pools[i];
+  });
 
   const usadosRecentes: Record<string, string[]> = {
     CAFE_DA_MANHA: [],

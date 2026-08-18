@@ -14,6 +14,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Impede o "efeito elástico" (pull-to-refresh / bounce) de encadear no documento. */
+  overscroll-behavior: none;
 }
 
 body {
@@ -22,6 +24,11 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-feature-settings: "cv11", "ss01";
+  /* Sem zoom por gesto/duplo-toque; a rolagem de uma dedo continua normal. */
+  touch-action: pan-x pan-y;
+  overscroll-behavior: none;
+  /* Nunca deixa a página vazar na horizontal (o que dá a sensação de "arrastar o app"). */
+  overflow-x: hidden;
 }
 
 ::selection {

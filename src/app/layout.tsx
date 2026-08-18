@@ -23,6 +23,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // Trava o zoom para dar sensação de app nativo (sem pinça nem duplo-toque).
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
   themeColor: "#f97316",
 };
 

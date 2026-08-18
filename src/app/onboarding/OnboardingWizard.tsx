@@ -12,6 +12,7 @@ import {
 } from "@/lib/constants";
 import AddCustomFoodInput, { type IngredienteBasico } from "@/components/AddCustomFoodInput";
 import EquipamentosSelect from "@/components/EquipamentosSelect";
+import Spinner from "@/components/Spinner";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
@@ -178,6 +179,23 @@ export default function OnboardingWizard({
   }
 
   const StepIcon = STEPS[step].icon;
+
+  // Enquanto o plano é montado no servidor, cobre a tela inteira com um estado
+  // de progresso claro, em vez de deixar a pessoa olhando um botão "carregando".
+  if (submitting) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-white px-6 text-center">
+        <Spinner size={44} />
+        <div>
+          <h2 className="text-lg font-bold text-stone-800">Montando o cardápio de 30 dias…</h2>
+          <p className="mt-1 text-sm text-stone-500">
+            Estamos escolhendo as receitas certas para {draft.nome || "sua criança"} com base no que
+            você respondeu. Leva só alguns segundos.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
