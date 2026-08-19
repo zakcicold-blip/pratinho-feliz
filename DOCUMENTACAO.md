@@ -225,6 +225,11 @@ Regra-base do spec: **dados estruturados**, não LLM por requisição. Duas etap
   (`sincronizarAssinaturaStripe`) e dispara os eventos do Meta (ver abaixo).
 - **Estados** (`StatusAssinatura`): `TESTE` (trial), `ATIVA`, `CARENCIA`
   (pagamento pendente), `CANCELADA`.
+- **Cancelamento:** não é automático. Em **Configurações**, a pessoa clica em
+  "Solicitar cancelamento", escreve o motivo e envia (`solicitarCancelamento`).
+  Vira uma `SolicitacaoCancelamento` PENDENTE. O **admin** analisa em
+  `/admin/cancelamentos` e **Aprova** (`resolverCancelamento`) — que agenda o
+  cancelamento no Stripe ao fim do período pago — ou **Recusa**.
 - **Provisão no Stripe:** `npm run stripe:setup` cria produto, os dois preços e
   o webhook (com os eventos certos, incluindo `invoice.payment_succeeded`).
 
@@ -257,6 +262,8 @@ Utmify.
   mensais × trimestrais, canceladas, receita recorrente estimada) e bloco
   **Uso** (contas totais, ativas na semana, perfis, planos, feedbacks) + eventos
   recentes.
+- **Cancelamentos** (`/admin/cancelamentos`): solicitações de cancelamento com
+  o motivo; aprovar/recusar. O dashboard alerta quando há pendentes.
 - **Receitas / Ingredientes / Usuários:** gestão e importação em massa
   (CSV/JSON) com pré-visualização antes de gravar.
 - Acesso restrito por `requireAdmin` (`role = ADMIN`).
