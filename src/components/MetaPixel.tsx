@@ -40,11 +40,18 @@ export default function MetaPixel() {
   useEffect(() => {
     if (!ativo || conversaoContada.current) return;
 
-    // Trial iniciado: volta do checkout para /hoje?assinatura=ok.
+    // Trial iniciado: volta do checkout para /hoje?assinatura=ok. O eventID é o
+    // mesmo que o CAPI usa no servidor, então a Meta deduplica os dois.
     if (pathname === "/hoje" && searchParams.get("assinatura") === "ok") {
       conversaoContada.current = true;
       const valor = searchParams.get("plano") === "TRIMESTRAL" ? 59.9 : 29.9;
-      fbq("track", "StartTrial", { value: valor, currency: "BRL", predicted_ltv: valor });
+      const eid = searchParams.get("eid") ?? undefined;
+      fbq(
+        "track",
+        "StartTrial",
+        { value: valor, currency: "BRL", predicted_ltv: valor },
+        eid ? { eventID: eid } : undefined
+      );
       return;
     }
 

@@ -41,6 +41,7 @@ const EVENTOS_WEBHOOK = [
   "customer.subscription.updated",
   "customer.subscription.deleted",
   "customer.subscription.trial_will_end",
+  "invoice.payment_succeeded",
 ];
 
 /** Grava (ou atualiza) uma variável no .env, sem imprimir o valor na tela. */
@@ -132,7 +133,9 @@ async function acharOuCriarWebhook() {
   const lista = await stripe.webhookEndpoints.list({ limit: 100 });
   const existente = lista.data.find((w) => w.url === URL_WEBHOOK);
   if (existente) {
-    console.log(`• Webhook já existia: ${existente.id}`);
+    // Garante que os eventos estão atualizados (ex.: incluir invoice.payment_succeeded).
+    await stripe.webhookEndpoints.update(existente.id, { enabled_events: EVENTOS_WEBHOOK });
+    console.log(`• Webhook já existia (eventos atualizados): ${existente.id}`);
     return { endpoint: existente, segredo: null };
   }
   const endpoint = await stripe.webhookEndpoints.create({

@@ -2,6 +2,24 @@ import type Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { sincronizarAssinaturaStripe } from "@/lib/assinatura";
+import { enviarEventoCapi } from "@/lib/metaCapi";
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://pratinho-feliz.vercel.app";
+
+/** Lê os campos de tracking que gravamos no metadata da assinatura. */
+function trackingDaSub(sub: Stripe.Subscription) {
+  return {
+    fbp: sub.metadata?.fbp || null,
+    fbc: sub.metadata?.fbc || null,
+    startTrialEventId: sub.metadata?.startTrialEventId || null,
+  };
+}
+
+/** Valor mensal-equivalente do plano da assinatura, em reais. */
+function valorDaSub(sub: Stripe.Subscription): number | undefined {
+  const centavos = sub.items.data[0]?.price.unit_amount;
+  return centavos != null ? centavos / 100 : undefined;
+}
 
 // A verificação de assinatura precisa do corpo cru e do runtime Node.
 export const runtime = "nodejs";
@@ -38,6 +56,43 @@ export async function POST(req: Request) {
             typeof sessao.subscription === "string" ? sessao.subscription : sessao.subscription.id;
           const sub = await stripe.subscriptions.retrieve(subId);
           await sincronizarAssinaturaStripe(sub);
+
+          // StartTrial server-side (CAPI), deduplicado com o pixel pelo mesmo
+          // event_id gravado no checkout.
+          const { fbp, fbc, startTrialEventId } = trackingDaSub(sub);
+          await enviarEventoCapi({
+            eventName: "StartTrial",
+            eventId: startTrialEventId || `trial:${sub.id}`,
+            email: sessao.customer_details?.email ?? null,
+            fbp,
+            fbc,
+            value: valorDaSub(sub),
+            currency: "BRL",
+            eventSourceUrl: `${APP_URL}/hoje`,
+          });
+        }
+        break;
+      }
+      case "invoice.payment_succeeded": {
+        // Compra real: a cobrança que acontece ao fim do trial (e nas
+        // renovações). Fatura de valor 0 (o trial em si) é ignorada.
+        const fatura = evento.data.object as Stripe.Invoice;
+        const subRef = (fatura as unknown as { subscription?: string | Stripe.Subscription })
+          .subscription;
+        if (fatura.amount_paid > 0 && subRef) {
+          const subId = typeof subRef === "string" ? subRef : subRef.id;
+          const sub = await stripe.subscriptions.retrieve(subId);
+          const { fbp, fbc } = trackingDaSub(sub);
+          await enviarEventoCapi({
+            eventName: "Purchase",
+            eventId: `purchase:${fatura.id}`,
+            email: fatura.customer_email ?? null,
+            fbp,
+            fbc,
+            value: fatura.amount_paid / 100,
+            currency: (fatura.currency ?? "brl").toUpperCase(),
+            eventSourceUrl: `${APP_URL}/hoje`,
+          });
         }
         break;
       }

@@ -1,6 +1,6 @@
 "use server";
 
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/currentChild";
@@ -84,6 +84,14 @@ export async function criarCheckoutTrial(
   const customerId = await garantirCustomer(session.user.id, user.email, user.name);
   const base = await origem();
 
+  // Cookies do Meta (não são httpOnly, chegam ao servidor) para casar a
+  // conversão com o clique do anúncio no CAPI. E um event_id compartilhado
+  // entre o pixel do navegador e o evento server-side, para deduplicar.
+  const jar = await cookies();
+  const fbp = jar.get("_fbp")?.value ?? "";
+  const fbc = jar.get("_fbc")?.value ?? "";
+  const startTrialEventId = crypto.randomUUID();
+
   const stripe = getStripe();
   const checkout = await stripe.checkout.sessions.create({
     mode: "subscription",
@@ -92,7 +100,7 @@ export async function criarCheckoutTrial(
     payment_method_collection: "always",
     subscription_data: {
       trial_period_days: DIAS_TESTE_GRATIS,
-      metadata: { userId: session.user.id },
+      metadata: { userId: session.user.id, fbp, fbc, startTrialEventId },
     },
     // Deixa claro o que acontece quando o trial acabar.
     custom_text: {
@@ -100,9 +108,10 @@ export async function criarCheckoutTrial(
         message: `Você não será cobrado agora. Após ${DIAS_TESTE_GRATIS} dias de teste grátis, a assinatura é renovada automaticamente. Cancele quando quiser.`,
       },
     },
-    // Passa pelo /assinar (que reconcilia a assinatura na hora) levando o plano,
-    // e de lá segue para /hoje?assinatura=ok — onde o pixel marca o StartTrial.
-    success_url: `${base}/assinar?sucesso=1&plano=${plano}`,
+    // Passa pelo /assinar (que reconcilia a assinatura na hora) levando o plano
+    // e o event_id, e de lá segue para /hoje?assinatura=ok — onde o pixel marca
+    // o StartTrial com o mesmo id que o CAPI usa.
+    success_url: `${base}/assinar?sucesso=1&plano=${plano}&eid=${startTrialEventId}`,
     cancel_url: `${base}/assinar?cancelado=1`,
   });
 

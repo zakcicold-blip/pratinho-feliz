@@ -14,20 +14,23 @@ export default async function AssinarPage({
     cancelado?: string;
     erro?: string;
     plano?: string;
+    eid?: string;
   }>;
 }) {
   const session = await requireSession();
-  const { sucesso, cancelado, erro, plano } = await searchParams;
+  const { sucesso, cancelado, erro, plano, eid } = await searchParams;
 
   // Já tem acesso? Não faz sentido ficar no paywall.
   if (await podeAcessarApp(session.user.id)) redirect("/hoje");
 
   // Voltou do Checkout: concilia na hora, sem esperar o webhook, e segue para
-  // /hoje com o marcador que dispara o StartTrial no Meta Pixel.
+  // /hoje com o marcador que dispara o StartTrial no Meta Pixel (mesmo event_id
+  // do CAPI, para deduplicar).
   if (sucesso) {
     if (await reconciliarAssinatura(session.user.id)) {
       const planoParam = plano === "TRIMESTRAL" ? "TRIMESTRAL" : "MENSAL";
-      redirect(`/hoje?assinatura=ok&plano=${planoParam}`);
+      const eidParam = eid ? `&eid=${encodeURIComponent(eid)}` : "";
+      redirect(`/hoje?assinatura=ok&plano=${planoParam}${eidParam}`);
     }
   }
 
