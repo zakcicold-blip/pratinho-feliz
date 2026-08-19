@@ -3,6 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { ArrowRight } from "lucide-react";
 import { irParaCheckout } from "@/lib/actions/billing";
+import { trackPixel } from "@/lib/fbpixel";
 
 function BotaoPrincipal() {
   const { pending } = useFormStatus();
@@ -35,12 +36,17 @@ function BotaoSecundario() {
 }
 
 export default function IniciarTrialButton() {
+  // Marca o início do checkout no funil do Meta antes de sair para o Stripe.
+  function marcarInicio(valor: number) {
+    trackPixel("InitiateCheckout", { value: valor, currency: "BRL" });
+  }
+
   return (
     <div className="space-y-2.5">
-      <form action={irParaCheckout.bind(null, "MENSAL")}>
+      <form action={irParaCheckout.bind(null, "MENSAL")} onSubmit={() => marcarInicio(29.9)}>
         <BotaoPrincipal />
       </form>
-      <form action={irParaCheckout.bind(null, "TRIMESTRAL")}>
+      <form action={irParaCheckout.bind(null, "TRIMESTRAL")} onSubmit={() => marcarInicio(59.9)}>
         <BotaoSecundario />
       </form>
     </div>

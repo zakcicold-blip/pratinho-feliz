@@ -9,17 +9,26 @@ import IniciarTrialButton from "./IniciarTrialButton";
 export default async function AssinarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sucesso?: string; cancelado?: string; erro?: string }>;
+  searchParams: Promise<{
+    sucesso?: string;
+    cancelado?: string;
+    erro?: string;
+    plano?: string;
+  }>;
 }) {
   const session = await requireSession();
-  const { sucesso, cancelado, erro } = await searchParams;
+  const { sucesso, cancelado, erro, plano } = await searchParams;
 
   // Já tem acesso? Não faz sentido ficar no paywall.
   if (await podeAcessarApp(session.user.id)) redirect("/hoje");
 
-  // Voltou do Checkout: concilia na hora, sem esperar o webhook.
+  // Voltou do Checkout: concilia na hora, sem esperar o webhook, e segue para
+  // /hoje com o marcador que dispara o StartTrial no Meta Pixel.
   if (sucesso) {
-    if (await reconciliarAssinatura(session.user.id)) redirect("/hoje");
+    if (await reconciliarAssinatura(session.user.id)) {
+      const planoParam = plano === "TRIMESTRAL" ? "TRIMESTRAL" : "MENSAL";
+      redirect(`/hoje?assinatura=ok&plano=${planoParam}`);
+    }
   }
 
   const beneficios = [

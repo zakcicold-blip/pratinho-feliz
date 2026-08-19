@@ -100,7 +100,9 @@ export async function criarCheckoutTrial(
         message: `Você não será cobrado agora. Após ${DIAS_TESTE_GRATIS} dias de teste grátis, a assinatura é renovada automaticamente. Cancele quando quiser.`,
       },
     },
-    success_url: `${base}/hoje?assinatura=ok`,
+    // Passa pelo /assinar (que reconcilia a assinatura na hora) levando o plano,
+    // e de lá segue para /hoje?assinatura=ok — onde o pixel marca o StartTrial.
+    success_url: `${base}/assinar?sucesso=1&plano=${plano}`,
     cancel_url: `${base}/assinar?cancelado=1`,
   });
 

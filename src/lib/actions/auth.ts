@@ -45,10 +45,11 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
     },
   });
 
+  // novo=1 sinaliza ao Meta Pixel que é um cadastro recém-concluído.
   await signIn("credentials", {
     email,
     password,
-    redirectTo: "/onboarding",
+    redirectTo: "/onboarding?novo=1",
   });
 }
 
