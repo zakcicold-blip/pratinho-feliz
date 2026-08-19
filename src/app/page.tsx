@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { cn } from "@/lib/cn";
+import PhoneCarousel from "@/components/PhoneCarousel";
 import {
   UtensilsCrossed,
   CalendarDays,
@@ -132,13 +133,9 @@ export default async function LandingPage({
             </div>
           </div>
 
-          {/* Mockup de celular — troque o ImgSlot por um print real do app */}
+          {/* Carrossel com prints reais do app dentro do mockup de celular */}
           <div className="flex justify-center md:justify-end">
-            <div className="w-full max-w-[270px] rounded-[2.5rem] border-[7px] border-stone-900 bg-stone-900 shadow-float">
-              <div className="overflow-hidden rounded-[1.9rem] bg-white">
-                <ImgSlot label="prévia do app" className="aspect-[9/18]" />
-              </div>
-            </div>
+            <PhoneCarousel />
           </div>
         </div>
       </section>

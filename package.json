@@ -14,7 +14,8 @@
     "db:rotina": "tsx prisma/seedRotina.ts",
     "stripe:setup": "node scripts/stripe-setup.mjs",
     "db:migrate": "prisma migrate deploy",
-    "icons:generate": "node scripts/generate-icons.mjs"
+    "icons:generate": "node scripts/generate-icons.mjs",
+    "screens": "node scripts/screenshots.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -39,6 +40,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "puppeteer-core": "^25.8.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5"
