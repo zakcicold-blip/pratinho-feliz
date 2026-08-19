@@ -8,6 +8,7 @@ import {
 } from "@prisma/client";
 import { TIPO_REFEICAO_ORDEM, parseEquipamentos } from "@/lib/constants";
 import { faixaEtariaEmMeses } from "@/lib/idade";
+import { addDiasChave } from "@/lib/dates";
 import { campoDoObjetivo, lerRotina, type ObjetivoRotina } from "@/lib/objetivosRotina";
 import { lerSinaisRotina } from "@/lib/rotinaSinais";
 
@@ -229,8 +230,7 @@ async function getRecipePool(tipo: TipoRefeicao): Promise<RecipeWithIngredients[
 }
 
 export async function gerarPlano30Dias(childId: string, cicloNumero: number, dataInicio: Date) {
-  const dataFim = new Date(dataInicio);
-  dataFim.setDate(dataFim.getDate() + 29);
+  const dataFim = addDiasChave(dataInicio, 29);
 
   // Contexto, criação do plano e os 4 pools de receita são independentes:
   // dispara tudo de uma vez em vez de esperar um por um.
@@ -263,8 +263,7 @@ export async function gerarPlano30Dias(childId: string, cicloNumero: number, dat
   }[] = [];
 
   for (let dia = 0; dia < 30; dia++) {
-    const data = new Date(dataInicio);
-    data.setDate(data.getDate() + dia);
+    const data = addDiasChave(dataInicio, dia);
 
     for (const tipo of TIPO_REFEICAO_ORDEM) {
       const candidatos = (poolPorTipo[tipo] ?? []).filter((r) => passaRegrasDuras(r, ctx));

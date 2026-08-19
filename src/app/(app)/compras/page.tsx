@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
-import { addDays, startOfDay } from "@/lib/dates";
+import { addDiasChave, hojeChave } from "@/lib/dates";
 import { CATEGORIA_INGREDIENTE_LABEL, CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import ShoppingItemRow from "./ShoppingItemRow";
@@ -38,13 +38,13 @@ export default async function ComprasPage({
     );
   }
 
-  const inicioCiclo = startOfDay(plano.dataInicio);
-  const hojeIdx = Math.round((startOfDay(new Date()).getTime() - inicioCiclo.getTime()) / 86400000);
+  const inicioCiclo = plano.dataInicio;
+  const hojeIdx = Math.round((hojeChave().getTime() - inicioCiclo.getTime()) / 86400000);
   const semanaAtualIdx = Math.min(4, Math.max(0, Math.floor(hojeIdx / 7)));
   const semanaIdx = semana ? Math.min(4, Math.max(0, Number(semana))) : semanaAtualIdx;
 
-  const semanaInicio = addDays(inicioCiclo, semanaIdx * 7);
-  const semanaFim = addDays(semanaInicio, 6);
+  const semanaInicio = addDiasChave(inicioCiclo, semanaIdx * 7);
+  const semanaFim = addDiasChave(semanaInicio, 6);
 
   const slots = await db.mealSlot.findMany({
     where: {

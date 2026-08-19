@@ -1,6 +1,6 @@
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
-import { startOfDay } from "@/lib/dates";
+import { chaveDoDia, hojeChave, diffDiasChave } from "@/lib/dates";
 import TopBar from "@/components/TopBar";
 import GerarProximoCicloButton from "../hoje/GerarProximoCicloButton";
 import Card from "@/components/ui/Card";
@@ -31,7 +31,7 @@ export default async function RelatorioPage() {
   });
 
   const diasComFeedback = new Set(
-    slots.filter((s) => s.feedback).map((s) => startOfDay(s.data).toISOString())
+    slots.filter((s) => s.feedback).map((s) => chaveDoDia(s.data).toISOString())
   ).size;
 
   const receitasDiferentes = new Set(slots.filter((s) => s.recipeId).map((s) => s.recipeId)).size;
@@ -60,9 +60,9 @@ export default async function RelatorioPage() {
     .sort((a, b) => b.pontos - a.pontos)
     .slice(0, 5);
 
-  const hoje = startOfDay(new Date());
+  const hoje = hojeChave();
   const diaDoCiclo =
-    Math.floor((hoje.getTime() - startOfDay(plano.dataInicio).getTime()) / 86400000) + 1;
+    diffDiasChave(plano.dataInicio, hoje) + 1;
   const cicloConcluido = diaDoCiclo >= 30;
 
   return (

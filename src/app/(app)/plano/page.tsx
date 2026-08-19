@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
-import { addDays, formatDiaMes, formatDiaSemana, sameDay, startOfDay } from "@/lib/dates";
+import { addDiasChave, diffDiasChave, formatDiaMes, formatDiaSemana, hojeChave } from "@/lib/dates";
 import { TIPO_REFEICAO_LABEL, TIPO_REFEICAO_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import MealCard, { type MealCardData } from "@/components/MealCard";
@@ -31,10 +31,10 @@ export default async function PlanoPage({
     );
   }
 
-  const inicio = startOfDay(plano.dataInicio);
-  const diaSelecionado = dia ? Number(dia) : diffDias(inicio, startOfDay(new Date()));
+  const inicio = plano.dataInicio;
+  const diaSelecionado = dia ? Number(dia) : diffDiasChave(inicio, hojeChave());
   const diaClamped = Math.min(29, Math.max(0, diaSelecionado));
-  const dataSelecionada = addDays(inicio, diaClamped);
+  const dataSelecionada = addDiasChave(inicio, diaClamped);
 
   const todosSlots = await db.mealSlot.findMany({
     where: { mealPlanId: plano.id },
@@ -49,7 +49,7 @@ export default async function PlanoPage({
 
   const slotsPorDia = new Map<number, typeof todosSlots>();
   for (const slot of todosSlots) {
-    const idx = diffDias(inicio, startOfDay(slot.data));
+    const idx = diffDiasChave(inicio, slot.data);
     slotsPorDia.set(idx, [...(slotsPorDia.get(idx) ?? []), slot]);
   }
 
@@ -118,12 +118,12 @@ export default async function PlanoPage({
 
             <div className="grid grid-cols-7 gap-1">
               {/* Alinha o dia 1 do ciclo na coluna do dia da semana correto. */}
-              {Array.from({ length: inicio.getDay() }, (_, i) => (
+              {Array.from({ length: inicio.getUTCDay() }, (_, i) => (
                 <span key={`vazio-${i}`} />
               ))}
 
               {Array.from({ length: 30 }, (_, i) => i).map((i) => {
-                const data = addDays(inicio, i);
+                const data = addDiasChave(inicio, i);
                 const slotsDia = slotsPorDia.get(i) ?? [];
                 const positivos = slotsDia.filter(
                   (s) =>
@@ -131,7 +131,7 @@ export default async function PlanoPage({
                     (s.feedback.estado === "GOSTOU" || s.feedback.estado === "ACEITOU"),
                 ).length;
                 const ativo = i === diaClamped;
-                const ehHoje = sameDay(data, new Date());
+                const ehHoje = diffDiasChave(data, hojeChave()) === 0;
                 return (
                   <Link
                     key={i}
@@ -145,7 +145,7 @@ export default async function PlanoPage({
                           : "border-stone-200/70 bg-white text-stone-700 hover:border-stone-300",
                     )}
                   >
-                    <span className="text-sm font-bold leading-none">{data.getDate()}</span>
+                    <span className="text-sm font-bold leading-none">{data.getUTCDate()}</span>
                     <span
                       className={cn(
                         "mt-0.5 text-[9px] leading-none",
@@ -169,7 +169,7 @@ export default async function PlanoPage({
             </div>
 
             <p className="mb-3 mt-5 text-sm font-medium text-stone-500">
-              Dia {diaClamped + 1} de 30 · {dataSelecionada.toLocaleDateString("pt-BR")}
+              Dia {diaClamped + 1} de 30 · {dataSelecionada.toLocaleDateString("pt-BR", { timeZone: "UTC" })}
             </p>
 
             <div className="space-y-3">
@@ -182,7 +182,7 @@ export default async function PlanoPage({
           <>
             <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
               {diasDaSemana.map((i) => {
-                const data = addDays(inicio, i);
+                const data = addDiasChave(inicio, i);
                 const ativo = i === diaClamped;
                 return (
                   <Link
@@ -203,7 +203,7 @@ export default async function PlanoPage({
             </div>
 
             <p className="mb-3 text-sm font-medium text-stone-500">
-              Dia {diaClamped + 1} de 30 · {dataSelecionada.toLocaleDateString("pt-BR")}
+              Dia {diaClamped + 1} de 30 · {dataSelecionada.toLocaleDateString("pt-BR", { timeZone: "UTC" })}
             </p>
 
             <div className="space-y-3">
@@ -218,6 +218,3 @@ export default async function PlanoPage({
   );
 }
 
-function diffDias(a: Date, b: Date) {
-  return Math.round((b.getTime() - a.getTime()) / 86400000);
-}

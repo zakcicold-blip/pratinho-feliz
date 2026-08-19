@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { gerarPlano30Dias } from "@/lib/planEngine";
 import { COOKIE_CRIANCA } from "@/lib/currentChild";
+import { hojeChave } from "@/lib/dates";
 import { Objetivo, Praticidade, StatusPreferencia } from "@prisma/client";
 
 export type OnboardingInput = {
@@ -66,9 +67,7 @@ export async function completarOnboarding(input: OnboardingInput) {
     await db.foodPreference.createMany({ data: preferencias });
   }
 
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
-  await gerarPlano30Dias(child.id, 1, hoje);
+  await gerarPlano30Dias(child.id, 1, hojeChave());
 
   // Quem acabou de ser cadastrado vira a crianca em foco — inclusive quando e
   // o segundo ou terceiro filho.

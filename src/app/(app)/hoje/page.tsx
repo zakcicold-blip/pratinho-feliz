@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
-import { startOfDay, addDays } from "@/lib/dates";
+import { addDiasChave, hojeChave, diffDiasChave, horaSaoPaulo } from "@/lib/dates";
 import { TIPO_REFEICAO_LABEL, TIPO_REFEICAO_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import MealCard, { type MealCardData } from "@/components/MealCard";
@@ -41,10 +41,8 @@ export default async function HojePage() {
     );
   }
 
-  const agora = new Date();
-  const hoje = startOfDay(agora);
-  const diaDoCiclo =
-    Math.floor((hoje.getTime() - startOfDay(plano.dataInicio).getTime()) / 86400000) + 1;
+  const hoje = hojeChave();
+  const diaDoCiclo = diffDiasChave(plano.dataInicio, hoje) + 1;
   const cicloEncerrado = diaDoCiclo > 30;
 
   const slots = await db.mealSlot.findMany({
@@ -84,7 +82,7 @@ export default async function HojePage() {
   ).length;
 
   const amanha = await db.mealSlot.findMany({
-    where: { mealPlanId: plano.id, data: addDays(hoje, 1) },
+    where: { mealPlanId: plano.id, data: addDiasChave(hoje, 1) },
     include: { recipe: true },
     orderBy: { tipo: "asc" },
   });
@@ -92,7 +90,7 @@ export default async function HojePage() {
   return (
     <>
       <TopBar
-        title={cicloEncerrado ? `Hoje de ${child.nome}` : `${saudacao(agora.getHours())}!`}
+        title={cicloEncerrado ? `Hoje de ${child.nome}` : `${saudacao(horaSaoPaulo())}!`}
         subtitle={cicloEncerrado ? "Ciclo de 30 dias concluído" : `${child.nome} · Dia ${diaDoCiclo} de 30`}
       />
 

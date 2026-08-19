@@ -1,6 +1,6 @@
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
-import { addDays, formatDiaMes, formatDiaSemana, startOfDay } from "@/lib/dates";
+import { addDiasChave, formatDiaMes, formatDiaSemana, hojeChave } from "@/lib/dates";
 import TopBar from "@/components/TopBar";
 import RotinaForm from "./RotinaForm";
 import HorariosForm from "./HorariosForm";
@@ -14,8 +14,8 @@ import { sugestoesDaRotina } from "@/lib/planEngine";
 export default async function RotinaPage() {
   const { child } = await getCurrentChild();
 
-  const hoje = startOfDay(new Date());
-  const seteDiasAtras = addDays(hoje, -6);
+  const hoje = hojeChave();
+  const seteDiasAtras = addDiasChave(hoje, -6);
 
   const entradas = await db.routineEntry.findMany({
     where: { childProfileId: child.id, data: { gte: seteDiasAtras, lte: hoje } },
@@ -89,7 +89,7 @@ export default async function RotinaPage() {
         <Card>
           <h2 className="mb-3 text-sm font-semibold text-stone-700">Últimos 7 dias</h2>
           <div className="space-y-2">
-            {Array.from({ length: 7 }, (_, i) => addDays(seteDiasAtras, i)).map((data) => {
+            {Array.from({ length: 7 }, (_, i) => addDiasChave(seteDiasAtras, i)).map((data) => {
               const entrada = entradaPorDia.get(data.getTime());
               return (
                 <div

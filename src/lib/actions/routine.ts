@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { chaveUtc } from "@/lib/dates";
 import { requireSession } from "@/lib/currentChild";
 import { NivelDisposicao, QualidadeSono } from "@prisma/client";
 
@@ -24,8 +25,7 @@ async function assertOwnership(childId: string) {
 export async function registrarRotina(childId: string, input: RotinaInput) {
   await assertOwnership(childId);
 
-  const data = new Date(input.data);
-  data.setHours(0, 0, 0, 0);
+  const data = chaveUtc(new Date(input.data));
 
   await db.routineEntry.upsert({
     where: { childProfileId_data: { childProfileId: childId, data } },

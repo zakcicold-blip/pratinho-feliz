@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { addDays, startOfDay } from "@/lib/dates";
+import { addDiasChave, hojeChave } from "@/lib/dates";
 import { faixaEtariaEmMeses } from "@/lib/idade";
 import { lerRotina, type LeituraRotina, type SinaisRotina } from "@/lib/objetivosRotina";
 
@@ -18,8 +18,8 @@ export async function lerSinaisRotina(childId: string): Promise<SinaisRotina> {
     select: { faixaEtaria: true },
   });
 
-  const hoje = startOfDay(new Date());
-  const desde = addDays(hoje, -(JANELA_DIAS - 1));
+  const hoje = hojeChave();
+  const desde = addDiasChave(hoje, -(JANELA_DIAS - 1));
 
   const entradas = await db.routineEntry.findMany({
     where: { childProfileId: childId, data: { gte: desde, lte: hoje } },

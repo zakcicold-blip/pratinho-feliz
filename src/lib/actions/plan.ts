@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { hojeChave } from "@/lib/dates";
 import { requireSession } from "@/lib/currentChild";
 import {
   gerarAlternativasComDespensa,
@@ -93,8 +94,7 @@ export async function gerarProximoCiclo(childId: string) {
     await db.mealPlan.update({ where: { id: atual.id }, data: { ativo: false } });
   }
 
-  const dataInicio = new Date();
-  dataInicio.setHours(0, 0, 0, 0);
+  const dataInicio = hojeChave();
 
   await gerarPlano30Dias(childId, (atual?.cicloNumero ?? 0) + 1, dataInicio);
 
