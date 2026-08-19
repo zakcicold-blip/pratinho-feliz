@@ -84,7 +84,7 @@ export default async function LandingPage({
         />
 
         <div className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
-          <div>
+          <div className="text-center md:text-left">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">
               <Gift size={13} /> 7 dias grátis
             </span>
@@ -93,9 +93,10 @@ export default async function LandingPage({
               <span className="text-orange-500">resolvido.</span>
             </h1>
             <p className="mt-4 text-lg text-stone-600">
-              Um cardápio de 30 dias sob medida — e a lista de compras junto.
+              O assistente que aprende os gostos do seu filho e adapta a alimentação à rotina dele —
+              refeições, nutrição e lista de compras num lugar só.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
               {logado ? (
                 <Link
                   href="/hoje"
@@ -120,7 +121,7 @@ export default async function LandingPage({
                 </>
               )}
             </div>
-            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500">
+            <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
               <span className="flex items-center gap-1">
                 <Check size={13} className="text-emerald-500" /> Menos de 5 min
               </span>
