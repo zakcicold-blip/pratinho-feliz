@@ -8,7 +8,10 @@ export default async function OnboardingPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const ingredientes = await db.ingredient.findMany({ orderBy: { nome: "asc" } });
+  const [ingredientes, filhosExistentes] = await Promise.all([
+    db.ingredient.findMany({ orderBy: { nome: "asc" } }),
+    db.childProfile.count({ where: { userId: session.user.id } }),
+  ]);
   const porCategoria = CATEGORIA_INGREDIENTE_ORDEM.map((categoria) => ({
     categoria,
     itens: ingredientes.filter((i) => i.categoria === categoria),
@@ -16,7 +19,11 @@ export default async function OnboardingPage() {
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-2xl px-4 py-8">
-      <OnboardingWizard grupos={porCategoria} userId={session.user.id} />
+      <OnboardingWizard
+        grupos={porCategoria}
+        userId={session.user.id}
+        podeCancelar={filhosExistentes > 0}
+      />
     </main>
   );
 }

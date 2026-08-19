@@ -81,9 +81,12 @@ const initialDraft: Draft = {
 export default function OnboardingWizard({
   grupos: gruposIniciais,
   userId,
+  podeCancelar = false,
 }: {
   grupos: Grupo[];
   userId: string;
+  /** Verdadeiro quando o responsável já tem outro filho (está adicionando mais um). */
+  podeCancelar?: boolean;
 }) {
   const router = useRouter();
   // Rascunho é por usuário: uma conta nunca herda o que outra deixou no navegador.
@@ -418,15 +421,26 @@ export default function OnboardingWizard({
         {error && <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
 
         <div className="mt-6 flex items-center justify-between">
-          <Button
-            type="button"
-            onClick={back}
-            disabled={step === 0}
-            variant="ghost"
-            className={step === 0 ? "invisible" : ""}
-          >
-            Voltar
-          </Button>
+          {step === 0 ? (
+            // No primeiro passo não há passo anterior. Se a pessoa já tem outro
+            // filho, ela está apenas adicionando mais um: oferece cancelar e
+            // voltar ao perfil. No cadastro inicial não há para onde cancelar.
+            podeCancelar ? (
+              <Button type="button" onClick={() => router.push("/perfil")} variant="ghost">
+                Cancelar
+              </Button>
+            ) : (
+              <span className="invisible">
+                <Button type="button" variant="ghost">
+                  Voltar
+                </Button>
+              </span>
+            )
+          ) : (
+            <Button type="button" onClick={back} variant="ghost">
+              Voltar
+            </Button>
+          )}
 
           {step < STEPS.length - 1 ? (
             <div className="flex gap-2">
