@@ -12,7 +12,7 @@ import {
 } from "@/lib/constants";
 import AddCustomFoodInput, { type IngredienteBasico } from "@/components/AddCustomFoodInput";
 import EquipamentosSelect from "@/components/EquipamentosSelect";
-import Spinner from "@/components/Spinner";
+import PlanoLoading from "./PlanoLoading";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
@@ -165,36 +165,36 @@ export default function OnboardingWizard({
     }
     setSubmitting(true);
     setError(null);
-    const result = await completarOnboarding(draft);
-    if (result?.error) {
-      setError(result.error);
+    try {
+      // Gera o plano e, em paralelo, segura a tela de loading por ~3,8s para a
+      // animação aparecer por inteiro antes de abrir o teste grátis.
+      const [result] = await Promise.all([
+        completarOnboarding(draft),
+        new Promise((r) => setTimeout(r, 3800)),
+      ]);
+      if (result?.error) {
+        setError(result.error);
+        setSubmitting(false);
+        return;
+      }
+      // Sucesso: limpa o rascunho ANTES de sair. Antes o redirect acontecia no
+      // servidor e esta linha nunca rodava, deixando o rascunho vazar para a
+      // próxima conta criada no mesmo navegador.
+      localStorage.removeItem(draftKey);
+      router.push("/hoje");
+    } catch {
+      // Falha transitória (ex.: banco acordando). Não deixa a tela de loading
+      // travada — devolve o controle e permite tentar de novo.
+      setError("Não conseguimos montar o plano agora. Tente de novo em alguns segundos.");
       setSubmitting(false);
-      return;
     }
-    // Sucesso: limpa o rascunho ANTES de sair. Antes o redirect acontecia no
-    // servidor e esta linha nunca rodava, deixando o rascunho vazar para a
-    // próxima conta criada no mesmo navegador.
-    localStorage.removeItem(draftKey);
-    router.push("/hoje");
   }
 
   const StepIcon = STEPS[step].icon;
 
-  // Enquanto o plano é montado no servidor, cobre a tela inteira com um estado
-  // de progresso claro, em vez de deixar a pessoa olhando um botão "carregando".
+  // Enquanto o plano é montado, cobre a tela inteira com a animação de progresso.
   if (submitting) {
-    return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-white px-6 text-center">
-        <Spinner size={44} />
-        <div>
-          <h2 className="text-lg font-bold text-stone-800">Montando o cardápio de 30 dias…</h2>
-          <p className="mt-1 text-sm text-stone-500">
-            Estamos escolhendo as receitas certas para {draft.nome || "sua criança"} com base no que
-            você respondeu. Leva só alguns segundos.
-          </p>
-        </div>
-      </div>
-    );
+    return <PlanoLoading nome={draft.nome} />;
   }
 
   return (
