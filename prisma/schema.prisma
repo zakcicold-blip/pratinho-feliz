@@ -92,6 +92,7 @@ model User {
   children      ChildProfile[]
   subscription  Subscription?
   auditLogs     AuditLog[]
+  cancelamentos SolicitacaoCancelamento[]
 }
 
 model ChildProfile {
@@ -390,4 +391,24 @@ model AuditLog {
   evento    String
   detalhes  String?
   createdAt DateTime @default(now())
+}
+
+
+enum StatusSolicitacao {
+  PENDENTE
+  APROVADO
+  RECUSADO
+}
+
+model SolicitacaoCancelamento {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  motivo        String
+  status        StatusSolicitacao @default(PENDENTE)
+  respostaAdmin String?
+  createdAt     DateTime @default(now())
+  resolvidoEm   DateTime?
+
+  @@index([status, createdAt])
 }

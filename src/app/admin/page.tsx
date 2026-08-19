@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { db } from "@/lib/db";
 import StatCard from "@/components/ui/StatCard";
 import Card from "@/components/ui/Card";
 import {
+  LifeBuoy,
+  ArrowRight,
   Users,
   Baby,
   CalendarCheck,
@@ -39,6 +42,7 @@ export default async function AdminDashboard() {
     carencia,
     assinaturasReais,
     logsSemana,
+    cancelamentosPendentes,
   ] = await Promise.all([
     db.user.count(),
     db.childProfile.count(),
@@ -61,6 +65,7 @@ export default async function AdminDashboard() {
       where: { createdAt: { gte: seteDiasAtras }, userId: { not: null } },
       select: { userId: true },
     }),
+    db.solicitacaoCancelamento.count({ where: { status: "PENDENTE" } }),
   ]);
 
   const mensais = assinaturasReais.filter((s) => s.stripePriceId === precoMensalId).length;
@@ -81,6 +86,20 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-bold text-stone-800">Visão geral</h1>
+
+      {cancelamentosPendentes > 0 && (
+        <Link
+          href="/admin/cancelamentos"
+          className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 transition hover:bg-amber-100"
+        >
+          <span className="flex items-center gap-2 font-semibold">
+            <LifeBuoy size={16} />
+            {cancelamentosPendentes} solicitação{cancelamentosPendentes === 1 ? "" : "ões"} de
+            cancelamento aguardando
+          </span>
+          <ArrowRight size={16} />
+        </Link>
+      )}
 
       <section>
         <h2 className="mb-2 text-sm font-semibold text-stone-700">Assinaturas</h2>

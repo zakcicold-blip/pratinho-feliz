@@ -9,6 +9,7 @@ const ITEMS = [
   { href: "/admin/receitas", label: "Receitas" },
   { href: "/admin/ingredientes", label: "Ingredientes" },
   { href: "/admin/usuarios", label: "Usuários" },
+  { href: "/admin/cancelamentos", label: "Cancelamentos" },
 ];
 
 export default function AdminNav() {

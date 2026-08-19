@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import TopBar from "@/components/TopBar";
 import LembretesToggle from "./LembretesToggle";
 import AccountActions from "./AccountActions";
+import CancelamentoCard from "./CancelamentoCard";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { CreditCard, Bell, ShieldCheck, ArrowRight } from "lucide-react";
@@ -24,6 +25,11 @@ export default async function ConfiguracoesPage() {
   });
 
   const statusAtual = user.subscription?.status ?? "TESTE";
+
+  const cancelamentoPendente = await db.solicitacaoCancelamento.findFirst({
+    where: { userId: user.id, status: "PENDENTE" },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <>
@@ -49,9 +55,23 @@ export default async function ConfiguracoesPage() {
               {STATUS_LABEL[statusAtual]}
             </Badge>
           </p>
-          <p className="mt-2 text-xs text-stone-400">
-            Cobrança recorrente não incluída nesta versão MVP — estrutura de dados já preparada.
-          </p>
+          {user.subscription?.cancelAtPeriodEnd && (
+            <p className="mt-2 text-xs text-amber-700">
+              Cancelamento agendado — o acesso segue até o fim do período já pago.
+            </p>
+          )}
+          <div className="mt-3 border-t border-stone-100 pt-3">
+            <CancelamentoCard
+              pendente={
+                cancelamentoPendente
+                  ? {
+                      status: cancelamentoPendente.status,
+                      createdAt: cancelamentoPendente.createdAt.toISOString(),
+                    }
+                  : null
+              }
+            />
+          </div>
         </Card>
 
         <Card>
