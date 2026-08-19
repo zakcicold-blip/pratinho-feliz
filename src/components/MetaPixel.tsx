@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useConsent } from "@/lib/consent";
 
 // Id público do pixel, injetado no build. Sem ele (ex.: no demo), nada carrega.
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
@@ -20,22 +21,24 @@ function fbq(...args: unknown[]) {
 export default function MetaPixel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const consent = useConsent();
+  const ativo = Boolean(PIXEL_ID) && consent === "accepted";
   const primeiraCarga = useRef(true);
   const conversaoContada = useRef(false);
 
   // PageView em navegações client-side (a primeira já é disparada pelo script).
   useEffect(() => {
-    if (!PIXEL_ID) return;
+    if (!ativo) return;
     if (primeiraCarga.current) {
       primeiraCarga.current = false;
       return;
     }
     fbq("track", "PageView");
-  }, [pathname]);
+  }, [pathname, ativo]);
 
   // Eventos de conversão, marcados por parâmetros na URL.
   useEffect(() => {
-    if (!PIXEL_ID || conversaoContada.current) return;
+    if (!ativo || conversaoContada.current) return;
 
     // Trial iniciado: volta do checkout para /hoje?assinatura=ok.
     if (pathname === "/hoje" && searchParams.get("assinatura") === "ok") {
@@ -50,9 +53,9 @@ export default function MetaPixel() {
       conversaoContada.current = true;
       fbq("track", "CompleteRegistration");
     }
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, ativo]);
 
-  if (!PIXEL_ID) return null;
+  if (!ativo) return null;
 
   return (
     <>

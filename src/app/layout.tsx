@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import UtmifyScript from "@/components/UtmifyScript";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: "Pratinho Feliz",
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Suspense>
         <UtmifyScript />
         {children}
+        <CookieConsent />
       </body>
     </html>
   );
