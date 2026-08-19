@@ -2085,6 +2085,294 @@ const RECEITAS: RecipeSeed[] = [
       { nome: "Azeite", quantidade: "1 colher de chá" },
     ],
   },
+
+  // ---------------------------------------------------------------------
+  // RECEITAS DA ROTINA — SONO
+  //
+  // Combinam alimentos com magnésio, cálcio e carboidratos de digestão
+  // lenta, além de fontes de triptofano (leite, aveia, banana), que apoiam
+  // o relaxamento no fim do dia. São sugestões, não tratamento.
+  // ---------------------------------------------------------------------
+  {
+    nome: "Mingau cremoso de aveia com canela",
+    resumo: "Aveia e leite trazem magnésio e cálcio; a canela dá aconchego no fim do dia.",
+    tipoRefeicao: TipoRefeicao.CAFE_DA_MANHA,
+    tempoPreparoMin: 10,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Leve o leite e a aveia ao fogo baixo, mexendo sempre.",
+      "Cozinhe até engrossar, cerca de 4 minutos.",
+      "Desligue, polvilhe canela e sirva morno.",
+    ],
+    tags: ["sono", "cremoso", "vegetariano"],
+    ingredientes: [
+      { nome: "Aveia", quantidade: "3 colheres de sopa" },
+      { nome: "Leite", quantidade: "1 xícara" },
+      { nome: "Canela", quantidade: "a gosto" },
+    ],
+  },
+  {
+    nome: "Iogurte com aveia e banana amassada",
+    resumo: "Cálcio do iogurte com o magnésio da aveia e da banana, num lanche que acalma.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 5,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Amasse a banana com um garfo.",
+      "Misture ao iogurte e à aveia.",
+      "Sirva gelado.",
+    ],
+    tags: ["sono", "pratico", "vegetariano"],
+    ingredientes: [
+      { nome: "Iogurte natural", quantidade: "1 pote" },
+      { nome: "Aveia", quantidade: "2 colheres de sopa" },
+      { nome: "Banana", quantidade: "1 unidade" },
+    ],
+  },
+  {
+    nome: "Creme de abóbora com leite",
+    resumo: "Jantar leve e morno, com abóbora e leite ricos em magnésio e cálcio.",
+    tipoRefeicao: TipoRefeicao.JANTAR,
+    tempoPreparoMin: 25,
+    dificuldade: "Fácil",
+    rendimento: "2 porções",
+    passos: [
+      "Cozinhe a abóbora e a batata até ficarem bem macias.",
+      "Bata com o leite até virar um creme liso.",
+      "Aqueça, tempere com um fio de azeite e sirva.",
+    ],
+    tags: ["sono", "leve", "vegetariano"],
+    ingredientes: [
+      { nome: "Abóbora", quantidade: "300 g" },
+      { nome: "Batata", quantidade: "1 unidade" },
+      { nome: "Leite", quantidade: "1 xícara" },
+      { nome: "Azeite", quantidade: "1 colher de chá" },
+    ],
+  },
+  {
+    nome: "Sopa cremosa de batata-doce",
+    resumo: "Carboidrato de digestão lenta que ajuda a fechar o dia sem peso.",
+    tipoRefeicao: TipoRefeicao.JANTAR,
+    tempoPreparoMin: 25,
+    dificuldade: "Fácil",
+    rendimento: "2 porções",
+    passos: [
+      "Cozinhe a batata-doce e a cenoura até amaciarem.",
+      "Bata com o leite até ficar cremoso.",
+      "Aqueça e sirva morno.",
+    ],
+    tags: ["sono", "leve", "vegetariano"],
+    ingredientes: [
+      { nome: "Batata-doce", quantidade: "1 unidade grande" },
+      { nome: "Cenoura", quantidade: "1 unidade" },
+      { nome: "Leite", quantidade: "1 xícara" },
+    ],
+  },
+  {
+    nome: "Smoothie de banana, aveia e chia",
+    resumo: "Banana e aveia com triptófano e magnésio, num copo cremoso para relaxar.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 5,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Bata a banana, a aveia, a chia e o leite no liquidificador.",
+      "Sirva na hora.",
+    ],
+    tags: ["sono", "pratico", "vegetariano"],
+    ingredientes: [
+      { nome: "Banana", quantidade: "1 unidade" },
+      { nome: "Aveia", quantidade: "2 colheres de sopa" },
+      { nome: "Chia", quantidade: "1 colher de chá" },
+      { nome: "Leite", quantidade: "1 xícara" },
+    ],
+  },
+  {
+    nome: "Purê de inhame com frango desfiado",
+    resumo: "Inhame como carboidrato de absorção lenta, num jantar macio e reconfortante.",
+    tipoRefeicao: TipoRefeicao.JANTAR,
+    tempoPreparoMin: 30,
+    dificuldade: "Fácil",
+    rendimento: "2 porções",
+    passos: [
+      "Cozinhe o inhame até ficar bem macio e amasse com o leite.",
+      "Cozinhe o frango e desfie.",
+      "Misture o frango ao purê e sirva morno.",
+    ],
+    tags: ["sono", "proteina"],
+    ingredientes: [
+      { nome: "Inhame", quantidade: "2 unidades" },
+      { nome: "Frango", quantidade: "100 g" },
+      { nome: "Leite", quantidade: "1/2 xícara" },
+    ],
+  },
+
+  // ---------------------------------------------------------------------
+  // RECEITAS DA ROTINA — ENERGIA / DISPOSIÇÃO
+  //
+  // Priorizam ferro, proteína e vitaminas do complexo B, que participam do
+  // transporte de oxigênio e do metabolismo de energia. Combinam ferro com
+  // vitamina C quando possível, que melhora a absorção. Sugestões, não
+  // tratamento.
+  // ---------------------------------------------------------------------
+  {
+    nome: "Arroz com feijão e carne moída",
+    resumo: "O clássico brasileiro: ferro e proteína do feijão com a carne, para dar disposição.",
+    tipoRefeicao: TipoRefeicao.ALMOCO,
+    tempoPreparoMin: 30,
+    dificuldade: "Fácil",
+    rendimento: "2 porções",
+    passos: [
+      "Refogue a carne moída até dourar.",
+      "Junte o feijão já cozido com um pouco do caldo.",
+      "Sirva sobre o arroz.",
+    ],
+    tags: ["energia", "ferro", "classico"],
+    ingredientes: [
+      { nome: "Arroz", quantidade: "1 xícara" },
+      { nome: "Feijão", quantidade: "1/2 xícara" },
+      { nome: "Carne moída", quantidade: "150 g" },
+      { nome: "Cebola", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Baião de dois infantil",
+    resumo: "Arroz e feijão juntos com queijo — energia e ferro em um prato só.",
+    tipoRefeicao: TipoRefeicao.ALMOCO,
+    tempoPreparoMin: 30,
+    dificuldade: "Média",
+    rendimento: "2 porções",
+    passos: [
+      "Refogue a cebola e junte o arroz e o feijão cozidos.",
+      "Acrescente um pouco de água e cozinhe até apurar.",
+      "Finalize com o queijo picado.",
+    ],
+    tags: ["energia", "ferro", "regional"],
+    ingredientes: [
+      { nome: "Arroz", quantidade: "1 xícara" },
+      { nome: "Feijão", quantidade: "1/2 xícara" },
+      { nome: "Queijo", quantidade: "3 cubos" },
+      { nome: "Cebola", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Bife de patinho com purê de batata",
+    resumo: "Patinho é uma carne magra rica em ferro e proteína, ótima para a energia.",
+    tipoRefeicao: TipoRefeicao.JANTAR,
+    tempoPreparoMin: 25,
+    dificuldade: "Média",
+    rendimento: "1 porção",
+    passos: [
+      "Grelhe o bife de patinho até o ponto desejado e corte em tiras finas.",
+      "Cozinhe a batata e amasse com o leite formando um purê.",
+      "Sirva o bife sobre o purê.",
+    ],
+    tags: ["energia", "ferro", "proteina"],
+    ingredientes: [
+      { nome: "Patinho bovino", quantidade: "1 bife" },
+      { nome: "Batata", quantidade: "2 unidades" },
+      { nome: "Leite", quantidade: "1/4 xícara" },
+    ],
+  },
+  {
+    nome: "Panqueca de espinafre e ovo",
+    resumo: "Espinafre e ovo trazem ferro e proteína, num lanche que sustenta a manhã.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 15,
+    dificuldade: "Média",
+    rendimento: "4 panquecas",
+    passos: [
+      "Bata o ovo, a farinha, o espinafre e um pouco de leite até formar uma massa.",
+      "Doure as panquecas dos dois lados em fogo médio.",
+      "Sirva enroladas.",
+    ],
+    tags: ["energia", "ferro", "vegetariano"],
+    ingredientes: [
+      { nome: "Espinafre", quantidade: "1 xícara" },
+      { nome: "Ovo", quantidade: "2 unidades" },
+      { nome: "Farinha de trigo", quantidade: "4 colheres de sopa" },
+      { nome: "Leite", quantidade: "1/2 xícara" },
+    ],
+  },
+  {
+    nome: "Ensopado de feijão com carne e legumes",
+    resumo: "Feijão e carne concentram ferro; os legumes completam o prato reforçado.",
+    tipoRefeicao: TipoRefeicao.ALMOCO,
+    tempoPreparoMin: 35,
+    dificuldade: "Média",
+    rendimento: "3 porções",
+    passos: [
+      "Refogue a carne moída com a cebola.",
+      "Junte o feijão cozido, a cenoura em cubos e um pouco de água.",
+      "Cozinhe até a cenoura ficar macia e sirva com arroz.",
+    ],
+    tags: ["energia", "ferro"],
+    ingredientes: [
+      { nome: "Feijão", quantidade: "1 xícara" },
+      { nome: "Carne moída", quantidade: "150 g" },
+      { nome: "Cenoura", quantidade: "1 unidade" },
+      { nome: "Cebola", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Ovos mexidos com espinafre e tomate",
+    resumo: "Café da manhã com ferro e proteína para começar o dia com energia.",
+    tipoRefeicao: TipoRefeicao.CAFE_DA_MANHA,
+    tempoPreparoMin: 10,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Refogue o espinafre e o tomate picados.",
+      "Junte os ovos batidos e mexa até firmar.",
+      "Sirva quente.",
+    ],
+    tags: ["energia", "ferro", "vegetariano"],
+    ingredientes: [
+      { nome: "Ovo", quantidade: "2 unidades" },
+      { nome: "Espinafre", quantidade: "1 xícara" },
+      { nome: "Tomate", quantidade: "1/2 unidade" },
+    ],
+  },
+  {
+    nome: "Hambúrguer caseiro de patinho com batata-doce",
+    resumo: "Carne magra rica em ferro com batata-doce, energia que a criança adora.",
+    tipoRefeicao: TipoRefeicao.ALMOCO,
+    tempoPreparoMin: 30,
+    dificuldade: "Média",
+    rendimento: "2 porções",
+    passos: [
+      "Tempere o patinho moído, misture o ovo e modele os hambúrgueres.",
+      "Grelhe dos dois lados até dourar.",
+      "Sirva com a batata-doce assada em rodelas.",
+    ],
+    tags: ["energia", "ferro", "proteina"],
+    ingredientes: [
+      { nome: "Patinho bovino", quantidade: "200 g" },
+      { nome: "Batata-doce", quantidade: "1 unidade" },
+      { nome: "Ovo", quantidade: "1 unidade" },
+    ],
+  },
+  {
+    nome: "Vitamina de beterraba com laranja",
+    resumo: "Beterraba tem ferro e a laranja traz vitamina C, que melhora a absorção.",
+    tipoRefeicao: TipoRefeicao.LANCHE,
+    tempoPreparoMin: 8,
+    dificuldade: "Fácil",
+    rendimento: "1 porção",
+    passos: [
+      "Cozinhe a beterraba até ficar macia e deixe amornar.",
+      "Bata com o suco da laranja e a maçã no liquidificador.",
+      "Sirva na hora.",
+    ],
+    tags: ["energia", "ferro", "vegetariano"],
+    ingredientes: [
+      { nome: "Beterraba", quantidade: "1/2 unidade" },
+      { nome: "Laranja", quantidade: "1 unidade" },
+      { nome: "Maçã", quantidade: "1/2 unidade" },
+    ],
+  },
 ];
 
 async function main() {
