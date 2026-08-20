@@ -5,14 +5,18 @@ import Lottie from "lottie-react";
 
 // Renderiza uma animação Lottie a partir de uma URL de .json (ex.: arquivos em
 // /public/Lotties/...). Não desenha nada até a animação carregar (sem flash).
+// preserveAspectRatio "xMidYMax meet" alinha a animação pela BASE — útil para
+// o personagem "pisar" numa borda/barra.
 export default function LottieBox({
   src,
   className,
   loop = true,
+  preserveAspectRatio = "xMidYMid meet",
 }: {
   src: string;
   className?: string;
   loop?: boolean;
+  preserveAspectRatio?: string;
 }) {
   const [data, setData] = useState<unknown>(null);
 
@@ -32,5 +36,13 @@ export default function LottieBox({
   }, [src]);
 
   if (!data) return null;
-  return <Lottie animationData={data} loop={loop} autoplay className={className} />;
+  return (
+    <Lottie
+      animationData={data}
+      loop={loop}
+      autoplay
+      className={className}
+      rendererSettings={{ preserveAspectRatio }}
+    />
+  );
 }
