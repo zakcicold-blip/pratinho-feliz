@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { cn } from "@/lib/cn";
 import PhoneCarousel from "@/components/PhoneCarousel";
 import HeatTracker from "@/components/HeatTracker";
+import LottieBox from "@/components/LottieBox";
 import {
   UtensilsCrossed,
   CalendarDays,
@@ -96,7 +97,7 @@ export default async function LandingPage({
             <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">
               <Gift size={13} /> 7 dias grátis
             </span>
-            <h1 className="mt-4 text-3xl font-extrabold leading-[1.12] text-stone-900 md:text-[2.75rem]">
+            <h1 className="font-display mt-4 text-[2.1rem] font-extrabold leading-[1.08] text-stone-900 md:text-[3.25rem]">
               O mês inteiro de comida do seu filho,{" "}
               <span className="text-orange-500">resolvido.</span>
             </h1>
@@ -144,8 +145,16 @@ export default async function LandingPage({
             </div>
           </div>
 
-          {/* Carrossel com prints reais do app dentro do mockup de celular */}
-          <div className="flex justify-center md:justify-end">
+          {/* Carrossel com prints reais do app + mascote animado */}
+          <div className="relative flex justify-center md:justify-end">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-300/30 blur-3xl md:left-[38%]"
+            />
+            <LottieBox
+              src="/Lotties/LOADINGS/13306664.json"
+              className="pointer-events-none absolute -top-4 left-0 z-10 h-32 w-32 md:-left-6 md:-top-6 md:h-40 md:w-40"
+            />
             <PhoneCarousel />
           </div>
         </div>
@@ -278,25 +287,33 @@ export default async function LandingPage({
 
       {/* CTA FINAL */}
       <section data-section="cta-final" className="mx-auto w-full max-w-5xl px-6 py-10">
-        <div className="rounded-3xl bg-stone-900 px-8 py-12 text-center">
-          <h2 className="text-2xl font-bold text-white">
-            {logado ? (
-              <>
-                Seu plano de <span className="text-orange-400">30 dias</span> está te esperando.
-              </>
-            ) : (
-              <>
-                Comece hoje, <span className="text-orange-400">grátis por 7 dias.</span>
-              </>
-            )}
-          </h2>
-          <Link
-            href={logado ? "/hoje" : "/cadastro"}
-            data-heat="cta-final-cadastro"
-            className="mt-6 inline-block rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-orange-600"
-          >
-            {logado ? "Voltar ao app" : "Criar conta grátis"}
-          </Link>
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-orange-500 to-orange-400 px-8 py-14 text-center shadow-card-lg">
+          <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-white/10" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-black/5" />
+          <LottieBox
+            src="/Lotties/LOADINGS/13306666.json"
+            className="pointer-events-none absolute bottom-0 right-2 z-0 h-32 w-32 opacity-90 md:right-8 md:h-44 md:w-44"
+          />
+          <div className="relative z-10">
+            <h2 className="font-display text-3xl font-bold text-white md:text-4xl">
+              {logado ? (
+                <>
+                  Seu plano de <span className="text-orange-100">30 dias</span> está te esperando.
+                </>
+              ) : (
+                <>
+                  Comece hoje, <span className="text-orange-100">grátis por 7 dias.</span>
+                </>
+              )}
+            </h2>
+            <Link
+              href={logado ? "/hoje" : "/cadastro"}
+              data-heat="cta-final-cadastro"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-semibold text-orange-600 shadow-sm transition active:scale-[0.98] hover:bg-orange-50"
+            >
+              {logado ? "Voltar ao app" : "Criar conta grátis"} <ArrowRight size={16} />
+            </Link>
+          </div>
         </div>
       </section>
 
