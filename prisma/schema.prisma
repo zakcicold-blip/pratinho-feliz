@@ -412,3 +412,23 @@ model SolicitacaoCancelamento {
 
   @@index([status, createdAt])
 }
+
+// Eventos anônimos de comportamento na página (mapa de calor).
+// Sem PII: sessionId é um id aleatório do visitante, sem vínculo com User.
+model HeatEvent {
+  id        String   @id @default(cuid())
+  sessionId String
+  tipo      String   // "click" | "scroll" | "secao"
+  path      String   @default("/")
+  secao     String?  // id da seção (data-section)
+  rotulo    String?  // rótulo do elemento clicado (data-heat / texto)
+  xRel      Float?   // 0..1 relativo à largura da página
+  yRel      Float?   // 0..1 relativo à altura total da página
+  scrollPct Int?     // profundidade máxima de rolagem (0..100)
+  dwellMs   Int?     // tempo acumulado na seção (ms)
+  viewport  String?  // "mobile" | "desktop"
+  createdAt DateTime @default(now())
+
+  @@index([path, tipo, createdAt])
+  @@index([createdAt])
+}

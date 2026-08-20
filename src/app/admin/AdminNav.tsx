@@ -10,6 +10,7 @@ const ITEMS = [
   { href: "/admin/ingredientes", label: "Ingredientes" },
   { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/cancelamentos", label: "Cancelamentos" },
+  { href: "/admin/heatmap", label: "Mapa de calor" },
 ];
 
 export default function AdminNav() {

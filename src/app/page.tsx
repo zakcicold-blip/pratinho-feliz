@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { cn } from "@/lib/cn";
 import PhoneCarousel from "@/components/PhoneCarousel";
+import HeatTracker from "@/components/HeatTracker";
 import {
   UtensilsCrossed,
   CalendarDays,
@@ -38,7 +39,10 @@ export default async function LandingPage({
 
   return (
     <main className="flex-1 overflow-x-hidden">
-      <header className="sticky top-0 z-10 border-b border-stone-200/60 bg-[#fdfaf6]/85 backdrop-blur-md">
+      <header
+        data-section="topo"
+        className="sticky top-0 z-10 border-b border-stone-200/60 bg-[#fdfaf6]/85 backdrop-blur-md"
+      >
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 text-base font-bold text-stone-800">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
@@ -56,11 +60,16 @@ export default async function LandingPage({
               </Link>
             ) : (
               <>
-                <Link href="/login" className="text-sm font-medium text-stone-600 hover:text-stone-900">
+                <Link
+                  href="/login"
+                  data-heat="header-login"
+                  className="text-sm font-medium text-stone-600 hover:text-stone-900"
+                >
                   Entrar
                 </Link>
                 <Link
                   href="/cadastro"
+                  data-heat="header-cadastro"
                   className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
                 >
                   Começar grátis
@@ -72,7 +81,7 @@ export default async function LandingPage({
       </header>
 
       {/* HERO */}
-      <section className="relative">
+      <section data-section="hero" className="relative">
         <div
           aria-hidden
           className="pointer-events-none absolute -top-24 right-[-10%] h-80 w-80 rounded-full bg-orange-200/40 blur-3xl"
@@ -107,12 +116,14 @@ export default async function LandingPage({
                 <>
                   <Link
                     href="/cadastro"
+                    data-heat="hero-cadastro"
                     className="rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
                   >
                     Montar o plano grátis
                   </Link>
                   <Link
                     href="/login"
+                    data-heat="hero-login"
                     className="rounded-full border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 transition hover:bg-stone-50"
                   >
                     Já tenho conta
@@ -141,7 +152,7 @@ export default async function LandingPage({
       </section>
 
       {/* COMO FUNCIONA */}
-      <section className="mx-auto w-full max-w-5xl px-6 py-12">
+      <section data-section="como-funciona" className="mx-auto w-full max-w-5xl px-6 py-12">
         <h2 className="text-center text-2xl font-bold text-stone-900">Como funciona</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           <StepCard numero={1} icon={UserPlus} title="Conte sobre a criança" text="Idade, gostos, recusas e restrições." />
@@ -151,7 +162,7 @@ export default async function LandingPage({
       </section>
 
       {/* BENTO — RECURSOS */}
-      <section className="mx-auto w-full max-w-5xl px-6 py-12">
+      <section data-section="recursos" className="mx-auto w-full max-w-5xl px-6 py-12">
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-bold text-stone-900">Tudo em um só lugar</h2>
           <p className="mt-2 text-sm text-stone-500">Do cardápio à lista de compras, sem improviso.</p>
@@ -229,7 +240,7 @@ export default async function LandingPage({
       </section>
 
       {/* PREÇO */}
-      <section className="mx-auto w-full max-w-5xl px-6 py-12">
+      <section data-section="preco" className="mx-auto w-full max-w-5xl px-6 py-12">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-stone-900">7 dias grátis, depois você escolhe</h2>
           <p className="mt-2 text-sm text-stone-500">Só é cobrado após o teste. Cancele quando quiser.</p>
@@ -247,6 +258,7 @@ export default async function LandingPage({
         <div className="mt-8 text-center">
           <Link
             href={logado ? "/hoje" : "/cadastro"}
+            data-heat="preco-cadastro"
             className="inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
           >
             {logado ? "Voltar ao app" : "Começar 7 dias grátis"} <ArrowRight size={16} />
@@ -255,7 +267,7 @@ export default async function LandingPage({
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto w-full max-w-3xl px-6 py-12">
+      <section data-section="faq" className="mx-auto w-full max-w-3xl px-6 py-12">
         <h2 className="text-center text-2xl font-bold text-stone-900">Perguntas frequentes</h2>
         <div className="mt-8 space-y-3">
           {FAQ.map((item) => (
@@ -265,7 +277,7 @@ export default async function LandingPage({
       </section>
 
       {/* CTA FINAL */}
-      <section className="mx-auto w-full max-w-5xl px-6 py-10">
+      <section data-section="cta-final" className="mx-auto w-full max-w-5xl px-6 py-10">
         <div className="rounded-3xl bg-stone-900 px-8 py-12 text-center">
           <h2 className="text-2xl font-bold text-white">
             {logado ? (
@@ -280,6 +292,7 @@ export default async function LandingPage({
           </h2>
           <Link
             href={logado ? "/hoje" : "/cadastro"}
+            data-heat="cta-final-cadastro"
             className="mt-6 inline-block rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-orange-600"
           >
             {logado ? "Voltar ao app" : "Criar conta grátis"}
@@ -287,7 +300,7 @@ export default async function LandingPage({
         </div>
       </section>
 
-      <footer className="mx-auto w-full max-w-5xl px-6 py-10">
+      <footer data-section="rodape" className="mx-auto w-full max-w-5xl px-6 py-10">
         <div className="flex items-center gap-2 text-sm font-bold text-stone-700">
           <UtensilsCrossed size={16} className="text-orange-500" /> Pratinho Feliz
         </div>
@@ -298,19 +311,22 @@ export default async function LandingPage({
         <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
           {!logado && (
             <>
-              <Link href="/cadastro" className="text-stone-500 hover:text-stone-700">
+              <Link href="/cadastro" data-heat="rodape-cadastro" className="text-stone-500 hover:text-stone-700">
                 Criar conta
               </Link>
-              <Link href="/login" className="text-stone-500 hover:text-stone-700">
+              <Link href="/login" data-heat="rodape-login" className="text-stone-500 hover:text-stone-700">
                 Entrar
               </Link>
             </>
           )}
-          <Link href="/privacidade" className="text-stone-500 hover:text-stone-700">
+          <Link href="/privacidade" data-heat="rodape-privacidade" className="text-stone-500 hover:text-stone-700">
             Política de privacidade
           </Link>
         </div>
       </footer>
+
+      {/* Mapa de calor: só rastreia visitantes anônimos (leads). */}
+      {!logado && <HeatTracker path="/" />}
     </main>
   );
 }
