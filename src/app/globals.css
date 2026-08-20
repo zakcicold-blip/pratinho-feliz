@@ -22,8 +22,8 @@ body {
   background: linear-gradient(180deg, #fffdfb 0%, var(--background) 320px);
   color: var(--foreground);
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-feature-settings: "cv11", "ss01";
+    var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   /* Sem zoom por gesto/duplo-toque; a rolagem de uma dedo continua normal. */
   touch-action: pan-x pan-y;
   overscroll-behavior: none;
@@ -36,11 +36,10 @@ body {
   color: #7c2d12;
 }
 
-/* Fonte display (Fraunces) para títulos e números — hierarquia e tom acolhedor. */
+/* Títulos e números grandes — mesma sans, peso forte e tracking justo. */
 .font-display {
-  font-family: var(--font-display), Georgia, "Times New Roman", serif;
-  font-optical-sizing: auto;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .shadow-card {

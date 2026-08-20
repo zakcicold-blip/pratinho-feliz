@@ -4,8 +4,8 @@ import { db } from "@/lib/db";
 import { addDiasChave, hojeChave, diffDiasChave, horaSaoPaulo } from "@/lib/dates";
 import { TIPO_REFEICAO_LABEL, TIPO_REFEICAO_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
-import UserMenu from "@/components/UserMenu";
-import MealCard, { type MealCardData } from "@/components/MealCard";
+import type { MealCardData } from "@/components/MealCard";
+import RefeicoesComFiltro from "./RefeicoesComFiltro";
 import GerarProximoCicloButton from "./GerarProximoCicloButton";
 import { PartyPopper, CalendarClock, Search, Bell } from "lucide-react";
 import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
@@ -14,6 +14,7 @@ import CircleArrow from "@/components/ui/CircleArrow";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ProgressBar from "@/components/ui/ProgressBar";
 import EmptyState from "@/components/ui/EmptyState";
+import { cn } from "@/lib/cn";
 import type { TipoRefeicao } from "@prisma/client";
 
 function saudacao(hora: number) {
@@ -94,33 +95,48 @@ export default async function HojePage() {
   });
 
   const nome = session.user.name?.split(" ")[0] ?? child.nome;
+  const inicial = (nome[0] ?? "?").toUpperCase();
+  const aceitasHoje = cardsData.filter(
+    (c) => c.feedbackEstado === "GOSTOU" || c.feedbackEstado === "ACEITOU",
+  ).length;
 
   return (
     <div className="space-y-5 px-4 pb-4 pt-5">
-      {/* Cabeçalho de saudação */}
-      <header className="flex items-start justify-between gap-3">
+      {/* Saudação + avatar */}
+      <header className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm text-stone-500">{saudacao(horaSaoPaulo())},</p>
-          <h1 className="font-display truncate text-[26px] font-semibold leading-tight text-stone-900">
+          <p className="text-sm font-medium text-stone-500">{saudacao(horaSaoPaulo())},</p>
+          <h1 className="font-display truncate text-[27px] leading-tight text-stone-900">
             {nome}!
           </h1>
-          <p className="mt-0.5 text-xs text-stone-400">
-            {cicloEncerrado
-              ? `Plano de ${child.nome} · concluído`
-              : `Plano de ${child.nome} · Dia ${diaDoCiclo} de 30`}
-          </p>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2.5">
           <Link
-            href="/receitas"
-            aria-label="Buscar receitas"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-stone-200/70 bg-white text-stone-600 transition active:scale-95 hover:bg-stone-50"
+            href="/configuracoes"
+            aria-label="Lembretes"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-stone-200/70 bg-white text-stone-600 transition active:scale-95"
           >
-            <Search size={18} />
+            <Bell size={18} />
           </Link>
-          <UserMenu />
+          <Link
+            href="/perfil"
+            aria-label="Perfil"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900 text-base font-bold text-white transition active:scale-95"
+          >
+            {inicial}
+          </Link>
         </div>
       </header>
+
+      {/* CTA preto — ação principal */}
+      {!cicloEncerrado && (
+        <Link
+          href="/receitas"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-stone-900 py-4 text-sm font-semibold text-white shadow-sm shadow-stone-900/25 transition active:scale-[0.98]"
+        >
+          <Search size={17} /> Buscar receitas
+        </Link>
+      )}
 
       {cicloEncerrado ? (
         <Card className="text-center" padding="lg">
@@ -137,30 +153,47 @@ export default async function HojePage() {
         </Card>
       ) : (
         <>
-          {/* Card-herói: progresso do dia */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
-            <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
-            <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full bg-black/5" />
-            <div className="relative flex items-start justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-white/80">
-                Refeições de hoje
-              </span>
-              <CircleArrow href="/plano" tone="white" aria-label="Ver plano completo" />
+          {/* Resumo de hoje — trio de cards (card-herói + dois menores) */}
+          <section>
+            <SectionHeader title="Resumo de hoje" href="/plano" action="Ver tudo" />
+
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
+              <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
+              <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full bg-black/5" />
+              <div className="relative flex items-start justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wide text-white/80">
+                  Progresso do ciclo
+                </span>
+                <CircleArrow href="/plano" tone="white" aria-label="Ver plano completo" />
+              </div>
+              <p className="font-display relative mt-4 text-5xl leading-none">
+                {diaDoCiclo}
+                <span className="text-2xl font-semibold text-white/60"> / 30</span>
+              </p>
+              <p className="relative mt-1 text-sm text-white/80">dia do plano de {child.nome}</p>
+              <ProgressBar
+                value={diaDoCiclo}
+                max={30}
+                barClassName="bg-white"
+                className="relative mt-4 h-2 bg-white/25"
+              />
             </div>
-            <p className="font-display relative mt-4 text-5xl font-semibold leading-none">
-              {resolvidas}
-              <span className="text-2xl font-medium text-white/60"> / {cardsData.length}</span>
-            </p>
-            <p className="relative mt-1 text-sm text-white/80">
-              registradas — toque nas reações em cada refeição
-            </p>
-            <ProgressBar
-              value={resolvidas}
-              max={cardsData.length}
-              barClassName="bg-white"
-              className="relative mt-4 h-2 bg-white/25"
-            />
-          </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <StatMini
+                tint="bg-orange-50"
+                label="Refeições hoje"
+                valor={resolvidas}
+                sub={`de ${cardsData.length} registradas`}
+              />
+              <StatMini
+                tint="bg-white"
+                label="Aceitas hoje"
+                valor={aceitasHoje}
+                sub="gostou / aceitou"
+              />
+            </div>
+          </section>
 
           {/* Lembrete */}
           {usuario?.lembretes && resolvidas === 0 && cardsData.length > 0 && (
@@ -173,14 +206,10 @@ export default async function HojePage() {
             </div>
           )}
 
-          {/* Cardápio de hoje */}
+          {/* Cardápio de hoje + filtro por refeição */}
           <section>
-            <SectionHeader title="Cardápio de hoje" href="/plano" action="Ver plano" />
-            <div className="space-y-3">
-              {cardsData.map((card) => (
-                <MealCard key={card.slotId} data={card} childId={child.id} />
-              ))}
-            </div>
+            <SectionHeader title="Cardápio de hoje" />
+            <RefeicoesComFiltro cards={cardsData} childId={child.id} />
           </section>
         </>
       )}
@@ -206,6 +235,29 @@ export default async function HojePage() {
           </Card>
         </section>
       )}
+    </div>
+  );
+}
+
+function StatMini({
+  tint,
+  label,
+  valor,
+  sub,
+}: {
+  tint: string;
+  label: string;
+  valor: number;
+  sub: string;
+}) {
+  return (
+    <div className={cn("rounded-3xl border border-stone-200/60 p-4 shadow-card", tint)}>
+      <div className="flex items-start justify-between">
+        <span className="text-xs font-semibold text-stone-500">{label}</span>
+        <CircleArrow tone="light" size={28} />
+      </div>
+      <p className="font-display mt-3 text-3xl leading-none text-stone-900">{valor}</p>
+      <p className="mt-1.5 text-[11px] text-stone-400">{sub}</p>
     </div>
   );
 }

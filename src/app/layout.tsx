@@ -1,17 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Fraunces } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import TrackingHead from "@/components/TrackingHead";
 
-// Fonte display só para títulos e números — dá hierarquia e um tom mais adulto
-// e acolhedor (serif suave), sem pesar no corpo, que segue no sistema.
-const fraunces = Fraunces({
+// Sans geométrica moderna, usada em todo o app (títulos e corpo). Sem serifas.
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-display",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -44,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`h-full antialiased ${fraunces.variable}`}>
+    <html lang="pt-BR" className={`h-full antialiased ${jakarta.variable}`}>
       <body className="min-h-full flex flex-col bg-stone-50 text-stone-800">
         {/* Pixel + Utmify: beforeInteractive, carregam antes do app (vão pro <head>). */}
         <TrackingHead />
