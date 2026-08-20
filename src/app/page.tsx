@@ -22,7 +22,6 @@ import {
   ShieldCheck,
   ChevronDown,
   Gift,
-  ImageIcon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -160,7 +159,7 @@ export default async function LandingPage({
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:auto-rows-[188px]">
           {/* Card grande com imagem */}
-          <Bento className="col-span-2 md:row-span-2 flex flex-col">
+          <Bento className="col-span-2 flex flex-col">
             <div className="flex items-center gap-2 text-orange-500">
               <CalendarDays size={20} />
               <span className="text-xs font-semibold uppercase tracking-wide">Cardápio</span>
@@ -169,7 +168,6 @@ export default async function LandingPage({
             <p className="mt-1 text-sm text-stone-600">
               Café, almoço, lanche e jantar pela idade do seu filho — de 6 meses a 12 anos.
             </p>
-            <ImgSlot label="print do cardápio" className="mt-4 flex-1" />
           </Bento>
 
           {/* Card largo: rotina */}
@@ -213,13 +211,12 @@ export default async function LandingPage({
           </Bento>
 
           {/* Card largo: vários filhos com imagem */}
-          <Bento className="col-span-2 flex items-center gap-4">
-            <div className="min-w-0">
-              <Baby size={22} className="text-emerald-500" />
-              <h3 className="mt-2 font-semibold text-stone-800">Vários filhos, um app</h3>
-              <p className="mt-1 text-sm text-stone-500">Cada um com seu plano e sua lista.</p>
-            </div>
-            <ImgSlot label="perfis" className="h-full w-32 shrink-0" />
+          <Bento className="col-span-2 md:col-span-4">
+            <Baby size={22} className="text-emerald-500" />
+            <h3 className="mt-2 font-semibold text-stone-800">Vários filhos, um app</h3>
+            <p className="mt-1 text-sm text-stone-500">
+              Cada criança tem o próprio plano, lista e rotina — troque de filho quando quiser.
+            </p>
           </Bento>
         </div>
 
@@ -356,24 +353,6 @@ const FAQ: { q: string; a: string }[] = [
     a: "Não. É uma ferramenta de organização e apoio. Para diagnóstico ou dieta específica, procure sempre um profissional.",
   },
 ];
-
-function ImgSlot({ label, className }: { label?: string; className?: string }) {
-  return (
-    <div
-      className={cn(
-        "relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-orange-50 via-amber-50 to-emerald-50 ring-1 ring-inset ring-stone-200/60",
-        className
-      )}
-    >
-      <div className="flex flex-col items-center gap-1 text-stone-300">
-        <ImageIcon size={22} />
-        {label && (
-          <span className="text-[10px] font-medium uppercase tracking-wide">{label}</span>
-        )}
-      </div>
-    </div>
-  );
-}
 
 function Bento({ className, children }: { className?: string; children: React.ReactNode }) {
   return (

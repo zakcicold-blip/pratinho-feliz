@@ -33,7 +33,7 @@ export default async function ConfiguracoesPage() {
 
   return (
     <>
-      <TopBar title="Configurações" />
+      <TopBar title="Configurações" back />
       <div className="space-y-4 px-4 py-4">
         <Card className="flex items-center gap-3">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm font-bold text-orange-600">

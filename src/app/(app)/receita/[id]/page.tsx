@@ -31,7 +31,7 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
 
   return (
     <>
-      <TopBar title="Receita" />
+      <TopBar title="Receita" back />
       <div className="px-4 py-4">
         {recipe.imagemUrl && (
           <div className="relative mb-3 h-48 w-full overflow-hidden rounded-2xl bg-stone-100 shadow-card">

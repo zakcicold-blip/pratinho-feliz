@@ -32,7 +32,7 @@ export default async function ComprasPage({
   if (!plano) {
     return (
       <>
-        <TopBar title="Lista de compras" />
+        <TopBar title="Lista de compras" back />
         <EmptyState icon={ShoppingCart} title="Nenhum plano ativo ainda" />
       </>
     );
@@ -125,7 +125,7 @@ export default async function ComprasPage({
 
   return (
     <>
-      <TopBar title="Lista de compras" subtitle={`Semana ${semanaIdx + 1} de 5`} />
+      <TopBar title="Lista de compras" subtitle={`Semana ${semanaIdx + 1} de 5`} back />
 
       <div className="space-y-4 px-4 py-4">
         <div className="flex items-center justify-between">

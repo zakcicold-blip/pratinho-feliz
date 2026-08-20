@@ -19,7 +19,7 @@ export default async function RelatorioPage() {
   if (!plano) {
     return (
       <>
-        <TopBar title="Relatório" />
+        <TopBar title="Relatório" back />
         <EmptyState icon={ChartColumn} title="Nenhum ciclo ativo ainda" />
       </>
     );
@@ -67,7 +67,7 @@ export default async function RelatorioPage() {
 
   return (
     <>
-      <TopBar title="Relatório" subtitle={`Ciclo ${plano.cicloNumero} de ${child.nome}`} />
+      <TopBar title="Relatório" subtitle={`Ciclo ${plano.cicloNumero} de ${child.nome}`} back />
 
       <div className="space-y-4 px-4 py-4">
         <div className="grid grid-cols-2 gap-3">

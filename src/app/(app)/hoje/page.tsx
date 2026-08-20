@@ -6,7 +6,7 @@ import { TIPO_REFEICAO_LABEL, TIPO_REFEICAO_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import MealCard, { type MealCardData } from "@/components/MealCard";
 import GerarProximoCicloButton from "./GerarProximoCicloButton";
-import { PartyPopper, ArrowRight, CalendarClock } from "lucide-react";
+import { PartyPopper, ArrowRight, CalendarClock, Search, Bell } from "lucide-react";
 import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
 import Card from "@/components/ui/Card";
 import ProgressBar from "@/components/ui/ProgressBar";
@@ -20,12 +20,15 @@ function saudacao(hora: number) {
 }
 
 export default async function HojePage() {
-  const { child } = await getCurrentChild();
+  const { session, child } = await getCurrentChild();
 
-  const plano = await db.mealPlan.findFirst({
-    where: { childProfileId: child.id, ativo: true },
-    orderBy: { cicloNumero: "desc" },
-  });
+  const [plano, usuario] = await Promise.all([
+    db.mealPlan.findFirst({
+      where: { childProfileId: child.id, ativo: true },
+      orderBy: { cicloNumero: "desc" },
+    }),
+    db.user.findUnique({ where: { id: session.user.id }, select: { lembretes: true } }),
+  ]);
 
   if (!plano) {
     return (
@@ -92,6 +95,15 @@ export default async function HojePage() {
       <TopBar
         title={cicloEncerrado ? `Hoje de ${child.nome}` : `${saudacao(horaSaoPaulo())}!`}
         subtitle={cicloEncerrado ? "Ciclo de 30 dias concluído" : `${child.nome} · Dia ${diaDoCiclo} de 30`}
+        right={
+          <Link
+            href="/receitas"
+            aria-label="Buscar receitas"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-stone-200 bg-white text-stone-600 transition active:scale-95 hover:bg-stone-50"
+          >
+            <Search size={17} />
+          </Link>
+        }
       />
 
       <div className="space-y-3 px-4 py-4">
@@ -121,6 +133,17 @@ export default async function HojePage() {
                 <ProgressBar value={resolvidas} max={cardsData.length} className="mt-1.5" />
               </div>
             </Card>
+
+            {usuario?.lembretes && resolvidas === 0 && cardsData.length > 0 && (
+              <div className="flex items-start gap-2.5 rounded-2xl border border-orange-200/70 bg-orange-50 px-4 py-3 text-[13px] text-orange-800">
+                <Bell size={16} className="mt-0.5 shrink-0" />
+                <span>
+                  Lembrete: toque em <strong>Gostou / Aceitou / Experimentou / Recusou</strong> em
+                  cada refeição para o cardápio do próximo mês ficar cada vez mais a cara de{" "}
+                  {child.nome}.
+                </span>
+              </div>
+            )}
 
             {cardsData.map((card) => (
               <MealCard key={card.slotId} data={card} childId={child.id} />

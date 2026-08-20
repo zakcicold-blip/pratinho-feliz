@@ -30,8 +30,10 @@ const telas = [
   { rota: "/plano", arquivo: "plano.png" },
   { rota: "/rotina", arquivo: "rotina.png" },
   { rota: "/compras", arquivo: "compras.png" },
-  { rota: "/favoritos", arquivo: "favoritos.png" },
 ];
+
+// Esconde a barra/indicador de dev do Next para não aparecer nos prints.
+const OCULTAR_DEV = `nextjs-portal, [data-next-badge-root], [data-nextjs-toast], #__next-build-watcher { display: none !important; }`;
 
 const browser = await puppeteer.launch({
   executablePath,
@@ -54,6 +56,7 @@ await new Promise((r) => setTimeout(r, 1500));
 
 for (const t of telas) {
   await page.goto(`${BASE}${t.rota}`, { waitUntil: "networkidle2" });
+  await page.addStyleTag({ content: OCULTAR_DEV });
   await new Promise((r) => setTimeout(r, 1200));
   const destino = path.join(OUT, t.arquivo);
   await page.screenshot({ path: destino, clip: { x: 0, y: 0, width: LARGURA, height: ALTURA } });

@@ -30,7 +30,7 @@ export default async function DescobertasPage() {
 
   return (
     <>
-      <TopBar title="Descobertas" subtitle="Novos alimentos em apresentação" />
+      <TopBar title="Descobertas" subtitle="Novos alimentos em apresentação" back />
 
       <div className="space-y-4 px-4 py-4">
         <Card>

@@ -8,8 +8,13 @@ export default function LembretesToggle({ inicial }: { inicial: boolean }) {
   const [, startTransition] = useTransition();
 
   return (
-    <label className="flex items-center justify-between rounded-xl bg-stone-50 px-4 py-3">
-      <span className="text-sm text-stone-700">Lembretes e notificações</span>
+    <label className="flex items-center justify-between gap-3 rounded-xl bg-stone-50 px-4 py-3">
+      <span className="text-sm text-stone-700">
+        Lembretes no app
+        <span className="mt-0.5 block text-xs text-stone-400">
+          Um aviso na tela de hoje quando faltar registrar as reações das refeições.
+        </span>
+      </span>
       <input
         type="checkbox"
         checked={ativo}
