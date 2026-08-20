@@ -158,7 +158,10 @@ export default async function HojePage() {
           <section>
             <SectionHeader title="Resumo de hoje" href="/plano" action="Ver tudo" />
 
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
+            <Link
+              href="/plano"
+              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg transition active:scale-[0.99]"
+            >
               <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
               <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full bg-black/5" />
               {/* Personagem sorteado a cada visita, "pisando" na barra de
@@ -171,7 +174,7 @@ export default async function HojePage() {
                 <span className="text-xs font-semibold uppercase tracking-wide text-white/80">
                   Progresso do ciclo
                 </span>
-                <CircleArrow href="/plano" tone="white" aria-label="Ver plano completo" />
+                <CircleArrow tone="white" aria-label="Ver plano completo" />
               </div>
               <p className="font-display relative mt-4 text-5xl leading-none">
                 {diaDoCiclo}
@@ -184,16 +187,18 @@ export default async function HojePage() {
                 barClassName="bg-white"
                 className="relative mt-4 h-2 bg-white/25"
               />
-            </div>
+            </Link>
 
             <div className="mt-3 grid grid-cols-2 gap-3">
               <StatMini
+                href="/hoje/refeicoes"
                 tint="bg-orange-50"
                 label="Refeições hoje"
                 valor={resolvidas}
                 sub={`de ${cardsData.length} registradas`}
               />
               <StatMini
+                href="/hoje/aceitas"
                 tint="bg-white"
                 label="Aceitas hoje"
                 valor={aceitasHoje}
@@ -247,24 +252,32 @@ export default async function HojePage() {
 }
 
 function StatMini({
+  href,
   tint,
   label,
   valor,
   sub,
 }: {
+  href: string;
   tint: string;
   label: string;
   valor: number;
   sub: string;
 }) {
   return (
-    <div className={cn("rounded-3xl border border-stone-200/60 p-4 shadow-card", tint)}>
+    <Link
+      href={href}
+      className={cn(
+        "block rounded-3xl border border-stone-200/60 p-4 shadow-card transition active:scale-[0.98]",
+        tint,
+      )}
+    >
       <div className="flex items-start justify-between">
         <span className="text-xs font-semibold text-stone-500">{label}</span>
         <CircleArrow tone="light" size={28} />
       </div>
       <p className="font-display mt-3 text-3xl leading-none text-stone-900">{valor}</p>
       <p className="mt-1.5 text-[11px] text-stone-400">{sub}</p>
-    </div>
+    </Link>
   );
 }
