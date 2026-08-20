@@ -30,7 +30,9 @@ export default function TopBar({
           </Link>
         )}
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-lg font-bold leading-tight text-stone-900">{title}</h1>
+          <h1 className="font-display truncate text-xl font-semibold leading-tight text-stone-900">
+            {title}
+          </h1>
           {subtitle && <p className="truncate text-xs text-stone-500">{subtitle}</p>}
         </div>
         {right}

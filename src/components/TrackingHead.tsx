@@ -33,8 +33,10 @@ fbq('track', 'PageView');`}
         </Script>
       )}
       {UTMIFY_ATIVO && (
-        // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document -- idem.
-        <Script id="utmify-utms" strategy="beforeInteractive">
+        // afterInteractive (não beforeInteractive): o Utmify reescreve os href
+        // dos links; rodar antes da hidratação quebraria o React. Aqui ele roda
+        // logo após hidratar e decora os links sem conflito.
+        <Script id="utmify-utms" strategy="afterInteractive">
           {UTMIFY_LOADER}
         </Script>
       )}

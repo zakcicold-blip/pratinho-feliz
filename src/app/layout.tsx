@@ -1,8 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
+import { Fraunces } from "next/font/google";
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import TrackingHead from "@/components/TrackingHead";
+
+// Fonte display só para títulos e números — dá hierarquia e um tom mais adulto
+// e acolhedor (serif suave), sem pesar no corpo, que segue no sistema.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   title: "Pratinho Feliz",
@@ -34,7 +44,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className="h-full antialiased">
+    <html lang="pt-BR" className={`h-full antialiased ${fraunces.variable}`}>
       <body className="min-h-full flex flex-col bg-stone-50 text-stone-800">
         {/* Pixel + Utmify: beforeInteractive, carregam antes do app (vão pro <head>). */}
         <TrackingHead />
