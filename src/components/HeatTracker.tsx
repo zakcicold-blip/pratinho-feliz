@@ -20,6 +20,22 @@ type Evento = {
 };
 
 const SID_KEY = "pf_heat_sid";
+const OPTOUT_KEY = "pf_heat_optout";
+
+// Decide se este navegador deve ser ignorado no mapa de calor.
+// - ?noheat=1 marca opt-out (e ?noheat=0 reativa) — útil em aparelhos onde você
+//   não faz login. A flag persiste no localStorage.
+// - quem já entrou no app/admin também é marcado (ver HeatOptOut).
+function deveIgnorar(): boolean {
+  try {
+    const p = new URLSearchParams(window.location.search).get("noheat");
+    if (p === "1") localStorage.setItem(OPTOUT_KEY, "1");
+    if (p === "0") localStorage.removeItem(OPTOUT_KEY);
+    return localStorage.getItem(OPTOUT_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
 
 function getSessionId(): string {
   try {
@@ -36,6 +52,8 @@ function getSessionId(): string {
 
 export default function HeatTracker({ path = "/" }: { path?: string }) {
   useEffect(() => {
+    if (deveIgnorar()) return; // navegador do dono/usuário — não contabiliza
+
     const sessionId = getSessionId();
     const viewport = window.innerWidth < 768 ? "mobile" : "desktop";
 

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { requireSession } from "@/lib/currentChild";
 import { podeAcessarApp } from "@/lib/assinatura";
 import BottomNav from "@/components/BottomNav";
+import HeatOptOut from "@/components/HeatOptOut";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await requireSession();
@@ -13,6 +14,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen flex-col">
+      <HeatOptOut />
       <div className="mx-auto w-full max-w-2xl flex-1 pb-4">{children}</div>
       <BottomNav />
     </div>
