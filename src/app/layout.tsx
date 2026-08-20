@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
-import UtmifyScript from "@/components/UtmifyScript";
-import CookieConsent from "@/components/CookieConsent";
+import TrackingHead from "@/components/TrackingHead";
 
 export const metadata: Metadata = {
   title: "Pratinho Feliz",
@@ -37,12 +36,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-stone-50 text-stone-800">
+        {/* Pixel + Utmify: beforeInteractive, carregam antes do app (vão pro <head>). */}
+        <TrackingHead />
         <Suspense fallback={null}>
           <MetaPixel />
         </Suspense>
-        <UtmifyScript />
         {children}
-        <CookieConsent />
       </body>
     </html>
   );

@@ -1,11 +1,11 @@
 "use client";
 
-import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { useConsent } from "@/lib/consent";
 
-// Id público do pixel, injetado no build. Sem ele (ex.: no demo), nada carrega.
+// O script base do pixel é carregado no <head> (TrackingHead). Aqui só
+// disparamos os eventos do funil conforme a navegação (SPA) e os marcadores de
+// URL, chamando o fbq já carregado.
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 function fbq(...args: unknown[]) {
@@ -13,32 +13,25 @@ function fbq(...args: unknown[]) {
   if (fn) fn(...args);
 }
 
-/**
- * Meta Pixel: carrega o script uma vez, conta PageView a cada troca de tela
- * (SPA) e dispara os eventos de conversão do funil quando a pessoa volta do
- * checkout ou conclui o cadastro — tudo no nosso domínio.
- */
 export default function MetaPixel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const consent = useConsent();
-  const ativo = Boolean(PIXEL_ID) && consent === "accepted";
   const primeiraCarga = useRef(true);
   const conversaoContada = useRef(false);
 
-  // PageView em navegações client-side (a primeira já é disparada pelo script).
+  // PageView em navegações client-side (a primeira já é disparada no <head>).
   useEffect(() => {
-    if (!ativo) return;
+    if (!PIXEL_ID) return;
     if (primeiraCarga.current) {
       primeiraCarga.current = false;
       return;
     }
     fbq("track", "PageView");
-  }, [pathname, ativo]);
+  }, [pathname]);
 
   // Eventos de conversão, marcados por parâmetros na URL.
   useEffect(() => {
-    if (!ativo || conversaoContada.current) return;
+    if (!PIXEL_ID || conversaoContada.current) return;
 
     // Trial iniciado: volta do checkout para /hoje?assinatura=ok. O eventID é o
     // mesmo que o CAPI usa no servidor, então a Meta deduplica os dois.
@@ -60,34 +53,7 @@ export default function MetaPixel() {
       conversaoContada.current = true;
       fbq("track", "CompleteRegistration");
     }
-  }, [pathname, searchParams, ativo]);
+  }, [pathname, searchParams]);
 
-  if (!ativo) return null;
-
-  return (
-    <>
-      <Script id="meta-pixel" strategy="afterInteractive">
-        {`!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '${PIXEL_ID}');
-fbq('track', 'PageView');`}
-      </Script>
-      <noscript>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          alt=""
-          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
-        />
-      </noscript>
-    </>
-  );
+  return null;
 }

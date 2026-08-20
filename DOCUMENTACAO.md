@@ -235,8 +235,10 @@ Regra-base do spec: **dados estruturados**, não LLM por requisição. Duas etap
 
 ## 13. Rastreamento de marketing
 
-**Consentimento (LGPD):** banner de cookies (`src/lib/consent.ts`). Pixel e
-Utmify só carregam com `consent === "accepted"`.
+**Carregamento do tracking:** Pixel e Utmify são carregados o mais cedo
+possível por `src/components/TrackingHead.tsx` (`next/script` com
+`strategy="beforeInteractive"`, antes de todo o app; no DOM final ficam no
+`<head>`). Sem banner de consentimento — carregam para todos os visitantes.
 
 **Meta Pixel (navegador):**
 | Evento | Quando |
@@ -252,7 +254,7 @@ Utmify só carregam com `consent === "accepted"`.
 - `Purchase` no `invoice.payment_succeeded` com valor > 0 (cobrança real ao fim
   do trial e renovações). Enriquecido com e-mail (hash) e cookies `_fbp/_fbc`.
 
-**Utmify:** script de captura de UTMs (`src/components/UtmifyScript.tsx`). As
+**Utmify:** script de captura de UTMs (carregado em `TrackingHead.tsx`). As
 vendas são atribuídas pela **integração nativa Stripe** configurada no painel da
 Utmify.
 
