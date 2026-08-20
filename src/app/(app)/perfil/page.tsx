@@ -41,7 +41,7 @@ export default async function PerfilPage() {
         {ehAdmin && (
           <Link
             href="/admin"
-            className="mb-5 flex items-center justify-center gap-2 rounded-2xl border border-stone-800 bg-stone-800 py-3 text-sm font-semibold text-white transition-colors hover:bg-stone-900"
+            className="mb-5 flex items-center justify-center gap-2 rounded-full border border-stone-900 bg-stone-900 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-stone-800"
           >
             <ShieldCheck size={16} /> Painel administrativo
           </Link>
@@ -83,9 +83,11 @@ function QuickLink({
   return (
     <Link
       href={href}
-      className="flex flex-col items-center gap-1 rounded-xl border border-stone-200 bg-white py-2.5 text-center"
+      className="flex flex-col items-center gap-1.5 rounded-2xl border border-stone-200/60 bg-white py-3 text-center shadow-card transition active:scale-95 hover:border-orange-200"
     >
-      <Icon size={17} className="text-orange-500" />
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-50 text-orange-500">
+        <Icon size={17} />
+      </span>
       <span className="text-[11px] font-medium text-stone-600">{label}</span>
     </Link>
   );

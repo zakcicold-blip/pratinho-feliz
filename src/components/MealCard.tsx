@@ -146,18 +146,13 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
   const cor = MEAL_COLOR[data.tipo];
 
   return (
-    <div
-      className={cn(
-        "rounded-2xl border border-l-4 border-stone-200/70 bg-white shadow-card",
-        cor.accent
-      )}
-    >
+    <div className="rounded-3xl border border-stone-200/60 bg-white shadow-card">
       <div className="p-4">
         <div className="flex items-center justify-between">
           <span
             className={cn(
-              "flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide",
-              cor.text
+              "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold",
+              cor.bg
             )}
           >
             <MealTypeIcon tipo={data.tipo} size={13} />

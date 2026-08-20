@@ -24,9 +24,9 @@ export default function TopBar({
           <Link
             href="/hoje"
             aria-label="Início"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white shadow-sm shadow-orange-900/20 transition active:scale-95"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-sm shadow-orange-900/20 transition active:scale-95"
           >
-            <UtensilsCrossed size={16} />
+            <UtensilsCrossed size={17} />
           </Link>
         )}
         <div className="min-w-0 flex-1">
