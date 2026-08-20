@@ -161,9 +161,12 @@ export default async function HojePage() {
             <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
               <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
               <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full bg-black/5" />
-              {/* Lottie decorativo — troque a animação editando pulse.json ou
-                  passando src="URL do .json" no LottieBox. */}
-              <LottieBox className="pointer-events-none absolute right-2 top-1/2 h-28 w-28 -translate-y-1/2 opacity-80" />
+              {/* Lottie decorativo — troque o arquivo em src (opções em
+                  /public/Lotties/LOADINGS/). */}
+              <LottieBox
+                src="/Lotties/LOADINGS/13306664.json"
+                className="pointer-events-none absolute right-0 top-1/2 h-32 w-40 -translate-y-1/2"
+              />
               <div className="relative flex items-start justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wide text-white/80">
                   Progresso do ciclo

@@ -2,24 +2,21 @@
 
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import pulse from "./lottie/pulse.json";
 
-// Wrapper de Lottie. Por padrão usa a animação local `pulse.json`.
-// Para testar QUALQUER animação, passe `src` com a URL de um .json de Lottie
-// (ex.: do LottieFiles / lottie.host) — ela é baixada no cliente.
+// Renderiza uma animação Lottie a partir de uma URL de .json (ex.: arquivos em
+// /public/Lotties/...). Não desenha nada até a animação carregar (sem flash).
 export default function LottieBox({
   src,
   className,
   loop = true,
 }: {
-  src?: string;
+  src: string;
   className?: string;
   loop?: boolean;
 }) {
-  const [data, setData] = useState<unknown>(pulse);
+  const [data, setData] = useState<unknown>(null);
 
   useEffect(() => {
-    if (!src) return;
     let vivo = true;
     fetch(src)
       .then((r) => r.json())
@@ -27,12 +24,13 @@ export default function LottieBox({
         if (vivo) setData(json);
       })
       .catch(() => {
-        /* mantém o placeholder se falhar */
+        /* falha silenciosa — não quebra a tela */
       });
     return () => {
       vivo = false;
     };
   }, [src]);
 
+  if (!data) return null;
   return <Lottie animationData={data} loop={loop} autoplay className={className} />;
 }
