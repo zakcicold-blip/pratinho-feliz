@@ -4,7 +4,6 @@ import { auth } from "@/auth";
 import { cn } from "@/lib/cn";
 import PhoneCarousel from "@/components/PhoneCarousel";
 import HeatTracker from "@/components/HeatTracker";
-import LottieBox from "@/components/LottieBox";
 import {
   UtensilsCrossed,
   CalendarDays,
@@ -145,16 +144,8 @@ export default async function LandingPage({
             </div>
           </div>
 
-          {/* Carrossel com prints reais do app + mascote animado */}
-          <div className="relative flex justify-center md:justify-end">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-300/30 blur-3xl md:left-[38%]"
-            />
-            <LottieBox
-              src="/Lotties/LOADINGS/13306664.json"
-              className="pointer-events-none absolute -top-4 left-0 z-10 h-32 w-32 md:-left-6 md:-top-6 md:h-40 md:w-40"
-            />
+          {/* Carrossel com prints reais do app dentro do mockup de celular */}
+          <div className="flex justify-center md:justify-end">
             <PhoneCarousel />
           </div>
         </div>
@@ -290,10 +281,6 @@ export default async function LandingPage({
         <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-orange-500 to-orange-400 px-8 py-14 text-center shadow-card-lg">
           <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-white/10" />
           <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-black/5" />
-          <LottieBox
-            src="/Lotties/LOADINGS/13306666.json"
-            className="pointer-events-none absolute bottom-0 right-2 z-0 h-32 w-32 opacity-90 md:right-8 md:h-44 md:w-44"
-          />
           <div className="relative z-10">
             <h2 className="font-display text-3xl font-bold text-white md:text-4xl">
               {logado ? (
