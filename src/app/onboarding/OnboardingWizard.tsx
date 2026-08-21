@@ -228,7 +228,7 @@ export default function OnboardingWizard({
       <Card padding="lg" className="animate-fade-in">
         {step === 0 && (
           <div className="space-y-4">
-            <h2 className="text-lg font-bold text-stone-800">Sobre a criança</h2>
+            <h2 className="font-display text-xl font-bold text-stone-900">Sobre a criança</h2>
             <Field label="Nome ou apelido">
               <input
                 autoFocus
@@ -251,17 +251,30 @@ export default function OnboardingWizard({
                 ))}
               </select>
             </Field>
-            <Field label={`Refeições em casa por dia: ${draft.refeicoesPorDia}`}>
+            <div>
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-stone-700">Refeições em casa por dia</label>
+                <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-sm font-bold text-orange-600">
+                  {draft.refeicoesPorDia}
+                </span>
+              </div>
               <input
                 type="range"
                 min={2}
-                max={6}
+                max={4}
                 value={draft.refeicoesPorDia}
                 onChange={(e) => setDraft({ ...draft, refeicoesPorDia: Number(e.target.value) })}
-                className="w-full accent-orange-500"
+                className="mt-2 w-full accent-orange-500"
               />
-            </Field>
-            <Field label={`Tempo médio disponível para preparar: ${draft.tempoDisponivel} min`}>
+              <p className="mt-1 text-xs text-stone-400">De 2 a 4 refeições preparadas em casa.</p>
+            </div>
+            <div>
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-stone-700">Tempo pra cozinhar</label>
+                <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-sm font-bold text-orange-600">
+                  {draft.tempoDisponivel} min
+                </span>
+              </div>
               <input
                 type="range"
                 min={10}
@@ -269,9 +282,12 @@ export default function OnboardingWizard({
                 step={5}
                 value={draft.tempoDisponivel}
                 onChange={(e) => setDraft({ ...draft, tempoDisponivel: Number(e.target.value) })}
-                className="w-full accent-orange-500"
+                className="mt-2 w-full accent-orange-500"
               />
-            </Field>
+              <p className="mt-1 text-xs text-stone-400">
+                Quanto tempo você tem, em média, para preparar cada refeição. O cardápio se ajusta ao seu ritmo.
+              </p>
+            </div>
             <Field label="O que você tem na cozinha? (opcional)">
               <EquipamentosSelect
                 value={draft.equipamentos}
@@ -335,7 +351,7 @@ export default function OnboardingWizard({
 
         {step === 5 && (
           <div className="space-y-5">
-            <h2 className="text-lg font-bold text-stone-800">Rotina e objetivo</h2>
+            <h2 className="font-display text-xl font-bold text-stone-900">Rotina e objetivo</h2>
             <Field label="Nível de praticidade">
               <div className="grid gap-2 sm:grid-cols-3">
                 {Object.entries(PRATICIDADE_LABEL).map(([value, label]) => (
@@ -344,9 +360,9 @@ export default function OnboardingWizard({
                     type="button"
                     onClick={() => setDraft({ ...draft, praticidade: value as Draft["praticidade"] })}
                     className={cn(
-                      "rounded-xl border px-3 py-2 text-sm font-medium transition",
+                      "rounded-2xl border px-3 py-2.5 text-sm font-medium transition active:scale-[0.98]",
                       draft.praticidade === value
-                        ? "border-orange-500 bg-orange-50 text-orange-700"
+                        ? "border-orange-400 bg-orange-50 text-orange-700"
                         : "border-stone-200 text-stone-600 hover:bg-stone-50"
                     )}
                   >
@@ -363,9 +379,9 @@ export default function OnboardingWizard({
                     type="button"
                     onClick={() => setDraft({ ...draft, objetivo: value as Draft["objetivo"] })}
                     className={cn(
-                      "rounded-xl border px-3 py-2 text-sm font-medium transition",
+                      "rounded-2xl border px-3 py-2.5 text-sm font-medium transition active:scale-[0.98]",
                       draft.objetivo === value
-                        ? "border-orange-500 bg-orange-50 text-orange-700"
+                        ? "border-orange-400 bg-orange-50 text-orange-700"
                         : "border-stone-200 text-stone-600 hover:bg-stone-50"
                     )}
                   >
@@ -373,6 +389,9 @@ export default function OnboardingWizard({
                   </button>
                 ))}
               </div>
+              <p className="mt-2 text-xs text-stone-400">
+                Nos ajuda a entender por que você usa o app — não muda o cardápio.
+              </p>
             </Field>
             <label className="flex items-start gap-3 rounded-xl bg-orange-50 p-4 text-sm text-stone-700">
               <input
@@ -395,7 +414,7 @@ export default function OnboardingWizard({
 
         {step === 6 && (
           <div className="space-y-4">
-            <h2 className="text-lg font-bold text-stone-800">Montando o plano de {draft.nome}</h2>
+            <h2 className="font-display text-xl font-bold text-stone-900">Montando o plano de {draft.nome}</h2>
             <div className="divide-y divide-stone-100 rounded-xl bg-stone-50/60 px-4">
               <ResumoLinha label="Faixa etária" valor={draft.faixaEtaria} />
               <ResumoLinha label="Refeições por dia" valor={String(draft.refeicoesPorDia)} />
@@ -517,7 +536,7 @@ function IngredientStep({
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-bold text-stone-800">{titulo}</h2>
+        <h2 className="font-display text-xl font-bold text-stone-900">{titulo}</h2>
         <p className="mt-1 text-sm text-stone-500">{dica}</p>
       </div>
       <div className="max-h-96 space-y-4 overflow-y-auto pr-1">
