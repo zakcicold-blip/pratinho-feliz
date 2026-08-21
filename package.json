@@ -14,6 +14,7 @@
     "db:rotina": "tsx prisma/seedRotina.ts",
     "db:fotos": "tsx prisma/seedFotos.ts",
     "db:demo": "tsx prisma/seedDemo.ts",
+    "db:equipamentos": "tsx prisma/seedEquipamentos.ts",
     "stripe:setup": "node scripts/stripe-setup.mjs",
     "db:migrate": "prisma migrate deploy",
     "icons:generate": "node scripts/generate-icons.mjs",
