@@ -21,9 +21,10 @@ const BASE = "http://localhost:3000";
 const LARGURA = 390;
 const ALTURA = 780; // 1:2, igual ao aspect-[9/18] do mockup
 
-// Credenciais do admin (conta com plano do Léo) — leem do .env.
-let email = "admin@pratinhofeliz.com";
-let senha = "Dazai3424@";
+// Conta usada nos prints (precisa ter um plano ativo). Pode trocar por env:
+// SCREENS_EMAIL=... SCREENS_SENHA=... npm run screens
+const email = process.env.SCREENS_EMAIL ?? "admin@pratinhofeliz.com";
+const senha = process.env.SCREENS_SENHA ?? "Dazai3424@";
 
 const telas = [
   { rota: "/hoje", arquivo: "hoje.png" },

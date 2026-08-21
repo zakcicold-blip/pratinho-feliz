@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import Badge from "@/components/ui/Badge";
+import DeletarUsuarioButton from "./DeletarUsuarioButton";
 
 const STATUS_LABEL: Record<string, string> = {
   TESTE: "Em teste",
@@ -26,6 +27,7 @@ export default async function AdminUsuariosPage() {
               <th className="px-4 py-3">Perfis</th>
               <th className="px-4 py-3">Assinatura</th>
               <th className="px-4 py-3">Criado em</th>
+              <th className="px-4 py-3">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -42,6 +44,9 @@ export default async function AdminUsuariosPage() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3 text-stone-400">{u.createdAt.toLocaleDateString("pt-BR")}</td>
+                  <td className="px-4 py-3">
+                    <DeletarUsuarioButton userId={u.id} nome={u.name} />
+                  </td>
                 </tr>
               );
             })}
