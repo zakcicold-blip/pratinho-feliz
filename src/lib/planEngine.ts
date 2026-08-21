@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
 import {
   EstadoFeedback,
-  Objetivo,
   Praticidade,
   StatusPreferencia,
   TipoRefeicao,
@@ -31,7 +30,6 @@ type RecipeWithIngredients = {
 type ChildContext = {
   childId: string;
   praticidade: Praticidade;
-  objetivo: Objetivo;
   tempoDisponivel: number;
   idadeMeses: number;
   objetivoRotina: ObjetivoRotina;
@@ -103,7 +101,6 @@ async function buildChildContext(childId: string): Promise<ChildContext> {
   return {
     childId,
     praticidade: child.praticidade,
-    objetivo: child.objetivo,
     tempoDisponivel: child.tempoDisponivel,
     idadeMeses: faixaEtariaEmMeses(child.faixaEtaria),
     objetivoRotina,
@@ -162,8 +159,9 @@ function scoreRecipe(
   for (const ri of recipe.ingredients) {
     if (ctx.aceitaIds.has(ri.ingredient.id)) score += 3;
     if (ctx.desejadaIds.has(ri.ingredient.id)) {
-      const bonus = ctx.objetivo === Objetivo.APRESENTAR_NOVOS_ALIMENTOS ? 6 : 4;
-      score += bonus;
+      // Bônus por conter um alimento em "apresentando aos poucos".
+      // (O objetivo principal do perfil é só métrica; não pesa no cardápio.)
+      score += 5;
       motivoForte = "Ajuda a apresentar um novo alimento";
     }
     if (ctx.recusaIds.has(ri.ingredient.id)) score -= 2;

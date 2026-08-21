@@ -104,86 +104,83 @@ export default function PerfilForm({
 
   return (
     <div className="space-y-4">
-      <Card padding="lg" className="space-y-3">
-        <Field label="Nome ou apelido">
-          <input value={nome} onChange={(e) => setNome(e.target.value)} className="input" />
-        </Field>
-        <Field label="Faixa etária">
-          <select value={faixaEtaria} onChange={(e) => setFaixaEtaria(e.target.value)} className="input">
-            {FAIXAS_ETARIAS.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
-        </Field>
-        <Field label={`Refeições em casa por dia: ${refeicoesPorDia}`}>
-          <input
-            type="range"
+      <div className="space-y-5 rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
+        {/* Sobre a criança */}
+        <div className="space-y-3">
+          <h3 className="font-display text-sm font-semibold text-stone-800">Sobre a criança</h3>
+          <Field label="Nome ou apelido">
+            <input
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              className="input"
+              placeholder="Como você chama a criança"
+            />
+          </Field>
+          <Field label="Faixa etária">
+            <select value={faixaEtaria} onChange={(e) => setFaixaEtaria(e.target.value)} className="input">
+              {FAIXAS_ETARIAS.map((f) => (
+                <option key={f} value={f}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </Field>
+        </div>
+
+        {/* Rotina na cozinha */}
+        <div className="space-y-4 border-t border-stone-100 pt-5">
+          <h3 className="font-display text-sm font-semibold text-stone-800">Sua rotina na cozinha</h3>
+
+          <Slider
+            label="Refeições em casa por dia"
+            valor={`${refeicoesPorDia}`}
             min={2}
-            max={6}
+            max={4}
             value={refeicoesPorDia}
-            onChange={(e) => setRefeicoesPorDia(Number(e.target.value))}
-            className="w-full accent-orange-500"
+            onChange={setRefeicoesPorDia}
+            ajuda="De 2 a 4 refeições preparadas em casa."
           />
-        </Field>
-        <Field label={`Tempo médio disponível: ${tempoDisponivel} min`}>
-          <input
-            type="range"
+
+          <Slider
+            label="Tempo pra cozinhar"
+            valor={`${tempoDisponivel} min`}
             min={10}
             max={60}
             step={5}
             value={tempoDisponivel}
-            onChange={(e) => setTempoDisponivel(Number(e.target.value))}
-            className="w-full accent-orange-500"
+            onChange={setTempoDisponivel}
+            ajuda="Quanto tempo você tem, em média, para preparar cada refeição. O cardápio se ajusta ao seu ritmo."
           />
-        </Field>
-        <Field label="O que você tem na cozinha? (opcional)">
-          <EquipamentosSelect value={equipamentos} onChange={setEquipamentos} />
+
+          <Field label="O que você tem na cozinha? (opcional)">
+            <EquipamentosSelect value={equipamentos} onChange={setEquipamentos} />
+            <p className="mt-2 text-xs text-stone-400">
+              O cardápio só sugere receitas possíveis com o que estiver marcado. Fogão e panela já
+              entram por padrão.
+            </p>
+          </Field>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-stone-700">Praticidade no dia a dia</label>
+            <Segmented
+              options={PRATICIDADE_LABEL}
+              value={praticidade}
+              onChange={setPraticidade}
+              cols="sm:grid-cols-3"
+            />
+            <p className="mt-2 text-xs text-stone-400">Ajusta o cardápio ao seu tempo de preparo.</p>
+          </div>
+        </div>
+
+        {/* Objetivo (métrica) */}
+        <div className="border-t border-stone-100 pt-5">
+          <label className="mb-2 block text-sm font-medium text-stone-700">Objetivo principal</label>
+          <Segmented options={OBJETIVO_LABEL} value={objetivo} onChange={setObjetivo} cols="sm:grid-cols-2" />
           <p className="mt-2 text-xs text-stone-400">
-            O cardápio só sugere receitas possíveis com o que estiver marcado. Fogão e panela já
-            entram por padrão.
+            Nos ajuda a entender por que você usa o app — não muda o cardápio.
           </p>
-        </Field>
-        <Field label="Praticidade">
-          <div className="grid gap-2 sm:grid-cols-3">
-            {Object.entries(PRATICIDADE_LABEL).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setPraticidade(value)}
-                className={cn(
-                  "rounded-xl border px-3 py-2 text-sm font-medium transition",
-                  praticidade === value
-                    ? "border-orange-500 bg-orange-50 text-orange-700"
-                    : "border-stone-200 text-stone-600 hover:bg-stone-50"
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </Field>
-        <Field label="Objetivo principal">
-          <div className="grid gap-2 sm:grid-cols-2">
-            {Object.entries(OBJETIVO_LABEL).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setObjetivo(value)}
-                className={cn(
-                  "rounded-xl border px-3 py-2 text-sm font-medium transition",
-                  objetivo === value
-                    ? "border-orange-500 bg-orange-50 text-orange-700"
-                    : "border-stone-200 text-stone-600 hover:bg-stone-50"
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </Field>
-      </Card>
+        </div>
+      </div>
 
       <PreferenceGroup
         titulo="Aceita bem"
@@ -225,10 +222,16 @@ export default function PerfilForm({
       <style jsx global>{`
         .input {
           width: 100%;
-          border-radius: 0.75rem;
-          border: 1px solid #d6d3d1;
-          padding: 0.625rem 1rem;
+          border-radius: 0.875rem;
+          border: 1px solid #e7e5e4;
+          background: #fff;
+          padding: 0.7rem 1rem;
+          font-size: 0.9rem;
           outline: none;
+          transition: border-color 0.15s;
+        }
+        .input:focus {
+          border-color: #fb923c;
         }
       `}</style>
     </div>
@@ -240,6 +243,77 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div>
       <label className="mb-1 block text-sm font-medium text-stone-700">{label}</label>
       {children}
+    </div>
+  );
+}
+
+function Slider({
+  label,
+  valor,
+  min,
+  max,
+  step = 1,
+  value,
+  onChange,
+  ajuda,
+}: {
+  label: string;
+  valor: string;
+  min: number;
+  max: number;
+  step?: number;
+  value: number;
+  onChange: (v: number) => void;
+  ajuda: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-medium text-stone-700">{label}</label>
+        <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-sm font-bold text-orange-600">{valor}</span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="mt-2 w-full accent-orange-500"
+      />
+      <p className="mt-1 text-xs text-stone-400">{ajuda}</p>
+    </div>
+  );
+}
+
+function Segmented({
+  options,
+  value,
+  onChange,
+  cols,
+}: {
+  options: Record<string, string>;
+  value: string;
+  onChange: (v: string) => void;
+  cols: string;
+}) {
+  return (
+    <div className={cn("grid gap-2", cols)}>
+      {Object.entries(options).map(([v, label]) => (
+        <button
+          key={v}
+          type="button"
+          onClick={() => onChange(v)}
+          className={cn(
+            "rounded-2xl border px-3 py-2.5 text-sm font-medium transition active:scale-[0.98]",
+            value === v
+              ? "border-orange-400 bg-orange-50 text-orange-700"
+              : "border-stone-200 text-stone-600 hover:bg-stone-50",
+          )}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 }
