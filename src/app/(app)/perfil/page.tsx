@@ -5,7 +5,7 @@ import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import PerfilForm from "./PerfilForm";
 import SeletorCrianca from "./SeletorCrianca";
-import { ChartColumn, Sparkles, ShoppingCart, Settings, ShieldCheck, BookOpen } from "lucide-react";
+import { ChartColumn, Sparkles, ShoppingCart, Settings, ShieldCheck, BookOpen, Baby } from "lucide-react";
 
 export default async function PerfilPage() {
   const { session, child } = await getCurrentChild();
@@ -32,6 +32,7 @@ export default async function PerfilPage() {
 
         <div className="mb-5 grid grid-cols-3 gap-2">
           <QuickLink href="/receitas" label="Receitas" Icon={BookOpen} />
+          <QuickLink href="/papinhas" label="Papinhas" Icon={Baby} />
           <QuickLink href="/relatorio" label="Relatório" Icon={ChartColumn} />
           <QuickLink href="/descobertas" label="Descobertas" Icon={Sparkles} />
           <QuickLink href="/compras" label="Compras" Icon={ShoppingCart} />
