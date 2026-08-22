@@ -24,6 +24,7 @@ export default async function AdminUsuariosPage() {
             <tr>
               <th className="px-4 py-3">Nome</th>
               <th className="px-4 py-3">E-mail</th>
+              <th className="px-4 py-3">WhatsApp</th>
               <th className="px-4 py-3">Perfis</th>
               <th className="px-4 py-3">Assinatura</th>
               <th className="px-4 py-3">Criado em</th>
@@ -37,6 +38,23 @@ export default async function AdminUsuariosPage() {
                 <tr key={u.id} className="border-t border-stone-100 hover:bg-stone-50/60">
                   <td className="px-4 py-3 font-medium text-stone-800">{u.name}</td>
                   <td className="px-4 py-3 text-stone-500">{u.email}</td>
+                  <td className="px-4 py-3">
+                    {u.telefone ? (
+                      <a
+                        href={`https://wa.me/${(() => {
+                          const d = u.telefone.replace(/\D/g, "");
+                          return d.startsWith("55") ? d : `55${d}`;
+                        })()}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-600 hover:underline"
+                      >
+                        {u.telefone}
+                      </a>
+                    ) : (
+                      <span className="text-stone-300">—</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-stone-500">{u.children.length}</td>
                   <td className="px-4 py-3">
                     <Badge tone={status === "ATIVA" ? "emerald" : "amber"}>

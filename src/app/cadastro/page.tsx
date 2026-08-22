@@ -55,6 +55,22 @@ export default function CadastroPage() {
             />
           </div>
           <div>
+            <label className="mb-1 block text-sm font-medium text-stone-700">
+              WhatsApp <span className="font-normal text-stone-400">(opcional)</span>
+            </label>
+            <input
+              type="tel"
+              name="telefone"
+              inputMode="tel"
+              autoComplete="tel"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              placeholder="(11) 99999-9999"
+            />
+            <p className="mt-1 text-[11px] text-stone-400">
+              Só usamos para falar com você sobre o app, se precisar. Nunca compartilhamos.
+            </p>
+          </div>
+          <div>
             <label className="mb-1 block text-sm font-medium text-stone-700">Senha</label>
             <input
               type="password"

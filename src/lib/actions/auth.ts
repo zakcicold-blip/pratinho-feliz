@@ -9,6 +9,7 @@ import { AuthError } from "next-auth";
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome."),
   email: z.string().trim().toLowerCase().email("E-mail inválido."),
+  telefone: z.string().trim().max(30).optional(),
   password: z.string().min(6, "A senha precisa ter ao menos 6 caracteres."),
 });
 
@@ -18,6 +19,7 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
   const parsed = registerSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
+    telefone: formData.get("telefone") ?? undefined,
     password: formData.get("password"),
   });
 
@@ -25,7 +27,7 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
     return { error: parsed.error.issues[0]?.message ?? "Dados inválidos." };
   }
 
-  const { name, email, password } = parsed.data;
+  const { name, email, telefone, password } = parsed.data;
 
   const existing = await db.user.findUnique({ where: { email } });
   if (existing) {
@@ -38,6 +40,7 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
     data: {
       name,
       email,
+      telefone: telefone && telefone.length > 0 ? telefone : null,
       passwordHash,
       subscription: {
         create: { plano: "ESSENCIAL", status: "TESTE" },
