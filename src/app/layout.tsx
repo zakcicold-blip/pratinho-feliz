@@ -14,9 +14,16 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  // Base para resolver URLs relativas de canonical, OG e sitemap.
+  metadataBase: new URL("https://www.pratinhofeliz.online"),
   title: "Pratinho Feliz",
   description:
     "Plataforma que organiza 30 dias de alimentação infantil e aprende com os gostos da criança.",
+  openGraph: {
+    siteName: "Pratinho Feliz",
+    locale: "pt_BR",
+    type: "website",
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [

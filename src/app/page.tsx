@@ -51,6 +51,13 @@ export default async function LandingPage({
             Pratinho Feliz
           </div>
           <nav className="flex items-center gap-4">
+            <Link
+              href="/blog"
+              data-heat="header-blog"
+              className="hidden text-sm font-medium text-stone-600 hover:text-stone-900 sm:block"
+            >
+              Blog
+            </Link>
             {logado ? (
               <Link
                 href="/hoje"
@@ -323,6 +330,9 @@ export default async function LandingPage({
               </Link>
             </>
           )}
+          <Link href="/blog" data-heat="rodape-blog" className="text-stone-500 hover:text-stone-700">
+            Blog
+          </Link>
           <Link href="/privacidade" data-heat="rodape-privacidade" className="text-stone-500 hover:text-stone-700">
             Política de privacidade
           </Link>

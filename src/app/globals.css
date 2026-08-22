@@ -76,3 +76,105 @@ body {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* ---------------------------------------------------------------------------
+   Prosa do blog.
+   Só estiliza filhos diretos do container: assim os componentes de bloco
+   (Destaque, CTAInline, Passos, Tabela) mantêm o visual próprio sem brigar
+   com a cascata.
+   --------------------------------------------------------------------------- */
+.prose-blog {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: #44403c;
+}
+
+.prose-blog > p {
+  margin-block: 1.15em;
+}
+
+.prose-blog > h2 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: 1.55rem;
+  line-height: 1.25;
+  color: #1c1917;
+  margin-block: 2.2rem 0.75rem;
+  scroll-margin-top: 5.5rem;
+  text-wrap: balance;
+}
+
+.prose-blog > h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  color: #292524;
+  margin-block: 1.7rem 0.5rem;
+  scroll-margin-top: 5.5rem;
+}
+
+.prose-blog > ul,
+.prose-blog > ol {
+  margin-block: 1.15em;
+  padding-left: 1.35em;
+}
+
+.prose-blog > ul {
+  list-style: disc;
+}
+.prose-blog > ol {
+  list-style: decimal;
+}
+
+.prose-blog > ul > li,
+.prose-blog > ol > li {
+  margin-block: 0.45em;
+  padding-left: 0.25em;
+}
+
+.prose-blog > ul > li::marker {
+  color: #fb923c;
+}
+.prose-blog > ol > li::marker {
+  color: #a8a29e;
+  font-weight: 600;
+}
+
+.prose-blog > blockquote {
+  margin-block: 1.6rem;
+  border-left: 3px solid #fdba74;
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  color: #57534e;
+  font-style: italic;
+}
+
+.prose-blog > hr {
+  margin-block: 2.4rem;
+  border: 0;
+  border-top: 1px solid #e7e5e4;
+}
+
+.prose-blog > p strong,
+.prose-blog > ul strong,
+.prose-blog > ol strong {
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.prose-blog > p a,
+.prose-blog > ul a,
+.prose-blog > ol a {
+  color: #ea580c;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: #fed7aa;
+}
+
+.prose-blog > p a:hover,
+.prose-blog > ul a:hover,
+.prose-blog > ol a:hover {
+  text-decoration-color: #ea580c;
+}
