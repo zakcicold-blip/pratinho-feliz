@@ -156,7 +156,17 @@ model Ingredient {
   niacinaMg       Float?
 
   // Peso médio de 1 unidade, quando o ingrediente é contado por unidade (ex.: 1 ovo ≈ 50 g).
+  // Atenção: é a medida usada NAS RECEITAS (1 dente de alho = 3 g), não a de compra.
   gramasPorUnidade Float?
+
+  // Como este item é COMPRADO no mercado. Serve para transformar o total de
+  // gramas do plano em algo acionável na lista: "5 abacates", "1,2 kg", "2 L".
+  // UNIDADE | GRAMAS | ML
+  unidadeCompra String  @default("GRAMAS")
+  // Peso de 1 unidade de compra (1 abacate = 200 g, 1 cabeça de alho = 50 g).
+  gramasCompra  Float?
+  // Substantivo da unidade de compra quando não é "unidade": maço, cabeça, lata, pote.
+  rotuloCompra  String?
 
   foodPreferences FoodPreference[]
   recipeItems     RecipeIngredient[]
