@@ -396,6 +396,10 @@ model ShoppingCheck {
   ingredientId   String
   ingredient     Ingredient @relation(fields: [ingredientId], references: [id])
   comprado       Boolean  @default(true)
+  // Quanto a pessoa REALMENTE pegou no mercado. A sugestao do plano fica so
+  // como referencia. Guardado na unidade base do ingrediente: contagem para
+  // itens por unidade, gramas (ou ml) para os demais.
+  quantidadeComprada Float?
   createdAt      DateTime @default(now())
 
   @@unique([childProfileId, semanaInicio, ingredientId])

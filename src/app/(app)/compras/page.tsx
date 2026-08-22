@@ -3,7 +3,7 @@ import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
 import { addDiasChave, hojeChave } from "@/lib/dates";
 import { CATEGORIA_INGREDIENTE_LABEL, CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
-import { agregarCompras } from "@/lib/compras";
+import { agregarCompras, formatarMedida } from "@/lib/compras";
 import TopBar from "@/components/TopBar";
 import ShoppingItemRow from "./ShoppingItemRow";
 import CopiarListaButton from "./CopiarListaButton";
@@ -143,6 +143,7 @@ export default async function ComprasPage({
     where: { childProfileId: child.id, semanaInicio: periodoInicio },
   });
   const compradoMap = new Map(checks.map((c) => [c.ingredientId, c.comprado]));
+  const quantidadeMap = new Map(checks.map((c) => [c.ingredientId, c.quantidadeComprada]));
 
   const grupos = CATEGORIA_INGREDIENTE_ORDEM.map((categoria) => ({
     categoria,
@@ -163,7 +164,11 @@ export default async function ComprasPage({
       (g) =>
         `${CATEGORIA_INGREDIENTE_LABEL[g.categoria]}\n` +
         [
-          ...g.itens.map((i) => `- ${i.nome} — ${i.quantidade}`),
+          ...g.itens.map((i) => {
+            const anotado = quantidadeMap.get(i.ingredientId);
+            const texto = anotado != null ? formatarMedida(i.medida, anotado) : i.quantidade;
+            return `- ${i.nome} — ${texto}`;
+          }),
           ...g.extras.map((e) => `- ${e.nome}${e.quantidade ? ` (${e.quantidade})` : ""}`),
         ].join("\n")
     )
@@ -229,7 +234,7 @@ export default async function ComprasPage({
               barClassName="bg-emerald-500"
             />
             <p className="mt-2 text-[11px] leading-relaxed text-stone-400">
-              As quantidades são o total que o plano
+              Os números em laranja são o que <strong>você pegou</strong>. A sugestão é o total que o plano
               {mesInteiro ? " do ciclo inteiro " : " desta semana "}
               consome, arredondado para cima.
             </p>
@@ -258,9 +263,12 @@ export default async function ComprasPage({
                       semanaInicioISO={periodoInicio.toISOString()}
                       ingredientId={item.ingredientId}
                       nome={item.nome}
-                      quantidade={item.quantidade}
+                      sugestao={item.quantidade}
+                      sugestaoBase={item.sugestaoBase}
+                      medida={item.medida}
                       aproximado={item.aproximado}
                       compradoInicial={compradoMap.get(item.ingredientId) ?? false}
+                      quantidadeInicial={quantidadeMap.get(item.ingredientId) ?? null}
                     />
                   ))}
                   {g.extras.map((e) => (

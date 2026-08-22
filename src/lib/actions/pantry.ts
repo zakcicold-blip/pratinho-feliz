@@ -49,6 +49,49 @@ export async function marcarComprado(
 }
 
 /**
+ * Registra quanto a pessoa realmente pegou no mercado.
+ *
+ * O valor chega na unidade base do ingrediente (contagem, gramas ou ml) e a
+ * sugestao do plano passa a ser so referencia. Anotar uma quantidade marca o
+ * item como comprado; zerar apenas limpa o numero, sem desmarcar.
+ */
+export async function registrarQuantidade(
+  childId: string,
+  semanaInicio: Date,
+  ingredientId: string,
+  quantidade: number | null
+) {
+  const session = await requireSession();
+  const child = await db.childProfile.findUniqueOrThrow({ where: { id: childId } });
+  if (child.userId !== session.user.id) throw new Error("Nao autorizado.");
+
+  const valor =
+    quantidade == null || !Number.isFinite(quantidade) || quantidade <= 0
+      ? null
+      : Math.min(quantidade, 100000);
+
+  await db.shoppingCheck.upsert({
+    where: {
+      childProfileId_semanaInicio_ingredientId: {
+        childProfileId: childId,
+        semanaInicio,
+        ingredientId,
+      },
+    },
+    update: valor == null ? { quantidadeComprada: null } : { quantidadeComprada: valor, comprado: true },
+    create: {
+      childProfileId: childId,
+      semanaInicio,
+      ingredientId,
+      quantidadeComprada: valor,
+      comprado: valor != null,
+    },
+  });
+
+  revalidatePath("/compras");
+}
+
+/**
  * Item avulso da lista de compras — o que a família precisa comprar mas não
  * vem de nenhuma receita do plano (produtos de limpeza, fruta extra, etc).
  * Fica preso à semana em que foi criado, igual aos itens gerados.
