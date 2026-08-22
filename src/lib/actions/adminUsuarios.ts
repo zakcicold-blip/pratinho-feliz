@@ -39,3 +39,61 @@ export async function deletarUsuario(userId: string): Promise<{ error?: string }
 
   revalidatePath("/admin/usuarios");
 }
+
+/**
+ * Liga/desliga o acesso de cortesia de uma conta (convidados, parceiras,
+ * imprensa). Libera o app sem passar pelo Stripe e sem contar como receita —
+ * por isso o status da assinatura não é tocado.
+ *
+ * Guardas:
+ * - quem já paga no Stripe não recebe cortesia (seria cobrança duplicada);
+ * - toda mudança fica registrada no log de auditoria.
+ */
+export async function alternarCortesia(
+  userId: string,
+  liberar: boolean,
+  motivo?: string
+): Promise<{ error?: string } | void> {
+  const session = await requireAdmin();
+
+  const alvo = await db.user.findUnique({
+    where: { id: userId },
+    include: { subscription: true },
+  });
+  if (!alvo) return { error: "Usuário não encontrado." };
+
+  if (liberar && alvo.subscription?.stripeSubscriptionId) {
+    return { error: "Esta conta já tem assinatura no Stripe. Cancele lá antes de liberar cortesia." };
+  }
+
+  const anotacao = motivo?.trim().slice(0, 120) || null;
+
+  await db.subscription.upsert({
+    where: { userId },
+    update: {
+      acessoCortesia: liberar,
+      cortesiaMotivo: liberar ? anotacao : null,
+      cortesiaEm: liberar ? new Date() : null,
+    },
+    create: {
+      userId,
+      plano: "ESSENCIAL",
+      status: "TESTE",
+      acessoCortesia: liberar,
+      cortesiaMotivo: liberar ? anotacao : null,
+      cortesiaEm: liberar ? new Date() : null,
+    },
+  });
+
+  await db.auditLog.create({
+    data: {
+      userId: session.user.id,
+      evento: liberar ? "cortesia_liberada" : "cortesia_removida",
+      detalhes: liberar
+        ? `Acesso liberado para ${alvo.email}${anotacao ? ` — ${anotacao}` : ""}.`
+        : `Acesso de cortesia removido de ${alvo.email}.`,
+    },
+  });
+
+  revalidatePath("/admin/usuarios");
+}

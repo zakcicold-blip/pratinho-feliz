@@ -63,10 +63,14 @@ export async function sincronizarAssinaturaStripe(sub: Stripe.Subscription): Pro
  * real no Stripe (stripeSubscriptionId). Assim, a conta recém-criada — que
  * nasce com status TESTE e sem Stripe — cai no paywall até passar o cartão.
  * ATIVA libera direto (cobre contas internas provisionadas à mão).
+ *
+ * Cortesia (liberada no painel admin) passa na frente de tudo: são convidados,
+ * parceiras e imprensa, que usam o app sem cartão e sem entrar na receita.
  */
 export async function podeAcessarApp(userId: string): Promise<boolean> {
   const sub = await db.subscription.findUnique({ where: { userId } });
   if (!sub) return false;
+  if (sub.acessoCortesia) return true;
   if (sub.status === "ATIVA") return true;
   if (sub.status === "TESTE") return Boolean(sub.stripeSubscriptionId);
   return false; // CANCELADA, CARENCIA

@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import Badge from "@/components/ui/Badge";
 import DeletarUsuarioButton from "./DeletarUsuarioButton";
+import CortesiaButton from "./CortesiaButton";
+import { Gift } from "lucide-react";
 
 const STATUS_LABEL: Record<string, string> = {
   TESTE: "Em teste",
@@ -34,6 +36,7 @@ export default async function AdminUsuariosPage() {
           <tbody>
             {usuarios.map((u) => {
               const status = u.subscription?.status ?? "TESTE";
+              const cortesia = u.subscription?.acessoCortesia ?? false;
               return (
                 <tr key={u.id} className="border-t border-stone-100 hover:bg-stone-50/60">
                   <td className="px-4 py-3 font-medium text-stone-800">{u.name}</td>
@@ -57,13 +60,29 @@ export default async function AdminUsuariosPage() {
                   </td>
                   <td className="px-4 py-3 text-stone-500">{u.children.length}</td>
                   <td className="px-4 py-3">
-                    <Badge tone={status === "ATIVA" ? "emerald" : "amber"}>
-                      {STATUS_LABEL[status]}
-                    </Badge>
+                    {cortesia ? (
+                      <span className="flex flex-col items-start gap-1">
+                        <Badge tone="indigo">
+                          <Gift size={11} /> Cortesia
+                        </Badge>
+                        {u.subscription?.cortesiaMotivo && (
+                          <span className="text-[11px] text-stone-400">
+                            {u.subscription.cortesiaMotivo}
+                          </span>
+                        )}
+                      </span>
+                    ) : (
+                      <Badge tone={status === "ATIVA" ? "emerald" : "amber"}>
+                        {STATUS_LABEL[status]}
+                      </Badge>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-stone-400">{u.createdAt.toLocaleDateString("pt-BR")}</td>
                   <td className="px-4 py-3">
-                    <DeletarUsuarioButton userId={u.id} nome={u.name} />
+                    <div className="flex flex-wrap items-center gap-x-1 gap-y-1.5">
+                      <CortesiaButton userId={u.id} nome={u.name} liberado={cortesia} />
+                      <DeletarUsuarioButton userId={u.id} nome={u.name} />
+                    </div>
                   </td>
                 </tr>
               );

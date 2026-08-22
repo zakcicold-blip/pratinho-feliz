@@ -25,6 +25,8 @@ export default async function ConfiguracoesPage() {
   });
 
   const statusAtual = user.subscription?.status ?? "TESTE";
+  // Cortesia: acesso liberado pela equipe, sem cobrança e sem nada a cancelar.
+  const cortesia = user.subscription?.acessoCortesia ?? false;
 
   const cancelamentoPendente = await db.solicitacaoCancelamento.findFirst({
     where: { userId: user.id, status: "PENDENTE" },
@@ -49,29 +51,44 @@ export default async function ConfiguracoesPage() {
           <h2 className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-stone-400">
             <CreditCard size={13} /> Assinatura
           </h2>
-          <p className="flex items-center gap-2 text-sm text-stone-700">
-            Plano <strong>{PLANO_LABEL[user.subscription?.plano ?? "ESSENCIAL"]}</strong>
-            <Badge tone={statusAtual === "ATIVA" ? "emerald" : "amber"}>
-              {STATUS_LABEL[statusAtual]}
-            </Badge>
-          </p>
-          {user.subscription?.cancelAtPeriodEnd && (
-            <p className="mt-2 text-xs text-amber-700">
-              Cancelamento agendado — o acesso segue até o fim do período já pago.
-            </p>
+          {cortesia ? (
+            <>
+              <p className="flex items-center gap-2 text-sm text-stone-700">
+                Plano <strong>{PLANO_LABEL[user.subscription?.plano ?? "ESSENCIAL"]}</strong>
+                <Badge tone="indigo">Acesso liberado</Badge>
+              </p>
+              <p className="mt-2 text-xs text-stone-500">
+                Seu acesso foi liberado pela equipe do Pratinho Feliz. Você usa o app completo sem
+                nenhuma cobrança — não há assinatura ativa nem cartão cadastrado.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="flex items-center gap-2 text-sm text-stone-700">
+                Plano <strong>{PLANO_LABEL[user.subscription?.plano ?? "ESSENCIAL"]}</strong>
+                <Badge tone={statusAtual === "ATIVA" ? "emerald" : "amber"}>
+                  {STATUS_LABEL[statusAtual]}
+                </Badge>
+              </p>
+              {user.subscription?.cancelAtPeriodEnd && (
+                <p className="mt-2 text-xs text-amber-700">
+                  Cancelamento agendado — o acesso segue até o fim do período já pago.
+                </p>
+              )}
+              <div className="mt-3 border-t border-stone-100 pt-3">
+                <CancelamentoCard
+                  pendente={
+                    cancelamentoPendente
+                      ? {
+                          status: cancelamentoPendente.status,
+                          createdAt: cancelamentoPendente.createdAt.toISOString(),
+                        }
+                      : null
+                  }
+                />
+              </div>
+            </>
           )}
-          <div className="mt-3 border-t border-stone-100 pt-3">
-            <CancelamentoCard
-              pendente={
-                cancelamentoPendente
-                  ? {
-                      status: cancelamentoPendente.status,
-                      createdAt: cancelamentoPendente.createdAt.toISOString(),
-                    }
-                  : null
-              }
-            />
-          </div>
         </Card>
 
         <Card>
