@@ -5,6 +5,7 @@ import { podeAcessarApp, reconciliarAssinatura } from "@/lib/assinatura";
 import { DIAS_TESTE_GRATIS } from "@/lib/stripe";
 import { signOutAction } from "@/lib/actions/auth-signout";
 import IniciarTrialButton from "./IniciarTrialButton";
+import PreviaDoPlano from "./PreviaDoPlano";
 
 export default async function AssinarPage({
   searchParams,
@@ -43,17 +44,20 @@ export default async function AssinarPage({
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col justify-center px-5 py-10">
+      {/* Mostra o que ja foi montado antes de pedir o cartao. */}
+      <PreviaDoPlano userId={session.user.id} />
+
       <div className="rounded-3xl border border-stone-200/70 bg-white p-6 shadow-card">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">
           <CalendarClock size={14} /> {DIAS_TESTE_GRATIS} dias grátis
         </span>
 
         <h1 className="mt-4 text-2xl font-bold text-stone-800">
-          Comece o teste grátis de {DIAS_TESTE_GRATIS} dias
+          Libere o plano por {DIAS_TESTE_GRATIS} dias grátis
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-stone-500">
-          Para liberar o app, adicione uma forma de pagamento. Você não é cobrado agora — só depois
-          de {DIAS_TESTE_GRATIS} dias, e pode cancelar antes disso quando quiser.
+          Para abrir o cardápio completo, adicione uma forma de pagamento. Você não é cobrado agora
+          — só depois de {DIAS_TESTE_GRATIS} dias, e pode cancelar antes disso quando quiser.
         </p>
 
         {cancelado && (

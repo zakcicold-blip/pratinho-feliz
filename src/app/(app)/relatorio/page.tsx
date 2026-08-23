@@ -1,12 +1,16 @@
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
-import { chaveDoDia, hojeChave, diffDiasChave } from "@/lib/dates";
+import { chaveDoDia, hojeChave, diffDiasChave, addDiasChave } from "@/lib/dates";
+import { calcularNutricao } from "@/lib/nutricao";
 import TopBar from "@/components/TopBar";
 import GerarProximoCicloButton from "../hoje/GerarProximoCicloButton";
 import Card from "@/components/ui/Card";
 import StatCard from "@/components/ui/StatCard";
 import EmptyState from "@/components/ui/EmptyState";
 import { CalendarCheck, Shuffle, Sparkles, ThumbsUp, TrendingUp, ChartColumn } from "lucide-react";
+import NutricaoSemana from "@/components/NutricaoSemana";
+import { calcularCoberturaSemana, NUTRIENTES, type NutrienteChave } from "@/lib/metasNutricionais";
+import { faixaEtariaEmMeses } from "@/lib/idade";
 
 export default async function RelatorioPage() {
   const { child } = await getCurrentChild();
@@ -29,6 +33,55 @@ export default async function RelatorioPage() {
     where: { mealPlanId: plano.id },
     include: { recipe: true, feedback: true },
   });
+
+  // ---- Nutricao dos ultimos 7 dias planejados ----
+  const seteDiasAtras = addDiasChave(hojeChave(), -6);
+  const slotsSemana = await db.mealSlot.findMany({
+    where: {
+      mealPlanId: plano.id,
+      data: { gte: seteDiasAtras, lte: hojeChave() },
+      status: { not: "FORA_DE_CASA" },
+      recipeId: { not: null },
+    },
+    include: {
+      recipe: {
+        include: { ingredients: { include: { ingredient: true } } },
+      },
+    },
+  });
+
+  const totaisNutri = Object.fromEntries(
+    NUTRIENTES.map((n) => [n.chave, 0])
+  ) as Record<NutrienteChave, number>;
+
+  let refeicoesParciais = 0;
+  const diasDistintos = new Set<string>();
+
+  for (const slot of slotsSemana) {
+    if (!slot.recipe) continue;
+    diasDistintos.add(slot.data.toISOString());
+
+    const resumo = calcularNutricao(
+      slot.recipe.ingredients.map((ri) => ({
+        quantidade: ri.quantidade,
+        gramas: ri.gramas,
+        ingredient: ri.ingredient,
+      })),
+      slot.recipe.porcoes
+    );
+    if (!resumo) continue;
+    if (!resumo.completo) refeicoesParciais += 1;
+
+    for (const n of NUTRIENTES) totaisNutri[n.chave] += resumo.porPorcao[n.chave];
+  }
+
+  const cobertura = calcularCoberturaSemana(
+    totaisNutri,
+    diasDistintos.size,
+    faixaEtariaEmMeses(child.faixaEtaria),
+    slotsSemana.length,
+    refeicoesParciais
+  );
 
   const diasComFeedback = new Set(
     slots.filter((s) => s.feedback).map((s) => chaveDoDia(s.data).toISOString())
@@ -100,6 +153,8 @@ export default async function RelatorioPage() {
             hint="Aceitos"
           />
         </div>
+
+        <NutricaoSemana cobertura={cobertura} />
 
         <Card>
           <h2 className="mb-2 text-sm font-semibold text-stone-700">Favoritos do ciclo</h2>
