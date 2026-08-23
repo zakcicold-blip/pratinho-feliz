@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import TrackingHead from "@/components/TrackingHead";
+import RegistrarServiceWorker from "@/components/RegistrarServiceWorker";
 
 // Sans geométrica moderna, usada em todo o app (títulos e corpo). Sem serifas.
 const jakarta = Plus_Jakarta_Sans({
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <MetaPixel />
         </Suspense>
+        <RegistrarServiceWorker />
         {children}
       </body>
     </html>

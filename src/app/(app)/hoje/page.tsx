@@ -4,10 +4,11 @@ import { db } from "@/lib/db";
 import { addDiasChave, hojeChave, diffDiasChave, horaSaoPaulo } from "@/lib/dates";
 import { TIPO_REFEICAO_LABEL, TIPO_REFEICAO_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
+import { assistenteDisponivel } from "@/lib/assistente";
 import type { MealCardData } from "@/components/MealCard";
 import RefeicoesComFiltro from "./RefeicoesComFiltro";
 import GerarProximoCicloButton from "./GerarProximoCicloButton";
-import { PartyPopper, CalendarClock, Search, Bell } from "lucide-react";
+import { PartyPopper, CalendarClock, Search, Bell, Sparkles, ArrowRight } from "lucide-react";
 import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
 import Card from "@/components/ui/Card";
 import CircleArrow from "@/components/ui/CircleArrow";
@@ -223,6 +224,24 @@ export default async function HojePage() {
             <SectionHeader title="Cardápio de hoje" />
             <RefeicoesComFiltro cards={cardsData} childId={child.id} />
           </section>
+
+          {assistenteDisponivel() && (
+            <Link
+              href="/assistente"
+              className="flex items-center gap-3 rounded-3xl border border-stone-200/60 bg-white p-4 shadow-card transition active:scale-[0.99]"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+                <Sparkles size={20} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-stone-800">Pergunte ao Pratinho</p>
+                <p className="text-[13px] leading-snug text-stone-500">
+                  Dúvida sobre a comida de {child.nome}? Ele já conhece a rotina dela.
+                </p>
+              </div>
+              <ArrowRight size={17} className="shrink-0 text-stone-300" />
+            </Link>
+          )}
         </>
       )}
 

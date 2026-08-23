@@ -3,6 +3,7 @@ import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
 import TopBar from "@/components/TopBar";
 import CapaReceita from "@/components/CapaReceita";
+import ModoCozinha from "./ModoCozinha";
 import FavoriteButton from "./FavoriteButton";
 import { MEAL_COLOR } from "@/components/mealIcons";
 import { TriangleAlert, Leaf } from "lucide-react";
@@ -42,6 +43,16 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
           tamanhoIcone={40}
           prioridade
         />
+
+        <div className="mb-3">
+          <ModoCozinha
+            nome={recipe.nome}
+            passos={passos}
+            ingredientes={recipe.ingredients.map(
+              (ri) => `${ri.ingredient.nome} — ${ri.quantidade}`
+            )}
+          />
+        </div>
 
         <Card padding="lg">
           <div className="flex items-start justify-between">
