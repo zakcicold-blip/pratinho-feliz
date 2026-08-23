@@ -3,6 +3,7 @@ import { hojeChave } from "@/lib/dates";
 import { TIPO_REFEICAO_LABEL } from "@/lib/constants";
 import { SITE_URL } from "@/lib/blog";
 import { enviarEmail, enviarWhatsapp } from "@/lib/envio";
+import { notificar } from "@/lib/notificacoes";
 
 /**
  * Monta e envia o lembrete diário: o que a criança come hoje.
@@ -138,6 +139,21 @@ export async function enviarLembretesDeHoje(): Promise<RelatorioEnvio> {
   let algumReal = false;
 
   for (const resumo of resumos) {
+    // Notificação no app + push do navegador. Esta via NÃO depende de chave de
+    // provedor nem da trava LEMBRETES_ATIVOS: é o canal do próprio produto, e
+    // é o que faz o sino ter conteúdo mesmo antes de e-mail e WhatsApp
+    // estarem configurados.
+    const primeira = resumo.refeicoes[0];
+    await notificar({
+      userId: resumo.userId,
+      tipo: "LEMBRETE",
+      titulo: `O prato de ${resumo.nomeCrianca} hoje`,
+      corpo: primeira
+        ? `${primeira.tipo}: ${primeira.receita}${resumo.refeicoes.length > 1 ? ` · e mais ${resumo.refeicoes.length - 1}` : ""}`
+        : "Seu cardápio de hoje está pronto.",
+      link: "/hoje",
+    });
+
     // E-mail sempre; WhatsApp só quando a pessoa deixou o telefone.
     const resultados = [
       await enviarEmail(

@@ -96,6 +96,8 @@ model User {
   // Quando o ultimo lembrete foi enviado — impede mandar duas vezes no mesmo
   // dia se o cron rodar de novo.
   ultimoLembreteEm DateTime?
+  notificacoes  Notificacao[]
+  pushSubscriptions PushSubscription[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -421,6 +423,39 @@ model ShoppingCheck {
   createdAt      DateTime @default(now())
 
   @@unique([childProfileId, semanaInicio, ingredientId])
+}
+
+/// Notificacao que a familia ve dentro do app, na aba do sino.
+model Notificacao {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// PLANO | LEMBRETE | DICA | SISTEMA — define o icone e a cor.
+  tipo      String   @default("SISTEMA")
+  titulo    String
+  corpo     String
+  /// Para onde o toque leva (ex.: "/hoje").
+  link      String?
+  lida      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, lida])
+  @@index([userId, createdAt])
+}
+
+/// Inscricao de push do navegador. Uma por aparelho.
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  /// Quando o navegador rejeitou a inscricao (aparelho desinstalou o app).
+  invalidaEm DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model AuditLog {

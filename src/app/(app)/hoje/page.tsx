@@ -29,10 +29,13 @@ export default async function HojePage() {
   // `conta` ja veio memoizada do layout — sem nova consulta para ler lembretes.
   const [{ child }, { conta, session }] = await Promise.all([getCurrentChild(), getConta()]);
 
-  const plano = await db.mealPlan.findFirst({
-    where: { childProfileId: child.id, ativo: true },
-    orderBy: { cicloNumero: "desc" },
-  });
+  const [plano, naoLidas] = await Promise.all([
+    db.mealPlan.findFirst({
+      where: { childProfileId: child.id, ativo: true },
+      orderBy: { cicloNumero: "desc" },
+    }),
+    db.notificacao.count({ where: { userId: session.user.id, lida: false } }),
+  ]);
   const usuario = { lembretes: conta.lembretes };
 
   if (!plano) {
@@ -113,11 +116,16 @@ export default async function HojePage() {
         </div>
         <div className="flex shrink-0 items-center gap-2.5">
           <Link
-            href="/configuracoes"
-            aria-label="Lembretes"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-stone-200/70 bg-white text-stone-600 transition active:scale-95"
+            href="/notificacoes"
+            aria-label="Notificações"
+            className="relative flex h-11 w-11 items-center justify-center rounded-full border border-stone-200/70 bg-white text-stone-600 transition active:scale-95"
           >
             <Bell size={18} />
+            {naoLidas > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-orange-500 px-1 text-[10px] font-bold text-white">
+                {naoLidas > 9 ? "9+" : naoLidas}
+              </span>
+            )}
           </Link>
           <Link
             href="/perfil"

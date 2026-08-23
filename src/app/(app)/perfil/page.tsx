@@ -5,7 +5,7 @@ import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import TopBar from "@/components/TopBar";
 import PerfilForm from "./PerfilForm";
 import SeletorCrianca from "./SeletorCrianca";
-import { ChartColumn, Sparkles, ShoppingCart, Settings, ShieldCheck, BookOpen, Baby } from "lucide-react";
+import { ChartColumn, Sparkles, ShoppingCart, Settings, ShieldCheck, BookOpen, Baby, Bell, ChevronRight } from "lucide-react";
 
 export default async function PerfilPage() {
   const { session, child } = await getCurrentChild();
@@ -36,7 +36,7 @@ export default async function PerfilPage() {
           <QuickLink href="/relatorio" label="Relatório" Icon={ChartColumn} />
           <QuickLink href="/descobertas" label="Descobertas" Icon={Sparkles} />
           <QuickLink href="/compras" label="Compras" Icon={ShoppingCart} />
-          <QuickLink href="/configuracoes" label="Ajustes" Icon={Settings} />
+          <QuickLink href="/notificacoes" label="Notificações" Icon={Bell} />
         </div>
 
         {ehAdmin && (
@@ -67,6 +67,27 @@ export default async function PerfilPage() {
             restricoes: porStatus("RESTRICAO"),
           }}
         />
+
+        {/*
+          Configuracoes da CONTA (assinatura, privacidade, sair) vivem aqui,
+          no Perfil. O sino no topo da Hoje passou a levar para as
+          notificacoes de verdade, entao este e o caminho para os ajustes.
+        */}
+        <Link
+          href="/configuracoes"
+          className="mt-5 flex items-center gap-3 rounded-3xl border border-stone-200/60 bg-white p-4 shadow-card transition active:scale-[0.99]"
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-100 text-stone-500">
+            <Settings size={20} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-stone-800">Configurações da conta</p>
+            <p className="text-[13px] leading-snug text-stone-500">
+              Assinatura, lembretes, privacidade e sair da conta.
+            </p>
+          </div>
+          <ChevronRight size={17} className="shrink-0 text-stone-300" />
+        </Link>
       </div>
     </>
   );

@@ -19,7 +19,7 @@
  *    para a proxima conta no mesmo aparelho nunca ver a tela da anterior.
  */
 
-const VERSAO = "pf-v2";
+const VERSAO = "pf-v3";
 const CACHE_PAGINAS = `${VERSAO}-paginas`;
 const CACHE_ESTATICOS = `${VERSAO}-estaticos`;
 
@@ -98,6 +98,53 @@ self.addEventListener("fetch", (evento) => {
         if (salvo) return salvo;
         throw erro;
       }
+    })()
+  );
+});
+
+/* ----------------------------------------------------------------------
+   PUSH — notificacao que chega com o app fechado.
+   ---------------------------------------------------------------------- */
+
+self.addEventListener("push", (evento) => {
+  let dados = { titulo: "Pratinho Feliz", corpo: "", link: "/notificacoes" };
+  try {
+    if (evento.data) dados = { ...dados, ...evento.data.json() };
+  } catch {
+    // Payload invalido: mostra a notificacao generica em vez de sumir.
+  }
+
+  evento.waitUntil(
+    self.registration.showNotification(dados.titulo, {
+      body: dados.corpo,
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      lang: "pt-BR",
+      // A tag agrupa: uma nova substitui a anterior em vez de empilhar.
+      tag: "pratinho-feliz",
+      renotify: true,
+      data: { link: dados.link },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (evento) => {
+  evento.notification.close();
+  const destino = evento.notification.data?.link || "/notificacoes";
+
+  evento.waitUntil(
+    (async () => {
+      const abas = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      // Se o app ja esta aberto, leva a aba existente para a tela certa em
+      // vez de abrir outra janela.
+      for (const aba of abas) {
+        if (aba.url.includes(self.location.origin)) {
+          await aba.focus();
+          if ("navigate" in aba) await aba.navigate(destino);
+          return;
+        }
+      }
+      await self.clients.openWindow(destino);
     })()
   );
 });
