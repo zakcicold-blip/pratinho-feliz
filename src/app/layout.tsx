@@ -52,6 +52,15 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`h-full antialiased ${jakarta.variable}`}>
+      <head>
+        {/*
+          O pixel agora carrega depois da hidratacao (antes bloqueava a
+          renderizacao por 2 s). Resolver DNS e TLS do Facebook desde ja faz
+          esse carregamento acontecer em paralelo, sem custar tempo depois.
+        */}
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+      </head>
       <body className="min-h-full flex flex-col bg-stone-50 text-stone-800">
         {/* Pixel + Utmify: beforeInteractive, carregam antes do app (vão pro <head>). */}
         <TrackingHead />

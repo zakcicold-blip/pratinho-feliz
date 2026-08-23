@@ -30,11 +30,28 @@ export default function LottieAleatorio({
 }) {
   const [src, setSrc] = useState<string | null>(null);
 
-  // Sorteia no cliente após montar (evita divergência de hidratação e garante
-  // um novo sorteio a cada remontagem da tela — sair da Hoje e voltar).
+  // Espera o navegador ficar OCIOSO antes de sequer escolher a animacao.
+  //
+  // Carregar sob demanda ja tirava a biblioteca do pacote inicial, mas o
+  // download comecava logo apos a hidratacao e disputava a linha principal
+  // justamente na hora em que a tela deveria terminar de pintar. Sao ~300 KB
+  // de biblioteca mais ~150 KB de JSON por causa de uma animacao decorativa.
+  // Em requestIdleCallback, ela so entra quando nada mais importa.
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- sorteio client-only intencional no mount
-    setSrc(LOTTIES[Math.floor(Math.random() * LOTTIES.length)]);
+    const escolher = () => setSrc(LOTTIES[Math.floor(Math.random() * LOTTIES.length)]);
+
+    const janela = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (janela.requestIdleCallback) {
+      const id = janela.requestIdleCallback(escolher, { timeout: 3000 });
+      return () => janela.cancelIdleCallback?.(id);
+    }
+    // Safari antigo nao tem requestIdleCallback: espera um tempo fixo.
+    const timer = setTimeout(escolher, 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!src) return null;
