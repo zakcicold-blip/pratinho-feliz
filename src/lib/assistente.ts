@@ -45,8 +45,16 @@ async function perguntasFeitasHoje(userId: string): Promise<number> {
   });
 }
 
-/** Reúne o que o modelo precisa saber sobre esta criança e este catálogo. */
-async function montarContexto(childId: string): Promise<string> {
+/**
+ * O contexto vai em DOIS blocos, e a ordem importa para o custo.
+ *
+ * O cache da Anthropic funciona por prefixo: só reaproveita o que vem antes
+ * da primeira coisa que muda. O catálogo de receitas era 73% do prompt e é
+ * igual para todo mundo da mesma faixa etária; o perfil da criança é pequeno
+ * e muda a cada pessoa. Com o catálogo ANTES e o perfil DEPOIS, o pedaço
+ * grande é cacheado e a leitura dele passa a custar 10% do preço normal.
+ */
+async function montarContexto(childId: string): Promise<{ catalogo: string; perfil: string }> {
   const child = await db.childProfile.findUniqueOrThrow({
     where: { id: childId },
     include: {
@@ -63,12 +71,21 @@ async function montarContexto(childId: string): Promise<string> {
       .join(", ") || "nenhum registrado";
 
   // Só receitas que a criança pode comer — o modelo não deve sugerir o resto.
+  // Agrupadas por refeição e só com o nome: o tipo já vem do grupo, e o tempo
+  // de preparo não muda a sugestão. O formato compacto corta ~40% do prompt.
   const receitas = await db.recipe.findMany({
     where: { ativo: true, idadeMinimaMeses: { lte: idadeMeses } },
-    select: { nome: true, tipoRefeicao: true, tempoPreparoMin: true },
+    select: { nome: true, tipoRefeicao: true },
     orderBy: { nome: "asc" },
-    take: 400,
   });
+
+  const porTipo = new Map<string, string[]>();
+  for (const r of receitas) {
+    porTipo.set(r.tipoRefeicao, [...(porTipo.get(r.tipoRefeicao) ?? []), r.nome]);
+  }
+  const blocoReceitas = [...porTipo.entries()]
+    .map(([tipo, nomes]) => `${tipo}: ${nomes.join("; ")}`)
+    .join("\n\n");
 
   const artigos = listarPosts().map((p) => `- ${p.titulo}: ${p.resumo}`);
 
@@ -78,16 +95,9 @@ async function montarContexto(childId: string): Promise<string> {
 
   const limites = PROIBIDOS_POR_IDADE.map((r) => `- ${r.item}: ${r.regra}. ${r.porque}`);
 
-  return `## Criança
-Nome: ${child.nome}
-Faixa etária: ${child.faixaEtaria} (aproximadamente ${idadeMeses} meses)
-Restrições alimentares declaradas: ${porStatus("RESTRICAO")}
-Alimentos que aceita: ${porStatus("ACEITA")}
-Alimentos que recusa: ${porStatus("RECUSA")}
-Alimentos que a família quer apresentar: ${porStatus("DESEJADA")}
-
-## Receitas disponíveis no app para esta idade (${receitas.length})
-${receitas.map((r) => `- ${r.nome} (${r.tipoRefeicao.toLowerCase()}, ${r.tempoPreparoMin} min)`).join("\n")}
+  // Bloco GRANDE e estável (cacheado): catálogo, blog e regras de segurança.
+  const catalogo = `## Receitas disponíveis no app para esta idade (${receitas.length})
+${blocoReceitas}
 
 ## Artigos do blog do Pratinho Feliz
 ${artigos.join("\n")}
@@ -95,6 +105,18 @@ ${artigos.join("\n")}
 ## Regras de segurança que NUNCA podem ser contrariadas
 ${riscos.join("\n")}
 ${limites.join("\n")}`;
+
+  // Bloco PEQUENO e variável (não cacheado): vai por último, depois do
+  // breakpoint, para não invalidar o cache do catálogo.
+  const perfil = `## Criança
+Nome: ${child.nome}
+Faixa etária: ${child.faixaEtaria} (aproximadamente ${idadeMeses} meses)
+Restrições alimentares declaradas: ${porStatus("RESTRICAO")}
+Alimentos que aceita: ${porStatus("ACEITA")}
+Alimentos que recusa: ${porStatus("RECUSA")}
+Alimentos que a família quer apresentar: ${porStatus("DESEJADA")}`;
+
+  return { catalogo, perfil };
 }
 
 const INSTRUCOES = `Você é o assistente do Pratinho Feliz, um app brasileiro de planejamento alimentar infantil. Responde para a mãe, o pai ou quem cuida da criança.
@@ -133,7 +155,7 @@ export async function perguntarAoPratinho(
     return { ok: false, erro: "Você chegou ao limite de perguntas de hoje. Amanhã ele volta." };
   }
 
-  const contexto = await montarContexto(childId);
+  const { catalogo, perfil } = await montarContexto(childId);
 
   try {
     const resposta = await cliente.messages.create({
@@ -141,8 +163,14 @@ export async function perguntarAoPratinho(
       max_tokens: 2000,
       output_config: { effort: "medium" },
       system: [
-        { type: "text", text: INSTRUCOES, cache_control: { type: "ephemeral" } },
-        { type: "text", text: contexto },
+        // Estável para todo mundo.
+        { type: "text", text: INSTRUCOES },
+        // Estável por faixa etária — é aqui que está o volume, e é o que o
+        // cache economiza. O breakpoint fica no fim deste bloco.
+        { type: "text", text: catalogo, cache_control: { type: "ephemeral" } },
+        // Varia por criança: sempre DEPOIS do breakpoint, senão invalidaria
+        // o cache do catálogo a cada pessoa.
+        { type: "text", text: perfil },
       ],
       messages: [{ role: "user", content: texto }],
     });
