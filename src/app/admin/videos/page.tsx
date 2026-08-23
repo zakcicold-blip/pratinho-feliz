@@ -7,7 +7,7 @@ export const metadata = { title: "Roteiros de vídeo" };
 export default async function VideosPage() {
   const receitas = await db.recipe.findMany({
     where: { ativo: true },
-    select: { id: true, nome: true, tipoRefeicao: true, tempoPreparoMin: true },
+    select: { id: true, nome: true, tipoRefeicao: true, tempoPreparoMin: true, idadeMinimaMeses: true },
     orderBy: { nome: "asc" },
   });
 
