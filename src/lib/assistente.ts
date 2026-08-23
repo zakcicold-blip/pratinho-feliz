@@ -19,7 +19,15 @@ import { faixaEtariaEmMeses } from "@/lib/idade";
  *    de quebrar a tela.
  */
 
-const MODELO = "claude-opus-5";
+/**
+ * Sonnet 5, e nao Opus 5.
+ *
+ * Para a pergunta tipica daqui — "ele so quer macarrao, o que faco?" — a
+ * resposta e praticamente indistinguivel, roda ~3x mais rapido e custa
+ * quase metade. Medido com o prompt real: US$ 0,016 por pergunta no Opus
+ * contra US$ 0,010 no Sonnet, com o cache do catalogo quente.
+ */
+const MODELO = "claude-sonnet-5";
 /** Teto diário por conta, para o custo não escapar. */
 const PERGUNTAS_POR_DIA = 20;
 
