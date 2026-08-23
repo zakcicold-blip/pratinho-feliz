@@ -1,5 +1,11 @@
 generator client {
   provider = "prisma-client-js"
+  // relationJoins faz o Prisma resolver relacao aninhada com JOIN, numa ida
+  // so ao banco. Sem isso, cada `include`/`select` aninhado vira uma consulta
+  // separada: carregar usuario + assinatura + filhos custava TRES viagens, e
+  // receita + ingredientes + alimento, mais tres. Com o banco em sa-east-1 a
+  // ~14 ms por viagem, era isso que deixava toda tela lenta.
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {

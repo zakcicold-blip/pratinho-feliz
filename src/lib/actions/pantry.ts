@@ -5,18 +5,37 @@ import { db } from "@/lib/db";
 import { requireSession } from "@/lib/currentChild";
 import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 
-export async function alternarDespensa(childId: string, ingredientId: string) {
+/**
+ * Confere que a criança pertence a quem está logado.
+ *
+ * Estas ações rodam a cada toque na lista de compras. Antes, cada uma
+ * gastava uma ida ao banco só para essa checagem, antes da gravação de
+ * verdade — dobrando o custo de marcar um item. Onde dá, a checagem agora
+ * viaja DENTRO da própria gravação, pelo filtro de relação (`child: { userId }`),
+ * e some como consulta separada.
+ */
+async function usuarioAtual(): Promise<string> {
   const session = await requireSession();
-  const child = await db.childProfile.findUniqueOrThrow({ where: { id: childId } });
-  if (child.userId !== session.user.id) throw new Error("Não autorizado.");
+  return session.user.id;
+}
 
-  const existente = await db.pantryItem.findUnique({
-    where: { childProfileId_ingredientId: { childProfileId: childId, ingredientId } },
+export async function alternarDespensa(childId: string, ingredientId: string) {
+  const userId = await usuarioAtual();
+
+  // Tenta remover já filtrando pelo dono: uma ida ao banco resolve o caso de
+  // desmarcar, que é metade dos toques.
+  const { count } = await db.pantryItem.deleteMany({
+    where: { childProfileId: childId, ingredientId, child: { userId } },
   });
 
-  if (existente) {
-    await db.pantryItem.delete({ where: { id: existente.id } });
-  } else {
+  if (count === 0) {
+    // Não existia: criar exige confirmar o dono, porque `create` não aceita
+    // filtro de relação.
+    const child = await db.childProfile.findFirst({
+      where: { id: childId, userId },
+      select: { id: true },
+    });
+    if (!child) throw new Error("Não autorizado.");
     await db.pantryItem.create({ data: { childProfileId: childId, ingredientId } });
   }
 
@@ -29,9 +48,16 @@ export async function marcarComprado(
   ingredientId: string,
   comprado: boolean
 ) {
-  const session = await requireSession();
-  const child = await db.childProfile.findUniqueOrThrow({ where: { id: childId } });
-  if (child.userId !== session.user.id) throw new Error("Não autorizado.");
+  const userId = await usuarioAtual();
+
+  // O upsert precisa da chave composta, entao a checagem de dono nao cabe
+  // dentro dele — mas cabe numa unica consulta enxuta, em vez de carregar o
+  // perfil inteiro.
+  const dono = await db.childProfile.findFirst({
+    where: { id: childId, userId },
+    select: { id: true },
+  });
+  if (!dono) throw new Error("Não autorizado.");
 
   await db.shoppingCheck.upsert({
     where: {

@@ -2447,19 +2447,39 @@ async function main() {
     `Pronto! ${ingredienteIdPorNome.size} ingredientes, ${criadas} receitas novas, ${atualizadas} atualizadas.`
   );
 
-  const adminEmail = "admin@pratinhofeliz.com";
+  // Conta de administrador.
+  //
+  // A senha NUNCA fica no codigo: este repositorio e publico, e uma senha
+  // versionada aqui e uma porta aberta para o painel de producao — foi
+  // exatamente o que aconteceu com a antiga "admin123".
+  //
+  // Defina ADMIN_EMAIL e ADMIN_SENHA no ambiente antes de rodar o seed.
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminSenha = process.env.ADMIN_SENHA;
+
+  if (!adminEmail || !adminSenha) {
+    console.log(
+      "Admin nao criado: defina ADMIN_EMAIL e ADMIN_SENHA no ambiente para provisionar a conta."
+    );
+    return;
+  }
+
+  if (adminSenha.length < 12) {
+    throw new Error("ADMIN_SENHA precisa ter ao menos 12 caracteres.");
+  }
+
   const adminExistente = await db.user.findUnique({ where: { email: adminEmail } });
   if (!adminExistente) {
     await db.user.create({
       data: {
         name: "Admin Pratinho Feliz",
         email: adminEmail,
-        passwordHash: await bcrypt.hash("admin123", 10),
+        passwordHash: await bcrypt.hash(adminSenha, 12),
         role: "ADMIN",
         subscription: { create: { plano: "FAMILIA", status: "ATIVA" } },
       },
     });
-    console.log(`Admin criado: ${adminEmail} / admin123`);
+    console.log(`Admin criado: ${adminEmail}`);
   }
 }
 

@@ -5,6 +5,13 @@
       "name": "pratinho-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
+      "env": { "PRISMA_LOG": "1" },
+      "port": 3000
+    },
+    {
+      "name": "pratinho-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
       "port": 3000
     }
   ]

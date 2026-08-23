@@ -67,9 +67,20 @@ export default async function PlanoPage({
   const datasSemana = diasDaSemana.map((i) => addDiasChave(inicio, i));
 
   const [todosSlots, slotsSemana] = await Promise.all([
+    // Visao do mes inteiro: 120 slots. Com `include: { recipe: true }` vinha a
+    // receita completa de cada um — passos, nutricao, tags, restricoes — para
+    // mostrar so o nome no calendario. Agora vem so o que a tela desenha.
     db.mealSlot.findMany({
       where: { mealPlanId: plano.id },
-      include: { recipe: true, feedback: true },
+      select: {
+        id: true,
+        data: true,
+        tipo: true,
+        status: true,
+        recipeId: true,
+        recipe: { select: { id: true, nome: true, tipoRefeicao: true, imagemUrl: true } },
+        feedback: { select: { estado: true } },
+      },
       orderBy: { data: "asc" },
     }),
     db.mealSlot.findMany({
