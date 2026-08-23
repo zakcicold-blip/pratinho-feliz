@@ -10,6 +10,7 @@ const ITEMS = [
   { href: "/admin/ingredientes", label: "Ingredientes" },
   { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/cancelamentos", label: "Cancelamentos" },
+  { href: "/admin/videos", label: "Vídeos" },
   { href: "/admin/heatmap", label: "Mapa de calor" },
 ];
 
