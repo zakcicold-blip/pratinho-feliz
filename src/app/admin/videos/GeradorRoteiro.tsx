@@ -115,8 +115,12 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
     ? [
         `GANCHO: ${roteiro.gancho}`,
         "",
+        `ÂNCORA (repetir igual nos 3 prompts):`,
+        roteiro.ancora,
+        "",
         ...roteiro.cenas.flatMap((c) => [
           `CENA ${c.numero} — ${c.descricao}`,
+          `Fala: ${c.fala}`,
           `Texto na tela: ${c.textoNaTela}`,
           `Prompt Veo: ${c.promptVeo}`,
           "",
@@ -269,6 +273,21 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
             <p className="text-lg font-bold text-stone-900">{roteiro.gancho}</p>
           </div>
 
+          {/* Âncora */}
+          <div className="rounded-2xl border border-sky-200 bg-sky-50/60 p-4">
+            <div className="mb-1 flex items-center justify-between gap-2">
+              <p className="text-[11px] font-bold tracking-wide text-sky-800 uppercase">
+                Âncora · repetida igual nos 3 prompts
+              </p>
+              <Copiar texto={roteiro.ancora} />
+            </div>
+            <p className="font-mono text-[12px] leading-relaxed text-stone-600">{roteiro.ancora}</p>
+            <p className="mt-2 text-[12px] text-sky-900">
+              O Veo não tem memória entre clipes. É esta descrição, repetida palavra por palavra,
+              que faz os três parecerem o mesmo vídeo.
+            </p>
+          </div>
+
           {/* Cenas */}
           {roteiro.cenas.map((cena) => (
             <div
@@ -282,9 +301,25 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
                 <span className="text-[11px] font-semibold tracking-wide text-stone-400 uppercase">
                   Cena {cena.numero} · até 8 s
                 </span>
+                {roteiro.cenaComApp === cena.numero && (
+                  <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-700">
+                    cita o app
+                  </span>
+                )}
               </div>
 
               <p className="text-sm text-stone-700">{cena.descricao}</p>
+
+              {/* Fala: é o que a pessoa diz, e o que precisa caber em 8 s */}
+              <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50/60 p-3">
+                <div className="mb-1 flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-bold tracking-wide text-emerald-800 uppercase">
+                    Fala · {cena.fala.trim().split(/\s+/).length} palavras
+                  </span>
+                  <Copiar texto={cena.fala} />
+                </div>
+                <p className="text-sm leading-relaxed text-stone-800">“{cena.fala}”</p>
+              </div>
 
               <div className="mt-3 rounded-xl bg-stone-50 p-3">
                 <div className="mb-1 flex items-center justify-between gap-2">

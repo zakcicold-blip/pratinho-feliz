@@ -24,7 +24,9 @@ export type Cena = {
   numero: number;
   /** O que acontece, em português, para você conferir antes de gerar. */
   descricao: string;
-  /** Prompt pronto para colar no Veo (inglês). */
+  /** A fala em português que a pessoa diz nesta cena. */
+  fala: string;
+  /** Prompt pronto para colar no Veo. Já inclui a âncora e a fala. */
   promptVeo: string;
   /** Texto que entra por cima do vídeo na edição. */
   textoNaTela: string;
@@ -34,6 +36,14 @@ export type RoteiroVideo = {
   receita: string;
   /** Frase dos primeiros 3 segundos — é ela que segura ou perde a pessoa. */
   gancho: string;
+  /**
+   * Descrição da pessoa e da cozinha, repetida PALAVRA POR PALAVRA nos três
+   * prompts. O Veo não tem memória entre gerações: sem isso, cada clipe sai
+   * com outra pessoa em outra cozinha.
+   */
+  ancora: string;
+  /** Em qual cena entra a menção ao app (varia para não ficar repetitivo). */
+  cenaComApp: number;
   cenas: Cena[];
   /** Legenda do post, em português. */
   legenda: string;
@@ -48,27 +58,105 @@ const INSTRUCOES = `Você cria roteiros de Reels de receita infantil para o Prat
 
 Público: mães e pais de crianças de 6 meses a 12 anos, cansados, no celular, rolando o feed.
 
-REGRAS DO FORMATO (não negociáveis):
-- O vídeo tem 3 cenas de no máximo 8 segundos cada. O Veo não gera mais que isso por clipe.
-- Cena 1 é o GANCHO: mostra o prato PRONTO e apetitoso, nunca o começo do preparo. Quem rola o feed decide em 3 segundos.
-- Cena 2 é o preparo, no ponto mais satisfatório visualmente (algo sendo amassado, derretendo, virando, polvilhando).
-- Cena 3 é a criança comendo e gostando, ou o prato sendo servido. Fecha com emoção, não com informação.
-- Vertical 9:16 sempre.
+## FORMATO (não negociável)
+- 3 cenas de no máximo 8 segundos cada. O Veo não gera mais que isso por clipe.
+- Cena 1: o prato PRONTO e apetitoso na tela, e a pessoa já falando. Nunca comece pelo preparo — quem rola o feed decide em 3 segundos.
+- Cena 2: o preparo no ponto mais satisfatório de ver (amassar, derreter, virar, polvilhar).
+- Cena 3: a criança comendo e gostando, ou o prato sendo servido. Fecha com emoção.
+- Vertical 9:16.
 
-SOBRE OS PROMPTS DO VEO (escreva em INGLÊS):
-- Descreva câmera, luz, textura e movimento. Ex: "close-up, shallow depth of field, natural window light, slow motion".
-- Comida brasileira de verdade, cozinha de casa comum brasileira — não cozinha de revista americana.
-- Quando aparecer criança, descreva de forma genérica e respeitosa ("a toddler's hands", "a child seated in a high chair"), sem descrever rosto em detalhe e sem nomear ninguém real.
-- Nunca peça texto dentro do vídeo: o Veo erra letras. O texto entra na edição.
+## A ÂNCORA (o que garante que os 3 clipes pareçam o mesmo vídeo)
+O Veo NÃO tem memória entre gerações. Cada clipe é gerado do zero: sem âncora, sai outra pessoa, em outra cozinha, com outra luz.
 
-SOBRE O TEXTO E A LEGENDA (em PORTUGUÊS do Brasil):
+Escreva no campo "ancora" uma descrição em INGLÊS, específica e visual, da pessoa e do cenário. Quanto mais específica, melhor a continuidade. Inclua: idade aproximada, cabelo, roupa com cor, a cozinha, a luz.
+Exemplo: "A Brazilian woman in her early 30s with dark wavy shoulder-length hair, wearing a mustard-yellow t-shirt, in a small bright Brazilian home kitchen with white tiles and a wooden countertop, soft natural window light from the left"
+
+Essa âncora tem que aparecer PALAVRA POR PALAVRA no começo dos três prompts. Não reescreva, não resuma, não varie.
+
+## OS PROMPTS DO VEO
+Estrutura de cada prompt, nesta ordem:
+1. A âncora, copiada exatamente.
+2. O que acontece nesta cena (câmera, ação, comida). Em inglês.
+3. A fala, neste formato exato: She says in Brazilian Portuguese: <a fala, em português, SEM aspas>
+4. Termine sempre com: (no subtitles)
+
+Regras que não podem ser quebradas:
+- A fala vem depois de dois-pontos e SEM aspas. Aspas confundem o modelo.
+- "(no subtitles)" no fim, sempre. Sem isso o Veo escreve legenda errada por cima do vídeo.
+- Nunca peça texto dentro do vídeo — o Veo erra letras. Texto entra na edição.
+- Da cena 2 em diante, comece a parte da ação dizendo o que continua: "Continuing in the same kitchen, now she...".
+- Comida brasileira de verdade, cozinha de casa comum brasileira. Nada de cozinha de revista americana.
+- Criança sempre de forma genérica e respeitosa ("a toddler's hands", "a child in a high chair"), sem rosto detalhado e sem nomear ninguém real.
+
+## AS FALAS (português do Brasil)
+- No máximo 18 PALAVRAS por cena. Fala natural em português leva cerca de 3 palavras por segundo — passar disso corta no meio dos 8 segundos.
+- Tom de amiga contando, não de apresentadora de TV. Sem "olá pessoal", sem "hoje eu vou ensinar".
+- As três falas juntas têm que ensinar a receita de verdade: ingrediente, ponto e dica. Quem assistir consegue fazer.
+- Fale com a pessoa: "você", "seu filho".
+
+## A MENÇÃO AO APP
+Uma das três falas menciona que a receita veio do Pratinho Feliz. Escolha a cena 1 OU a cena 2 — varie entre as receitas, não coloque sempre no mesmo lugar. Nunca na cena 3.
+
+Tem que soar como recomendação de amiga, encaixada na fala, nunca como anúncio colado. Varie a forma. Bons exemplos:
+- "Peguei essa no Pratinho Feliz, que já monta o cardápio do mês inteiro"
+- "Essa veio do Pratinho Feliz, o app que aprende o que seu filho aceita"
+- "Tava no plano de hoje do Pratinho Feliz e salvou meu almoço"
+Ruins (não use): "baixe o app", "link na bio", "acesse agora".
+
+Informe em "cenaComApp" o número da cena escolhida.
+
+## TEXTO NA TELA E LEGENDA (português)
 - Gancho: no máximo 8 palavras, na cara da mãe cansada. Nada de "confira a receita incrível".
-- Texto na tela: curtíssimo, 3 a 6 palavras por cena.
-- Legenda: 2 a 4 linhas, com a receita resumida e um motivo real para salvar o post.
-- O algoritmo do Reels premia SALVAMENTO e COMPARTILHAMENTO. Escreva pensando em fazer a pessoa salvar.
+- Texto na tela: 3 a 6 palavras por cena. Complementa a fala, não repete.
+- Legenda: 2 a 4 linhas, com a receita resumida e um motivo real para salvar.
+- O algoritmo do Reels premia SALVAMENTO e COMPARTILHAMENTO. Escreva para fazer salvar.
 
 Responda SOMENTE com JSON válido, sem cercas de código, neste formato exato:
-{"gancho":"","cenas":[{"numero":1,"descricao":"","promptVeo":"","textoNaTela":""}],"legenda":"","hashtags":[],"chamada":"","audio":""}`;
+{"gancho":"","ancora":"","cenaComApp":1,"cenas":[{"numero":1,"descricao":"","fala":"","promptVeo":"","textoNaTela":""}],"legenda":"","hashtags":[],"chamada":"","audio":""}`;
+
+/**
+ * Garante as regras do Veo no código, em vez de confiar que o modelo obedeceu.
+ *
+ * Três invariantes que, se falharem, estragam o clipe:
+ * - a âncora precisa abrir o prompt, senão o clipe sai com outra pessoa;
+ * - a fala precisa estar no prompt, senão o vídeo sai mudo;
+ * - "(no subtitles)" precisa fechar, senão o Veo escreve legenda errada por
+ *   cima do vídeo.
+ *
+ * Aqui a gente conserta o que faltou, sem gastar outra chamada.
+ */
+export { normalizarCenas as __normalizarCenasParaTeste };
+
+function normalizarCenas(roteiro: Omit<RoteiroVideo, "receita">): Omit<RoteiroVideo, "receita"> {
+  const ancora = roteiro.ancora?.trim() ?? "";
+
+  const cenas = (roteiro.cenas ?? []).map((cena) => {
+    let prompt = cena.promptVeo?.trim() ?? "";
+    const fala = cena.fala?.trim() ?? "";
+
+    if (ancora && !prompt.includes(ancora)) {
+      prompt = `${ancora}. ${prompt}`;
+    }
+
+    // Tira o "(no subtitles)" do fim ANTES de mexer no resto: se a fala for
+    // acrescentada depois dele, ela sai fora do lugar e o marcador duplica.
+    prompt = prompt.replace(/\(no subtitles\)/gi, "").trim();
+
+    if (fala && !prompt.includes(fala)) {
+      prompt = `${prompt.replace(/[.\s]+$/, "")}. She says in Brazilian Portuguese: ${fala}`;
+    }
+
+    // Aspas na fala confundem o modelo — a regra é dois-pontos e texto solto.
+    prompt = prompt.replace(/(says[^:]*:)\s*["“”']+/gi, "$1 ").replace(/["“”]+/g, "");
+
+    // E só então fecha com o marcador, exatamente uma vez.
+    prompt = `${prompt.replace(/[.\s]+$/, "")}. (no subtitles)`;
+
+    return { ...cena, promptVeo: prompt.replace(/\s{2,}/g, " ").trim() };
+  });
+
+  return { ...roteiro, cenas };
+}
 
 export function roteiroDisponivel(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY);
@@ -137,7 +225,8 @@ ${receita.passos}`;
       .replace(/\s*```$/, "");
 
     const bruto = JSON.parse(texto) as Omit<RoteiroVideo, "receita">;
-    return { ok: true, roteiro: { ...bruto, receita: receita.nome } };
+    const normalizado = normalizarCenas(bruto);
+    return { ok: true, roteiro: { ...normalizado, receita: receita.nome } };
   } catch (erro) {
     if (erro instanceof SyntaxError) {
       return { ok: false, erro: "A resposta não veio em JSON válido. Tente de novo." };
