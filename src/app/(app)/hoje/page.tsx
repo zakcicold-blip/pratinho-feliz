@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCurrentChild } from "@/lib/currentChild";
+import { getCurrentChild, getConta } from "@/lib/currentChild";
 import { db } from "@/lib/db";
 import { addDiasChave, hojeChave, diffDiasChave, horaSaoPaulo } from "@/lib/dates";
 import { TIPO_REFEICAO_LABEL, TIPO_REFEICAO_ORDEM } from "@/lib/constants";
@@ -26,15 +26,14 @@ function saudacao(hora: number) {
 }
 
 export default async function HojePage() {
-  const { session, child } = await getCurrentChild();
+  // `conta` ja veio memoizada do layout — sem nova consulta para ler lembretes.
+  const [{ child }, { conta, session }] = await Promise.all([getCurrentChild(), getConta()]);
 
-  const [plano, usuario] = await Promise.all([
-    db.mealPlan.findFirst({
-      where: { childProfileId: child.id, ativo: true },
-      orderBy: { cicloNumero: "desc" },
-    }),
-    db.user.findUnique({ where: { id: session.user.id }, select: { lembretes: true } }),
-  ]);
+  const plano = await db.mealPlan.findFirst({
+    where: { childProfileId: child.id, ativo: true },
+    orderBy: { cicloNumero: "desc" },
+  });
+  const usuario = { lembretes: conta.lembretes };
 
   if (!plano) {
     return (

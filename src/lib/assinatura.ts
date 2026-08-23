@@ -67,13 +67,30 @@ export async function sincronizarAssinaturaStripe(sub: Stripe.Subscription): Pro
  * Cortesia (liberada no painel admin) passa na frente de tudo: são convidados,
  * parceiras e imprensa, que usam o app sem cartão e sem entrar na receita.
  */
-export async function podeAcessarApp(userId: string): Promise<boolean> {
-  const sub = await db.subscription.findUnique({ where: { userId } });
+export type AssinaturaParaAcesso = {
+  status: StatusAssinatura;
+  stripeSubscriptionId: string | null;
+  acessoCortesia: boolean;
+};
+
+/**
+ * Regra pura do paywall, sem ida ao banco.
+ *
+ * Separada de `podeAcessarApp` para o layout do app poder reaproveitar a
+ * assinatura que ja veio junto com a conta, em vez de consultar de novo a
+ * cada navegacao.
+ */
+export function liberaAcesso(sub: AssinaturaParaAcesso | null | undefined): boolean {
   if (!sub) return false;
   if (sub.acessoCortesia) return true;
   if (sub.status === "ATIVA") return true;
   if (sub.status === "TESTE") return Boolean(sub.stripeSubscriptionId);
   return false; // CANCELADA, CARENCIA
+}
+
+export async function podeAcessarApp(userId: string): Promise<boolean> {
+  const sub = await db.subscription.findUnique({ where: { userId } });
+  return liberaAcesso(sub);
 }
 
 /**

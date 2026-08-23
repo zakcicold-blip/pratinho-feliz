@@ -1,14 +1,17 @@
 import { redirect } from "next/navigation";
-import { requireSession } from "@/lib/currentChild";
-import { podeAcessarApp } from "@/lib/assinatura";
+import { getConta } from "@/lib/currentChild";
+import { liberaAcesso } from "@/lib/assinatura";
 import BottomNav from "@/components/BottomNav";
 import HeatOptOut from "@/components/HeatOptOut";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const session = await requireSession();
+  // Uma consulta so, memoizada por requisicao: as paginas dentro deste layout
+  // reaproveitam a mesma conta em vez de consultar sessao, assinatura e
+  // perfil de novo.
+  const { conta } = await getConta();
 
-  // Paywall: sem teste/assinatura ativos, o app inteiro fica atrás de /assinar.
-  if (!(await podeAcessarApp(session.user.id))) {
+  // Paywall: sem teste/assinatura ativos, o app inteiro fica atras de /assinar.
+  if (!liberaAcesso(conta.subscription)) {
     redirect("/assinar");
   }
 

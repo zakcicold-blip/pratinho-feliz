@@ -25,3 +25,13 @@ export default function RegistrarServiceWorker() {
 
   return null;
 }
+
+/**
+ * Apaga o cache de paginas logadas.
+ *
+ * Chamado ao sair da conta: sem isso, a proxima pessoa a entrar no mesmo
+ * aparelho poderia abrir /hoje sem rede e ver a tela da conta anterior.
+ */
+export function limparCacheDoApp() {
+  navigator.serviceWorker?.controller?.postMessage("limpar-cache");
+}

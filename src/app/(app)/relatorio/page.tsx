@@ -30,26 +30,32 @@ export default async function RelatorioPage() {
     );
   }
 
-  const slots = await db.mealSlot.findMany({
-    where: { mealPlanId: plano.id },
-    include: { recipe: true, feedback: true },
-  });
-
   // ---- Nutricao dos ultimos 7 dias planejados ----
   const seteDiasAtras = addDiasChave(hojeChave(), -6);
-  const slotsSemana = await db.mealSlot.findMany({
+
+  // Tres consultas independentes: em serie custavam ~3 idas ao banco.
+  const [slots, slotsSemana, desejados] = await Promise.all([
+    db.mealSlot.findMany({
+      where: { mealPlanId: plano.id },
+      include: { recipe: true, feedback: true },
+    }),
+    db.mealSlot.findMany({
     where: {
       mealPlanId: plano.id,
       data: { gte: seteDiasAtras, lte: hojeChave() },
       status: { not: "FORA_DE_CASA" },
       recipeId: { not: null },
     },
-    include: {
-      recipe: {
-        include: { ingredients: { include: { ingredient: true } } },
+      include: {
+        recipe: {
+          include: { ingredients: { include: { ingredient: true } } },
+        },
       },
-    },
-  });
+    }),
+    db.foodPreference.findMany({
+      where: { childProfileId: child.id, status: "DESEJADA" },
+    }),
+  ]);
 
   const totaisNutri = Object.fromEntries(
     NUTRIENTES.map((n) => [n.chave, 0])
@@ -90,9 +96,6 @@ export default async function RelatorioPage() {
 
   const receitasDiferentes = new Set(slots.filter((s) => s.recipeId).map((s) => s.recipeId)).size;
 
-  const desejados = await db.foodPreference.findMany({
-    where: { childProfileId: child.id, status: "DESEJADA" },
-  });
   const journeys = await db.foodJourney.findMany({
     where: { childProfileId: child.id, ingredientId: { in: desejados.map((d) => d.ingredientId) } },
   });

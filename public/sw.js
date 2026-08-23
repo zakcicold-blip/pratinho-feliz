@@ -6,16 +6,24 @@
  * cozinha sao onde o sinal e pior, e sao justamente as telas que precisam
  * abrir.
  *
- * Estrategia: network-first com queda para o cache. Assim o conteudo continua
- * fresco quando ha rede, e ainda abre quando nao ha. Nunca guardamos POST,
- * rota de API, autenticacao nem checkout.
+ * DUAS REGRAS QUE NAO PODEM SER QUEBRADAS:
+ *
+ * 1. So intercepta NAVEGACAO de documento (req.mode === "navigate").
+ *    A navegacao entre telas do Next nao baixa HTML: baixa payload RSC na
+ *    mesma URL, com header RSC. Cachear os dois na mesma chave devolve HTML
+ *    onde o roteador espera RSC e quebra a navegacao — alem de colocar o
+ *    worker no meio de toda troca de tela, que e exatamente o que deixa o app
+ *    com cara de lento.
+ *
+ * 2. Cache de pagina logada e apagado no logout (mensagem "limpar-cache"),
+ *    para a proxima conta no mesmo aparelho nunca ver a tela da anterior.
  */
 
-const VERSAO = "pf-v1";
+const VERSAO = "pf-v2";
 const CACHE_PAGINAS = `${VERSAO}-paginas`;
 const CACHE_ESTATICOS = `${VERSAO}-estaticos`;
 
-/** Telas que valem guardar para uso offline. */
+/** Telas que valem guardar para abrir sem rede. */
 const PADROES_OFFLINE = [/^\/hoje/, /^\/compras/, /^\/receita\//, /^\/plano/];
 
 /** Nunca cachear: dados de sessao, pagamento e mutacoes. */
@@ -36,6 +44,13 @@ self.addEventListener("activate", (evento) => {
   );
 });
 
+/** O app pede a limpeza ao sair da conta. */
+self.addEventListener("message", (evento) => {
+  if (evento.data === "limpar-cache") {
+    evento.waitUntil(caches.delete(CACHE_PAGINAS));
+  }
+});
+
 function podeGuardar(url) {
   if (NUNCA.some((re) => re.test(url.pathname))) return false;
   return PADROES_OFFLINE.some((re) => re.test(url.pathname));
@@ -48,7 +63,7 @@ self.addEventListener("fetch", (evento) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Estaticos do Next: cache-first, sao versionados por hash.
+  // Estaticos do Next: cache-first, sao versionados por hash no nome.
   if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/icons/")) {
     evento.respondWith(
       (async () => {
@@ -63,6 +78,11 @@ self.addEventListener("fetch", (evento) => {
     return;
   }
 
+  // Daqui para baixo, so documento de verdade. Navegacao interna do Next
+  // (payload RSC) passa direto, sem o worker no caminho.
+  if (req.mode !== "navigate") return;
+  if (req.headers.get("RSC") === "1") return;
+  if (url.searchParams.has("_rsc")) return;
   if (!podeGuardar(url)) return;
 
   // Paginas: rede primeiro, cache como rede de seguranca.

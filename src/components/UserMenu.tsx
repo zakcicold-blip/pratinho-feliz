@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { Settings, Home, LogOut, EllipsisVertical } from "lucide-react";
 import { signOutAction } from "@/lib/actions/auth-signout";
+import { limparCacheDoApp } from "@/components/RegistrarServiceWorker";
 
 export default function UserMenu() {
   const [aberto, setAberto] = useState(false);
@@ -61,6 +62,7 @@ export default function UserMenu() {
           <button
             onClick={() => {
               setAberto(false);
+              limparCacheDoApp();
               startTransition(() => signOutAction());
             }}
             disabled={pending}

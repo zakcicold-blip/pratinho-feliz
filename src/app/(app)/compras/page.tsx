@@ -102,7 +102,8 @@ export default async function ComprasPage({
     ? addDiasChave(inicioCiclo, 34)
     : addDiasChave(periodoInicio, 6);
 
-  const slots = await db.mealSlot.findMany({
+  const [slots, extras, checks] = await Promise.all([
+    db.mealSlot.findMany({
     where: {
       mealPlanId: plano.id,
       data: { gte: periodoInicio, lte: periodoFim },
@@ -129,19 +130,18 @@ export default async function ComprasPage({
         },
       },
     },
-  });
+    }),
+    db.shoppingExtra.findMany({
+      where: { childProfileId: child.id, semanaInicio: periodoInicio },
+      orderBy: { createdAt: "asc" },
+    }),
+    db.shoppingCheck.findMany({
+      where: { childProfileId: child.id, semanaInicio: periodoInicio },
+    }),
+  ]);
 
   const linhas = slots.flatMap((s) => s.recipe?.ingredients ?? []);
   const itensMap = agregarCompras(linhas, pantryIds);
-
-  const extras = await db.shoppingExtra.findMany({
-    where: { childProfileId: child.id, semanaInicio: periodoInicio },
-    orderBy: { createdAt: "asc" },
-  });
-
-  const checks = await db.shoppingCheck.findMany({
-    where: { childProfileId: child.id, semanaInicio: periodoInicio },
-  });
   const compradoMap = new Map(checks.map((c) => [c.ingredientId, c.comprado]));
   const quantidadeMap = new Map(checks.map((c) => [c.ingredientId, c.quantidadeComprada]));
 

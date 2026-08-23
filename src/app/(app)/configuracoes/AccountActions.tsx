@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { signOutAction } from "@/lib/actions/auth-signout";
+import { limparCacheDoApp } from "@/components/RegistrarServiceWorker";
 import { excluirConta } from "@/lib/actions/childProfile";
 import Button from "@/components/ui/Button";
 import { LogOut, Trash2 } from "lucide-react";
@@ -14,7 +15,10 @@ export default function AccountActions() {
   return (
     <div className="space-y-2">
       <Button
-        onClick={() => startTransition(() => signOutAction())}
+        onClick={() => {
+          limparCacheDoApp();
+          startTransition(() => signOutAction());
+        }}
         disabled={pending}
         variant="outline"
         size="lg"
