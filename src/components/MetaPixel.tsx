@@ -3,14 +3,39 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-// O script base do pixel é carregado no <head> (TrackingHead). Aqui só
+// O script base do pixel é carregado pelo TrackingHead. Aqui só
 // disparamos os eventos do funil conforme a navegação (SPA) e os marcadores de
 // URL, chamando o fbq já carregado.
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
+/**
+ * Chama o fbq, esperando ele existir se precisar.
+ *
+ * O script base agora carrega com afterInteractive (antes bloqueava a
+ * renderizacao por 2 s). Isso abre uma janela curta em que este componente
+ * pode rodar antes de `window.fbq` existir — e a versao anterior descartava
+ * a chamada em silencio, o que perderia CompleteRegistration e StartTrial.
+ * Aqui a chamada e reagendada por ate 5 segundos.
+ */
 function fbq(...args: unknown[]) {
-  const fn = (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
-  if (fn) fn(...args);
+  const chamar = () => (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
+
+  const pronto = chamar();
+  if (pronto) {
+    pronto(...args);
+    return;
+  }
+
+  let tentativas = 0;
+  const timer = setInterval(() => {
+    const fn = chamar();
+    if (fn) {
+      clearInterval(timer);
+      fn(...args);
+      return;
+    }
+    if (++tentativas > 50) clearInterval(timer); // ~5 s e desiste
+  }, 100);
 }
 
 export default function MetaPixel() {

@@ -1,13 +1,21 @@
 import Script from "next/script";
 import UtmifyScript from "@/components/UtmifyScript";
 
-// Meta Pixel + Utmify, carregados o mais cedo possível para todo mundo.
+// Meta Pixel + Utmify.
 //
-// Observação técnica: no App Router do Next 16, scripts inline não podem ser
-// colocados literalmente dentro do <head> — o framework os injeta no topo do
-// <body>. Com strategy="beforeInteractive" eles carregam ANTES de qualquer
-// conteúdo/JS do app, então o pixel dispara tão cedo quanto no head. O próprio
-// snippet insere o fbevents.js no head do documento.
+// O pixel usava strategy="beforeInteractive" para disparar o mais cedo
+// possível. O custo medido em producao foi alto demais:
+//
+//   first-paint = first-contentful-paint = 2156 ms
+//
+// Ou seja, a tela ficava EM BRANCO por mais de dois segundos esperando o
+// fbevents.js do Facebook — mesmo com o HTML em 106 ms e a fonte em 142 ms.
+// beforeInteractive bloqueia a renderizacao do conteudo.
+//
+// afterInteractive (a estrategia que o proprio Next recomenda para
+// analytics) dispara logo apos a hidratacao. O PageView chega alguns
+// milissegundos depois; em troca, a pessoa ve a pagina na hora. Tela branca
+// de 2 s custa muito mais conversao do que um evento levemente atrasado.
 //
 // Sem env, nada é renderizado (demo/dev ficam fora).
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
@@ -18,8 +26,7 @@ export default function TrackingHead() {
   return (
     <>
       {PIXEL_ID && (
-        // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document -- App Router: beforeInteractive vai no root layout.
-        <Script id="meta-pixel" strategy="beforeInteractive">
+        <Script id="meta-pixel" strategy="afterInteractive">
           {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
