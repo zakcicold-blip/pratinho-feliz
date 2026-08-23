@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCurrentChild } from "@/lib/currentChild";
 import { db } from "@/lib/db";
 import TopBar from "@/components/TopBar";
+import CapaReceita from "@/components/CapaReceita";
 import FavoriteButton from "./FavoriteButton";
-import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
+import { MEAL_COLOR } from "@/components/mealIcons";
 import { TriangleAlert, Leaf } from "lucide-react";
 import Card from "@/components/ui/Card";
 import TabelaNutricional from "@/components/TabelaNutricional";
@@ -33,28 +33,19 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
     <>
       <TopBar title="Receita" back />
       <div className="px-4 py-4">
-        {recipe.imagemUrl && (
-          <div className="relative mb-3 h-48 w-full overflow-hidden rounded-2xl bg-stone-100 shadow-card">
-            <Image
-              src={recipe.imagemUrl}
-              alt={recipe.nome}
-              fill
-              sizes="(max-width: 672px) 100vw, 672px"
-              className="object-cover"
-              priority
-            />
-          </div>
-        )}
+        {/* Toda receita tem capa: foto quando existe, capa gerada quando nao. */}
+        <CapaReceita
+          tipo={recipe.tipoRefeicao}
+          nome={recipe.nome}
+          imagemUrl={recipe.imagemUrl}
+          className="mb-3 h-48 w-full rounded-2xl shadow-card"
+          tamanhoIcone={40}
+          prioridade
+        />
 
         <Card padding="lg">
           <div className="flex items-start justify-between">
-            {!recipe.imagemUrl && (
-              <span className={`flex h-16 w-16 items-center justify-center rounded-2xl ${cor.bg}`}>
-                <MealTypeIcon tipo={recipe.tipoRefeicao} size={30} />
-              </span>
-            )}
-            {/* Sem a miniatura do ícone, a estrela precisa ser empurrada para a direita. */}
-            <div className={recipe.imagemUrl ? "ml-auto" : ""}>
+            <div className="ml-auto">
               <FavoriteButton childId={child.id} recipeId={recipe.id} favoritoInicial={!!favorito} />
             </div>
           </div>

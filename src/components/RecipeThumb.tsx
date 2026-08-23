@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MealTypeIcon, MEAL_COLOR } from "@/components/mealIcons";
+import CapaReceita from "@/components/CapaReceita";
 import { cn } from "@/lib/cn";
 import type { TipoRefeicao } from "@prisma/client";
 
@@ -20,8 +20,6 @@ export default function RecipeThumb({
   size?: number;
   className?: string;
 }) {
-  const cor = MEAL_COLOR[tipo];
-
   if (imagemUrl) {
     return (
       <span
@@ -40,12 +38,15 @@ export default function RecipeThumb({
     );
   }
 
+  // Sem foto: capa gerada, mesma identidade da tela da receita.
   return (
-    <span
-      className={cn("flex shrink-0 items-center justify-center rounded-xl", cor.bg, className)}
-      style={{ width: size, height: size }}
-    >
-      <MealTypeIcon tipo={tipo} size={Math.round(size * 0.5)} />
-    </span>
+    <CapaReceita
+      tipo={tipo}
+      nome={nome}
+      imagemUrl={null}
+      mostrarInicial={false}
+      tamanhoIcone={Math.round(size * 0.45)}
+      className={cn("shrink-0 rounded-xl", className)}
+    />
   );
 }

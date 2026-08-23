@@ -9,6 +9,7 @@ import StatCard from "@/components/ui/StatCard";
 import EmptyState from "@/components/ui/EmptyState";
 import { CalendarCheck, Shuffle, Sparkles, ThumbsUp, TrendingUp, ChartColumn } from "lucide-react";
 import NutricaoSemana from "@/components/NutricaoSemana";
+import CompartilharResumo from "./CompartilharResumo";
 import { calcularCoberturaSemana, NUTRIENTES, type NutrienteChave } from "@/lib/metasNutricionais";
 import { faixaEtariaEmMeses } from "@/lib/idade";
 
@@ -153,6 +154,15 @@ export default async function RelatorioPage() {
             hint="Aceitos"
           />
         </div>
+
+        <Card>
+          <h2 className="mb-1 text-sm font-semibold text-stone-700">Mostre o progresso</h2>
+          <p className="mb-3 text-[13px] leading-relaxed text-stone-500">
+            Uma imagem com o que {child.nome} conquistou neste ciclo — pronta para guardar ou
+            postar.
+          </p>
+          <CompartilharResumo childId={child.id} nomeCrianca={child.nome} />
+        </Card>
 
         <NutricaoSemana cobertura={cobertura} />
 

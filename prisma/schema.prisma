@@ -87,6 +87,9 @@ model User {
   passwordHash  String
   role          PapelUsuario @default(RESPONSAVEL)
   lembretes     Boolean  @default(true)
+  // Quando o ultimo lembrete foi enviado — impede mandar duas vezes no mesmo
+  // dia se o cron rodar de novo.
+  ultimoLembreteEm DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
