@@ -44,7 +44,6 @@ export default function RecipeThumb({
       tipo={tipo}
       nome={nome}
       imagemUrl={null}
-      mostrarInicial={false}
       tamanhoIcone={Math.round(size * 0.45)}
       className={cn("shrink-0 rounded-xl", className)}
     />

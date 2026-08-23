@@ -112,6 +112,36 @@ const IDADE_MINIMA: Record<string, number> = {
   "Atum em lata": 12,
 };
 
+/**
+ * Reescreve a quantidade do ingrediente trocado na unidade DELE.
+ *
+ * O peso em gramas vem da receita base e é a fonte da verdade — é ele que
+ * alimenta o cálculo nutricional e a lista de compras. O texto passa a
+ * descrever esse mesmo peso na unidade do alimento novo.
+ */
+function quantidadeNaNovaUnidade(
+  quantidadeOriginal: string,
+  gramas: number | null,
+  gramasPorUnidade: number | null
+): { quantidade: string; gramas: number | null } {
+  if (!gramas || !gramasPorUnidade || !/unidade/i.test(quantidadeOriginal)) {
+    return { quantidade: quantidadeOriginal, gramas };
+  }
+
+  const resto = quantidadeOriginal.replace(/^[\d/]+\s*unidades?/i, "").trim();
+  const sufixo = resto ? ` ${resto}` : "";
+  const bruto = gramas / gramasPorUnidade;
+
+  if (bruto < 0.75) {
+    return { quantidade: `1/2 unidade${sufixo}`, gramas: Math.round(gramasPorUnidade / 2) };
+  }
+  const n = Math.max(1, Math.round(bruto));
+  return {
+    quantidade: `${n} ${n === 1 ? "unidade" : "unidades"}${sufixo}`,
+    gramas: Math.round(n * gramasPorUnidade),
+  };
+}
+
 /** Quantas variações no máximo por receita base. */
 const MAX_POR_RECEITA = 2;
 
@@ -313,17 +343,24 @@ async function main() {
           baseRecipeId: base.id,
           variacaoTroca: `${principal.ingredient.nome} → ${alternativa}`,
           ingredients: {
-            create: base.ingredients.map((ri) => ({
-              ingredientId:
-                ri.ingredientId === principal.ingredientId
-                  ? novoIngrediente.id
-                  : ri.ingredientId,
-              quantidade:
-                ri.ingredientId === principal.ingredientId
-                  ? substituirNoTexto(ri.quantidade, principal.ingredient.nome, alternativa)
-                  : ri.quantidade,
-              gramas: ri.gramas,
-            })),
+            create: base.ingredients.map((ri) => {
+              if (ri.ingredientId !== principal.ingredientId) {
+                return { ingredientId: ri.ingredientId, quantidade: ri.quantidade, gramas: ri.gramas };
+              }
+              // O ingrediente trocado tem outro peso por unidade: o texto
+              // precisa ser reescrito na unidade dele, senao "4 unidades" de
+              // morango (48 g) vira "4 unidades" de banana (280 g).
+              const ajustada = quantidadeNaNovaUnidade(
+                substituirNoTexto(ri.quantidade, principal.ingredient.nome, alternativa),
+                ri.gramas,
+                novoIngrediente.gramasPorUnidade
+              );
+              return {
+                ingredientId: novoIngrediente.id,
+                quantidade: ajustada.quantidade,
+                gramas: ajustada.gramas,
+              };
+            }),
           },
         },
       });

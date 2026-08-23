@@ -9,7 +9,7 @@ import type { TipoRefeicao } from "@prisma/client";
  * Quando existe foto, mostra a foto. Quando não existe — hoje a maioria do
  * catálogo — desenha uma capa gerada em vez de deixar um espaço vazio ou um
  * ícone solto: gradiente derivado do nome (sempre o mesmo para a mesma
- * receita), ícone do tipo de refeição e a inicial do prato.
+ * receita) e o ícone do tipo de refeição.
  *
  * Não é foto e não finge ser: é identidade visual até a foto real existir.
  */
@@ -51,7 +51,6 @@ export default function CapaReceita({
   imagemUrl,
   className,
   tamanhoIcone = 56,
-  mostrarInicial = true,
   prioridade = false,
 }: {
   tipo: TipoRefeicao;
@@ -59,7 +58,6 @@ export default function CapaReceita({
   imagemUrl: string | null;
   className?: string;
   tamanhoIcone?: number;
-  mostrarInicial?: boolean;
   prioridade?: boolean;
 }) {
   if (imagemUrl) {
@@ -79,7 +77,6 @@ export default function CapaReceita({
 
   const paletas = PALETAS[tipo] ?? PALETAS.ALMOCO;
   const gradiente = paletas[indiceEstavel(nome, paletas.length)];
-  const inicial = nome.trim().charAt(0).toUpperCase();
 
   return (
     <div
@@ -106,17 +103,12 @@ export default function CapaReceita({
         }}
       />
 
-      <div className="relative flex flex-col items-center gap-1 text-white/90">
-        <MealTypeIcon tipo={tipo} size={tamanhoIcone} />
-        {mostrarInicial && (
-          <span
-            className="font-display leading-none font-extrabold text-white/25"
-            style={{ fontSize: tamanhoIcone * 1.6 }}
-          >
-            {inicial}
-          </span>
-        )}
-      </div>
+      {/*
+        So o icone. A inicial da receita foi removida: letras estreitas como
+        "I" e "L" apareciam como um risco vertical solto e pareciam defeito de
+        renderizacao, nao design.
+      */}
+      <MealTypeIcon tipo={tipo} size={tamanhoIcone} className="relative text-white/90" />
     </div>
   );
 }

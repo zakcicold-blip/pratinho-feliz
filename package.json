@@ -19,6 +19,7 @@
     "db:equipamentos": "tsx prisma/seedEquipamentos.ts",
     "db:compras": "tsx prisma/seedCompras.ts",
     "db:variacoes": "tsx prisma/seedVariacoes.ts",
+    "db:corrigir-variacoes": "tsx prisma/corrigirQuantidadesVariacoes.ts",
     "stripe:setup": "node scripts/stripe-setup.mjs",
     "db:migrate": "prisma migrate deploy",
     "icons:generate": "node scripts/generate-icons.mjs",

@@ -22,9 +22,13 @@ const nomeContem = (termos: string[]) =>
 
 export default async function PapinhasPage() {
   const [inicio, amassados, pedacos] = await Promise.all([
+    // Sem `take`, esta consulta listava TODAS as receitas liberadas aos 6
+    // meses — 71 delas depois das variacoes, o que fazia a tela chegar a
+    // 398 KB. As outras fases ja limitavam a 8.
     db.recipe.findMany({
       where: { ativo: true, idadeMinimaMeses: { lte: 6 } },
       select: { id: true, nome: true, tipoRefeicao: true, tempoPreparoMin: true, imagemUrl: true },
+      take: 8,
       orderBy: { nome: "asc" },
     }),
     db.recipe.findMany({
