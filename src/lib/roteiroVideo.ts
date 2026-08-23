@@ -60,8 +60,8 @@ Público: mães e pais de crianças de 6 meses a 12 anos, cansados, no celular, 
 
 ## FORMATO (não negociável)
 - 3 cenas de no máximo 8 segundos cada. O Veo não gera mais que isso por clipe.
-- Cena 1: o prato PRONTO e apetitoso na tela, e a pessoa já falando. Nunca comece pelo preparo — quem rola o feed decide em 3 segundos.
-- Cena 2: o preparo no ponto mais satisfatório de ver (amassar, derreter, virar, polvilhar).
+- Cena 1: o prato PRONTO e apetitoso na tela, e a pessoa já falando — abrindo uma curiosidade que ela NÃO responde ainda. Nunca comece pelo preparo: quem rola o feed decide em 3 segundos.
+- Cena 2: responde a curiosidade da cena 1 e mostra o preparo no ponto mais satisfatório de ver (amassar, derreter, virar, polvilhar).
 - Cena 3: a criança comendo e gostando, ou o prato sendo servido. Fecha com emoção.
 - Vertical 9:16.
 
@@ -89,9 +89,33 @@ Regras que não podem ser quebradas:
 - Criança sempre de forma genérica e respeitosa ("a toddler's hands", "a child in a high chair"), sem rosto detalhado e sem nomear ninguém real.
 
 ## AS FALAS (português do Brasil)
-- No máximo 18 PALAVRAS por cena. Fala natural em português leva cerca de 3 palavras por segundo — passar disso corta no meio dos 8 segundos.
-- Tom de amiga contando, não de apresentadora de TV. Sem "olá pessoal", sem "hoje eu vou ensinar".
-- As três falas juntas têm que ensinar a receita de verdade: ingrediente, ponto e dica. Quem assistir consegue fazer.
+As três falas são UMA CONVERSA CONTÍNUA, não três frases soltas. A cena 2 termina o que a cena 1 começou.
+
+REGRA DA CENA 1 — LOOP ABERTO (é o que segura a pessoa):
+A primeira fala chama a mãe e ABRE uma curiosidade que ela NÃO resolve. Corta no meio, com reticências. A resposta só chega na cena 2.
+
+Modelo: chamar + fato curioso da receita + cortar antes da resposta.
+Exemplos bons:
+- "Mãe, você sabia que se você espremer meio limão no feijão..."
+- "Mãe, se o seu filho recusa brócolis, tem um jeito de cortar que muda tudo..."
+- "Olha, tem um detalhe nessa banana que quase ninguém faz..."
+- "Mãe, essa papinha fica muito mais nutritiva se você fizer uma coisa antes..."
+
+Exemplos ruins (não use): "Oi gente, hoje vou ensinar...", "Receita fácil e rápida!", "Bora fazer?"
+
+O fato precisa ser VERDADEIRO e sair da própria receita — ingrediente, ponto de preparo, combinação nutricional, corte seguro. Nunca invente curiosidade para gerar clique: é conteúdo de alimentação infantil, e a confiança é o ativo.
+
+REGRA DA CENA 2 — FECHA O LOOP:
+Começa exatamente respondendo o que ficou no ar, e já mostra como faz.
+Exemplo, seguindo o gancho do limão: "...a vitamina C faz o corpo aproveitar até três vezes mais o ferro do feijão. Espreme na hora de servir."
+
+REGRA DA CENA 3 — FECHA COM EMOÇÃO:
+Curta, sobre a criança comendo ou o resultado. Nada de informação nova.
+
+VALE PARA TODAS:
+- No máximo 18 PALAVRAS por cena. Fala natural em português corre a ~3 palavras por segundo — passar disso corta no meio dos 8 segundos.
+- Tom de amiga contando, não de apresentadora de TV.
+- Juntas, as três ensinam a receita de verdade: quem assistir consegue fazer.
 - Fale com a pessoa: "você", "seu filho".
 
 ## A MENÇÃO AO APP
@@ -106,7 +130,7 @@ Ruins (não use): "baixe o app", "link na bio", "acesse agora".
 Informe em "cenaComApp" o número da cena escolhida.
 
 ## TEXTO NA TELA E LEGENDA (português)
-- Gancho: no máximo 8 palavras, na cara da mãe cansada. Nada de "confira a receita incrível".
+- Gancho (campo "gancho"): é o texto que aparece ESCRITO no primeiro frame, no máximo 8 palavras. Reforça a curiosidade da fala da cena 1, com outras palavras — não repete a fala.
 - Texto na tela: 3 a 6 palavras por cena. Complementa a fala, não repete.
 - Legenda: 2 a 4 linhas, com a receita resumida e um motivo real para salvar.
 - O algoritmo do Reels premia SALVAMENTO e COMPARTILHAMENTO. Escreva para fazer salvar.
