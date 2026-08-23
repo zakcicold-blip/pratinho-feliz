@@ -217,6 +217,15 @@ model Recipe {
   ativo          Boolean  @default(true)
   createdAt      DateTime @default(now())
 
+  // Variacao gerada a partir de outra receita (troca de proteina ou de
+  // tuberculo por equivalente). Multiplica o catalogo sem escrever receita
+  // nova; a base fica registrada para dar para regerar ou remover em bloco.
+  baseRecipeId   String?
+  baseRecipe     Recipe?  @relation("VariacoesDaReceita", fields: [baseRecipeId], references: [id], onDelete: Cascade)
+  variacoes      Recipe[] @relation("VariacoesDaReceita")
+  /// Nome do ingrediente que foi trocado em relacao a base.
+  variacaoTroca  String?
+
   ingredients   RecipeIngredient[]
   mealSlots     MealSlot[]
   favorites     Favorite[]

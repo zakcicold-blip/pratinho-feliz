@@ -13,9 +13,22 @@ import { lerSinaisRotina } from "@/lib/rotinaSinais";
 
 const REPETITION_WINDOW_DIAS = 4;
 
+/**
+ * Chave de familia para a janela anti-repeticao.
+ *
+ * Uma variacao ("Pure de batata-doce com carne moida") herda score da base
+ * ("Pure de batata com carne moida"), entao sem isso o motor escolheria as
+ * duas em dias seguidos — e para quem come e o mesmo prato. Base e variacoes
+ * contam como uma coisa so.
+ */
+function familiaDaReceita(r: { id: string; baseRecipeId: string | null }): string {
+  return r.baseRecipeId ?? r.id;
+}
+
 type RecipeWithIngredients = {
   id: string;
   nome: string;
+  baseRecipeId: string | null;
   tipoRefeicao: TipoRefeicao;
   tempoPreparoMin: number;
   restricoes: string;
@@ -205,7 +218,8 @@ function scoreRecipe(
     }
   }
 
-  const vezesRecentes = recentUsados.filter((id) => id === recipe.id).length;
+  // Compara familia: base e suas variacoes contam como a mesma receita.
+  const vezesRecentes = recentUsados.filter((f) => f === familiaDaReceita(recipe)).length;
   score -= vezesRecentes * 50;
 
   score += Math.random() * 1.5;
@@ -291,7 +305,7 @@ export async function gerarPlano30Dias(childId: string, cicloNumero: number, dat
         explicacao: escolhido.motivo,
       });
 
-      usadosRecentes[tipo].push(escolhido.recipe.id);
+      usadosRecentes[tipo].push(familiaDaReceita(escolhido.recipe));
       if (usadosRecentes[tipo].length > REPETITION_WINDOW_DIAS) usadosRecentes[tipo].shift();
     }
   }
@@ -320,8 +334,12 @@ export async function gerarAlternativasParaSlot(mealSlotId: string, quantidade =
       tipo: slot.tipo,
       data: { gte: janelaInicio, lte: janelaFim },
     },
+    // baseRecipeId e necessario para a janela anti-repeticao enxergar familia.
+    include: { recipe: { select: { id: true, baseRecipeId: true } } },
   });
-  const usadosRecentes = vizinhos.map((v) => v.recipeId).filter((id): id is string => !!id);
+  const usadosRecentes = vizinhos
+    .map((v) => (v.recipe ? familiaDaReceita(v.recipe) : null))
+    .filter((f): f is string => !!f);
 
   const pool = await getRecipePool(slot.tipo);
   const candidatos = pool.filter((r) => passaRegrasDuras(r, ctx) && r.id !== slot.recipeId);
@@ -360,8 +378,12 @@ export async function gerarAlternativasComDespensa(mealSlotId: string, quantidad
       tipo: slot.tipo,
       data: { gte: janelaInicio, lte: janelaFim },
     },
+    // baseRecipeId e necessario para a janela anti-repeticao enxergar familia.
+    include: { recipe: { select: { id: true, baseRecipeId: true } } },
   });
-  const usadosRecentes = vizinhos.map((v) => v.recipeId).filter((id): id is string => !!id);
+  const usadosRecentes = vizinhos
+    .map((v) => (v.recipe ? familiaDaReceita(v.recipe) : null))
+    .filter((f): f is string => !!f);
 
   const pool = await getRecipePool(slot.tipo);
   const candidatos = pool.filter((r) => passaRegrasDuras(r, ctx) && r.id !== slot.recipeId);
