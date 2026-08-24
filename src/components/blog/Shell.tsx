@@ -26,11 +26,11 @@ export function BlogHeader() {
             Conheça o app
           </Link>
           <Link
-            href="/#planos"
+            href="/cadastro"
             data-heat="blog-header-cadastro"
             className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
           >
-            Assinar
+            Começar grátis
           </Link>
         </nav>
       </div>
@@ -80,11 +80,11 @@ export function BlogCTA() {
             e ainda gera a lista de compras. Você só serve.
           </p>
           <Link
-            href="/#planos"
+            href="/cadastro"
             data-heat="blog-cta-rodape"
             className="mt-7 inline-flex items-center gap-2 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/30 transition hover:bg-orange-600"
           >
-            Assinar e acessar <ArrowRight size={17} />
+            Criar conta grátis <ArrowRight size={17} />
           </Link>
         </div>
       </div>
@@ -111,8 +111,8 @@ export function BlogFooter() {
           <Link href="/" className="text-stone-500 hover:text-stone-700">
             O app
           </Link>
-          <Link href="/#planos" className="text-stone-500 hover:text-stone-700">
-            Assinar
+          <Link href="/cadastro" className="text-stone-500 hover:text-stone-700">
+            Criar conta
           </Link>
           <Link href="/login" className="text-stone-500 hover:text-stone-700">
             Entrar

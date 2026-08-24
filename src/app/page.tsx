@@ -51,15 +51,29 @@ export default async function HomePage({
             </span>
             Pratinho Feliz
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium text-stone-600 hover:text-stone-900">
-              Já sou membro
+          {/*
+            Tres portas no topo, na ordem de compromisso: entrar, testar de
+            graca, assinar. Os rotulos encurtam no celular para os tres caberem
+            lado a lado em 375px sem quebrar linha.
+          */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/login"
+              className="px-1 text-[13px] font-medium text-stone-600 hover:text-stone-900 sm:text-sm"
+            >
+              Entrar
+            </Link>
+            <Link
+              href="/cadastro"
+              className="rounded-full border border-stone-300 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-stone-700 transition hover:border-stone-400 hover:bg-white sm:px-4 sm:text-sm"
+            >
+              Criar conta
             </Link>
             <a
               href="#planos"
-              className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
+              className="rounded-full bg-orange-500 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600 sm:px-4 sm:text-sm"
             >
-              Assinar agora
+              Assinar
             </a>
           </div>
         </div>

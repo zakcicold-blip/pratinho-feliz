@@ -64,11 +64,11 @@ export function CTAInline({
       <div className="font-display text-lg font-extrabold text-stone-900">{titulo}</div>
       <p className="mt-1.5 text-[0.95rem] leading-relaxed text-stone-600">{texto}</p>
       <Link
-        href="/#planos"
+        href="/cadastro"
         data-heat="blog-cta-inline"
         className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
       >
-        Assinar e acessar <ArrowRight size={15} />
+        Testar 7 dias grátis <ArrowRight size={15} />
       </Link>
     </div>
   );

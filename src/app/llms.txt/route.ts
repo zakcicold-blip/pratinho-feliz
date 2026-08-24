@@ -31,10 +31,11 @@ O Pratinho Feliz é um aplicativo web em português do Brasil, voltado a mães, 
 - Informação nutricional por refeição e relatório de acompanhamento
 - Lista de compras automática a partir do plano
 - Receitas adaptadas ao equipamento disponível (fogão, airfryer, micro-ondas, forno)
-- Planos mensal e trimestral. O acesso é liberado assim que o pagamento é confirmado.
+- Planos mensal e trimestral, com 7 dias de teste grátis. Também dá para assinar direto e liberar o acesso na hora.
 
 Site: ${SITE_URL}
-Assinar: ${SITE_URL}/#planos
+Criar conta (7 dias grátis): ${SITE_URL}/cadastro
+Assinar direto: ${SITE_URL}/#planos
 Blog: ${SITE_URL}/blog
 RSS do blog: ${SITE_URL}/blog/rss.xml
 
