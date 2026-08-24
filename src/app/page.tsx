@@ -156,10 +156,11 @@ export default async function HomePage({
       {/* O QUE VOCÊ RECEBE */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Tudo que você recebe</h2>
-            <p className="mt-2 text-sm text-stone-500">Do cardápio à lista de compras, num app só.</p>
-          </div>
+          <TituloSecao
+            sobrelinha="O que está incluso"
+            titulo="Tudo que você recebe"
+            texto="Do cardápio à lista de compras, num app só."
+          />
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
             <Beneficio icon={CalendarDays} tone="text-orange-500 bg-orange-50" titulo="30 dias prontos" texto="Café, almoço, lanche e jantar pela idade — de 6 meses a 12 anos." />
             <Beneficio icon={Salad} tone="text-emerald-500 bg-emerald-50" titulo="Nutrição de verdade" texto="Valores por porção com base na TACO (NEPA/UNICAMP)." />
@@ -173,26 +174,22 @@ export default async function HomePage({
 
       {/* POR DENTRO DO APP — prints reais */}
       <section className="mx-auto w-full max-w-5xl px-6 py-14">
-        <div className="mb-8 text-center">
-          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Por dentro do app</h2>
-          <p className="mt-2 text-sm text-stone-500">
-            Telas de verdade — é exatamente isso que você abre no celular.
-          </p>
-        </div>
+        <TituloSecao
+          sobrelinha="Telas reais"
+          titulo="Por dentro do app"
+          texto="É exatamente isso que você abre no celular."
+        />
         <GaleriaDoApp />
       </section>
 
       {/* O APP NO SEU DIA — o que a pessoa realmente faz, na ordem em que faz */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
-              O app no seu dia
-            </h2>
-            <p className="mt-2 text-sm text-stone-500">
-              Não é uma lista de receitas. É o que resolver o almoço exige, na ordem em que aparece.
-            </p>
-          </div>
+          <TituloSecao
+            sobrelinha="Na rotina"
+            titulo="O app no seu dia"
+            texto="Não é uma lista de receitas. É o que resolver o almoço exige, na ordem em que aparece."
+          />
           <div className="grid gap-4 md:grid-cols-2">
             <Recurso
               icon={Clock}
@@ -241,12 +238,13 @@ export default async function HomePage({
       </section>
 
       {/* COMO FUNCIONA */}
-      <section className="bg-white">
+      <section>
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Como funciona</h2>
-            <p className="mt-2 text-sm text-stone-500">Do cadastro ao primeiro cardápio em minutos.</p>
-          </div>
+          <TituloSecao
+            sobrelinha="Primeiros minutos"
+            titulo="Como funciona"
+            texto="Do cadastro ao primeiro cardápio, sem cartão no caminho."
+          />
           {/*
             Sem a foto publicada o espaco nao existe, e a coluna vazia deixaria
             os passos espremidos na metade da largura — por isso a grade de
@@ -266,14 +264,11 @@ export default async function HomePage({
       {/* FOTOS REAIS — como fica na mesa */}
       {mostraFotosCriancas && (
         <section className="mx-auto w-full max-w-5xl px-6 py-14">
-          <div className="mb-8 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
-              Como fica na mesa
-            </h2>
-            <p className="mt-2 text-sm text-stone-500">
-              Refeições montadas pelo plano, na casa de quem já usa.
-            </p>
-          </div>
+          <TituloSecao
+            sobrelinha="Na vida real"
+            titulo="Como fica na mesa"
+            texto="Refeições montadas pelo plano, na casa de quem já usa."
+          />
           <div className="grid gap-4 sm:grid-cols-3">
             {FOTOS_CRIANCAS.map((foto, i) => (
               <FotoDoSite key={i} foto={foto} sizes="(min-width: 640px) 33vw, 100vw" />
@@ -285,14 +280,11 @@ export default async function HomePage({
       {/* PARA QUEM É */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
-              Feito para três situações
-            </h2>
-            <p className="mt-2 text-sm text-stone-500">
-              Se você se reconhece em alguma delas, o app foi desenhado para o seu caso.
-            </p>
-          </div>
+          <TituloSecao
+            sobrelinha="Para quem é"
+            titulo="Feito para três situações"
+            texto="Se você se reconhece em alguma delas, o app foi desenhado para o seu caso."
+          />
           <div className="grid gap-4 md:grid-cols-3">
             <Perfil
               icon={Baby}
@@ -315,11 +307,7 @@ export default async function HomePage({
 
       {/* ANTES E DEPOIS */}
       <section className="mx-auto w-full max-w-5xl px-6 py-14">
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
-            O que muda na prática
-          </h2>
-        </div>
+        <TituloSecao sobrelinha="Antes e depois" titulo="O que muda na prática" />
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-3xl border border-stone-200/60 bg-white p-6">
             <div className="text-sm font-semibold text-stone-400">Como costuma ser</div>
@@ -355,12 +343,12 @@ export default async function HomePage({
       {/* SEGURANÇA */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
-          <div className="mb-7 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Feito com segurança para cada idade</h2>
-            <p className="mt-2 text-sm text-stone-500">
-              De 6 meses a 12 anos, incluindo papinhas de introdução alimentar.
-            </p>
-          </div>
+          <TituloSecao
+            sobrelinha="Segurança"
+            titulo="Feito com segurança para cada idade"
+            texto="De 6 meses a 12 anos, incluindo papinhas de introdução alimentar."
+            espaco="mb-7"
+          />
           <div className="flex flex-wrap justify-center gap-2.5">
             <Confianca icon={Baby} texto="Porções pela faixa etária" />
             <Confianca icon={ShieldCheck} texto="Mel só após 1 ano, oleaginosas após os 3" />
@@ -381,24 +369,30 @@ export default async function HomePage({
 
       {/* PLANOS */}
       <section id="planos" className="mx-auto w-full max-w-5xl scroll-mt-20 px-6 py-14">
-        <div className="text-center">
-          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
-            Pague e libere seu acesso agora mesmo
-          </h2>
-          <p className="mt-2 text-sm text-stone-500">
-            Sem teste e sem espera: você paga, cria sua senha na tela seguinte e já entra no app.
-          </p>
-          <p className="mt-1.5 text-sm text-stone-500">
-            Prefere conhecer antes?{" "}
-            <Link href="/cadastro" className="font-semibold text-orange-600 hover:underline">
-              Monte o cardápio grátis
-            </Link>{" "}
-            e decida no fim.
-          </p>
-        </div>
-        <div className="mx-auto mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
+        <TituloSecao
+          sobrelinha="Planos"
+          titulo="Pague e libere seu acesso agora mesmo"
+          texto="Sem teste e sem espera: você paga, cria sua senha na tela seguinte e já entra no app."
+          espaco="mb-2"
+        />
+        <p className="text-center text-sm text-stone-500">
+          Prefere conhecer antes?{" "}
+          <Link href="/cadastro" className="font-semibold text-orange-600 hover:underline">
+            Monte o cardápio grátis
+          </Link>{" "}
+          e decida no fim.
+        </p>
+        <div className="mx-auto mt-8 grid max-w-2xl items-start gap-4 sm:grid-cols-2">
           <PlanoCard nome="Mensal" preco="R$ 29,90" periodo="por mês" plano="MENSAL" destaque={false} />
-          <PlanoCard nome="Trimestral" preco="R$ 59,90" periodo="a cada 3 meses" selo="3 meses pelo preço de 2" plano="TRIMESTRAL" destaque />
+          <PlanoCard
+            nome="Trimestral"
+            preco="R$ 59,90"
+            periodo="a cada 3 meses"
+            selo="Economize R$ 29,80"
+            equivale="Sai por R$ 19,97 por mês"
+            plano="TRIMESTRAL"
+            destaque
+          />
         </div>
         <ul className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-stone-500">
           <li className="flex items-center gap-1.5"><Clock size={15} className="text-emerald-500" /> Acesso imediato após pagar</li>
@@ -421,17 +415,87 @@ export default async function HomePage({
         </div>
       </section>
 
-      <footer className="mx-auto w-full max-w-5xl px-6 py-10">
-        <div className="flex items-center gap-2 text-sm font-bold text-stone-700">
-          <UtensilsCrossed size={16} className="text-orange-500" /> Pratinho Feliz
+      {/* FECHAMENTO */}
+      <section className="mx-auto w-full max-w-5xl px-6 pb-14">
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-stone-900 to-stone-800 px-7 py-12 text-center sm:px-12">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-20 -right-12 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl"
+          />
+          <div className="relative">
+            <h2 className="font-display text-2xl font-extrabold text-white sm:text-3xl">
+              Amanhã de manhã, o almoço já está decidido
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-[0.97rem] leading-relaxed text-stone-300">
+              Monte o cardápio do seu filho agora e veja o mês inteiro pronto antes de decidir
+              qualquer coisa sobre pagamento.
+            </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              <Link
+                href="/cadastro"
+                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/30 transition hover:bg-orange-600"
+              >
+                Montar o cardápio grátis <ArrowRight size={17} />
+              </Link>
+              <a
+                href="#planos"
+                className="flex items-center gap-1.5 rounded-full border border-white/25 px-7 py-3.5 font-semibold text-white transition hover:bg-white/10"
+              >
+                Assinar direto
+              </a>
+            </div>
+            <p className="mt-5 text-xs text-stone-400">
+              7 dias grátis no teste · cancele pelo app · pagamento processado pelo Stripe
+            </p>
+          </div>
         </div>
-        <p className="mt-3 max-w-2xl text-sm text-stone-400">
-          Valores nutricionais com base na TACO (NEPA/UNICAMP). Ferramenta de apoio à rotina
-          alimentar — não substitui pediatra ou nutricionista.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          <Link href="/login" className="text-stone-500 hover:text-stone-700">Entrar</Link>
-          <Link href="/privacidade" className="text-stone-500 hover:text-stone-700">Política de privacidade</Link>
+      </section>
+
+      <footer className="border-t border-stone-200/60">
+        <div className="mx-auto w-full max-w-5xl px-6 py-10">
+          <div className="grid gap-8 sm:grid-cols-[1.4fr_1fr_1fr]">
+            <div>
+              <div className="flex items-center gap-2 text-sm font-bold text-stone-700">
+                <UtensilsCrossed size={16} className="text-orange-500" /> Pratinho Feliz
+              </div>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-stone-400">
+                Valores nutricionais com base na TACO (NEPA/UNICAMP). Ferramenta de apoio à rotina
+                alimentar — não substitui pediatra ou nutricionista.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">
+                Começar
+              </div>
+              <div className="mt-3 flex flex-col gap-2 text-sm">
+                <Link href="/cadastro" className="text-stone-500 hover:text-stone-700">
+                  Criar conta grátis
+                </Link>
+                <a href="#planos" className="text-stone-500 hover:text-stone-700">
+                  Ver planos
+                </a>
+                <Link href="/login" className="text-stone-500 hover:text-stone-700">
+                  Entrar
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">
+                Mais
+              </div>
+              <div className="mt-3 flex flex-col gap-2 text-sm">
+                <Link href="/blog" className="text-stone-500 hover:text-stone-700">
+                  Blog
+                </Link>
+                <Link href="/privacidade" className="text-stone-500 hover:text-stone-700">
+                  Política de privacidade
+                </Link>
+              </div>
+            </div>
+          </div>
+          <p className="mt-8 border-t border-stone-200/60 pt-6 text-xs text-stone-400">
+            © {new Date().getFullYear()} Pratinho Feliz. Todos os direitos reservados.
+          </p>
         </div>
       </footer>
     </main>
@@ -440,11 +504,40 @@ export default async function HomePage({
 
 const FAQ = [
   { q: "Quando eu recebo o acesso?", a: "Na hora. Se você assinar, define sua senha logo após o pagamento e já entra. Se preferir testar antes, cria a conta e usa 7 dias grátis." },
-  { q: "Posso cancelar quando quiser?", a: "Sim, sem fidelidade. Você cancela a qualquer momento e mantém o acesso até o fim do período já pago." },
+  { q: "Posso cancelar quando quiser?", a: "Sim, não existe fidelidade. O pedido de cancelamento sai pelo próprio app, em Configurações, e você mantém o acesso até o fim do período já pago." },
   { q: "Para qual idade serve?", a: "De 6 meses a 12 anos. As receitas e porções seguem a faixa etária, incluindo papinhas de introdução alimentar." },
   { q: "E se meu filho tem alergia ou restrição?", a: "Você informa no início e o cardápio nunca sugere receitas com aqueles ingredientes. Dá para ajustar quando quiser." },
+  { q: "Preciso instalar alguma coisa?", a: "Não. Funciona no navegador do celular, e se quiser dá para adicionar o ícone na tela inicial e usar como aplicativo." },
   { q: "Meu filho é enjoado. Funciona?", a: "Foi feito pensando nisso: você marca o que ele recusa e o app para de insistir. E dá para trocar qualquer refeição em um toque." },
 ];
+
+/**
+ * Cabecalho de secao.
+ *
+ * A sobrelinha existe porque a pagina ficou longa: com oito titulos
+ * centralizados iguais, a pessoa perde a nocao de onde esta.
+ */
+function TituloSecao({
+  sobrelinha,
+  titulo,
+  texto,
+  espaco = "mb-10",
+}: {
+  sobrelinha: string;
+  titulo: string;
+  texto?: string;
+  espaco?: string;
+}) {
+  return (
+    <div className={`${espaco} text-center`}>
+      <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange-500">
+        {sobrelinha}
+      </span>
+      <h2 className="font-display mt-2 text-2xl font-bold text-stone-900 md:text-3xl">{titulo}</h2>
+      {texto && <p className="mx-auto mt-2 max-w-xl text-sm text-stone-500">{texto}</p>}
+    </div>
+  );
+}
 
 function Beneficio({ icon: Icon, tone, titulo, texto }: { icon: LucideIcon; tone: string; titulo: string; texto: string }) {
   return (
@@ -535,11 +628,20 @@ function Faq({ q, a }: { q: string; a: string }) {
   );
 }
 
+/** O que os dois planos entregam — identico nos dois, so muda o preco. */
+const INCLUSO = [
+  "30 dias de cardápio pela idade da criança",
+  "Lista de compras automática da semana",
+  "Troca de refeição e opções com o que tem em casa",
+  "Vários filhos no mesmo perfil",
+];
+
 function PlanoCard({
   nome,
   preco,
   periodo,
   selo,
+  equivale,
   plano,
   destaque,
 }: {
@@ -547,14 +649,17 @@ function PlanoCard({
   preco: string;
   periodo: string;
   selo?: string;
+  equivale?: string;
   plano: "MENSAL" | "TRIMESTRAL";
   destaque: boolean;
 }) {
   return (
     <form
       action={irParaCheckoutDireto.bind(null, plano)}
-      className={`relative flex flex-col rounded-3xl border bg-white p-6 shadow-card ${
-        destaque ? "border-orange-300 ring-1 ring-orange-200" : "border-stone-200/60"
+      className={`relative flex h-full flex-col rounded-3xl border bg-white p-6 ${
+        destaque
+          ? "border-orange-300 shadow-card-lg ring-2 ring-orange-200"
+          : "border-stone-200/60 shadow-card"
       }`}
     >
       {selo && (
@@ -567,6 +672,20 @@ function PlanoCard({
         <span className="font-display text-3xl font-extrabold text-stone-900">{preco}</span>
         <span className="text-sm text-stone-400">{periodo}</span>
       </div>
+      {equivale ? (
+        <div className="mt-1 text-xs font-semibold text-emerald-600">{equivale}</div>
+      ) : (
+        <div className="mt-1 text-xs text-stone-400">Renova todo mês</div>
+      )}
+
+      <ul className="mt-4 space-y-2 border-t border-stone-100 pt-4">
+        {INCLUSO.map((item) => (
+          <li key={item} className="flex items-start gap-2 text-[13px] leading-snug text-stone-600">
+            <Check size={14} className="mt-0.5 shrink-0 text-emerald-500" />
+            {item}
+          </li>
+        ))}
+      </ul>
       <BotaoAssinar plano={plano} valor={plano === "TRIMESTRAL" ? 59.9 : 29.9} destaque={destaque} />
     </form>
   );
