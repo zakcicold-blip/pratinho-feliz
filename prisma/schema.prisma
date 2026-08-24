@@ -411,6 +411,11 @@ model Subscription {
   conviteId        String?
   convite          ConviteCortesia? @relation(fields: [conviteId], references: [id], onDelete: SetNull)
 
+  // Pagamento pela Cakto. O Stripe continua nos campos acima para quem assinou
+  // antes da troca de gateway; os dois convivem sem se atrapalhar.
+  caktoAssinaturaId String?  @unique
+  caktoRefId        String?
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -486,6 +491,41 @@ model ConviteCortesia {
   criadoPor   User     @relation("ConvitesCriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
   assinaturas Subscription[]
   createdAt   DateTime @default(now())
+}
+
+/**
+ * Compra registrada pelo webhook da Cakto.
+ *
+ * O checkout deles e hospedado fora: a pessoa paga sem estar logada e sem
+ * conta nenhuma. O webhook chega primeiro, cria esta linha, e ela e o que
+ * permite a pessoa reivindicar o acesso depois em /acesso.
+ *
+ * O `id` e o id do evento na Cakto, o que da idempotencia de graca — reenvio
+ * do mesmo evento cai no mesmo registro em vez de duplicar a compra.
+ */
+model CompraCakto {
+  id           String    @id
+  refId        String?
+  evento       String
+  status       String
+  email        String
+  nome         String?
+  // Ultimos quatro digitos do CPF informado no pagamento. Serve de conferencia
+  // na hora de reivindicar o acesso; o documento inteiro nao e guardado.
+  docLast4     String?
+  valor        Float?
+  produtoNome  String?
+  ofertaId     String?
+  assinaturaId String?
+  // Preenchidos quando a compra vira acesso de verdade.
+  userId       String?
+  liberadaEm   DateTime?
+  // Tentativas erradas de reivindicar, para travar quem fica adivinhando.
+  tentativas   Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([email])
 }
 
 model AuditLog {
