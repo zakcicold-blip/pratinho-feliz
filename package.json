@@ -24,7 +24,8 @@
     "db:migrate": "prisma migrate deploy",
     "icons:generate": "node scripts/generate-icons.mjs",
     "screens": "node scripts/screenshots.mjs",
-    "senha:reset": "tsx scripts/resetarSenha.ts"
+    "senha:reset": "tsx scripts/resetarSenha.ts",
+    "cakto:testar": "node scripts/testarWebhookCakto.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
