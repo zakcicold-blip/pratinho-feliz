@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/currentChild";
 import { getStripe, DIAS_TESTE_GRATIS } from "@/lib/stripe";
+import { enviarEventoCapi } from "@/lib/metaCapi";
 
 /** Origem da requisição (https://host), para montar as URLs de retorno. */
 async function origem(): Promise<string> {
@@ -120,8 +121,27 @@ export async function criarCheckoutTrial(
 }
 
 /** Ação de formulário: cria o checkout do plano escolhido e vai para o Stripe. */
-export async function irParaCheckout(plano: PlanoAssinado = "MENSAL") {
+export async function irParaCheckout(plano: PlanoAssinado = "MENSAL", formData?: FormData) {
   const res = await criarCheckoutTrial(plano);
-  if ("url" in res) redirect(res.url);
-  redirect(`/assinar?erro=${encodeURIComponent(res.error)}`);
+  if (!("url" in res)) redirect(`/assinar?erro=${encodeURIComponent(res.error)}`);
+
+  // InitiateCheckout pelo servidor, com o mesmo id que o botao usou no pixel.
+  // Ir para o Stripe e sair do site: bloqueador de anuncio, aba fechada rapido
+  // ou pixel ainda carregando derrubam o evento do navegador — o do servidor
+  // chega de qualquer forma, e a Meta junta os dois pelo id.
+  const h = await headers();
+  const jar = await cookies();
+  await enviarEventoCapi({
+    eventName: "InitiateCheckout",
+    eventId: String(formData?.get("eventId") ?? "") || crypto.randomUUID(),
+    fbp: jar.get("_fbp")?.value ?? null,
+    fbc: jar.get("_fbc")?.value ?? null,
+    clientIp: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
+    userAgent: h.get("user-agent"),
+    value: plano === "TRIMESTRAL" ? 59.9 : 29.9,
+    currency: "BRL",
+    eventSourceUrl: `${await origem()}/assinar`,
+  });
+
+  redirect(res.url);
 }

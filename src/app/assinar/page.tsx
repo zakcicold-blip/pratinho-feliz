@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Check, ShieldCheck, CalendarClock, CreditCard } from "lucide-react";
+import { Check, ShieldCheck, CalendarClock, CreditCard, Lock } from "lucide-react";
 import { requireSession } from "@/lib/currentChild";
 import { podeAcessarApp, reconciliarAssinatura } from "@/lib/assinatura";
 import { DIAS_TESTE_GRATIS } from "@/lib/stripe";
@@ -35,6 +35,8 @@ export default async function AssinarPage({
     }
   }
 
+  // Escrito na chave do que a pessoa ja montou no onboarding — nesta altura o
+  // plano dela existe, e o cartao so destrava o que ela ja viu.
   const beneficios = [
     "Cardápio de 30 dias que se adapta ao sono, à rotina e aos gostos da criança",
     "Troca de qualquer refeição e opções com o que você tem em casa",
@@ -53,12 +55,38 @@ export default async function AssinarPage({
         </span>
 
         <h1 className="mt-4 text-2xl font-bold text-stone-800">
-          Libere o plano por {DIAS_TESTE_GRATIS} dias grátis
+          Seu cardápio está pronto
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-stone-500">
-          Para abrir o cardápio completo, adicione uma forma de pagamento. Você não é cobrado agora
-          — só depois de {DIAS_TESTE_GRATIS} dias, e pode cancelar antes disso quando quiser.
+          Para abrir os 30 dias completos, confirme uma forma de pagamento. <strong className="font-semibold text-stone-700">Hoje você
+          paga R$ 0,00</strong> — o teste roda por {DIAS_TESTE_GRATIS} dias e você decide depois.
         </p>
+
+        {/* As tres duvidas que travam a pessoa nesta tela, respondidas antes do botao. */}
+        <ul className="mt-4 space-y-2 rounded-2xl bg-[#fdfaf6] p-4">
+          <li className="flex items-start gap-2.5 text-[13px] leading-snug text-stone-600">
+            <CalendarClock size={15} className="mt-0.5 shrink-0 text-orange-500" />
+            <span>
+              <strong className="font-semibold text-stone-800">Nada é cobrado agora.</strong> A
+              primeira cobrança só acontece no {DIAS_TESTE_GRATIS}º dia, se você não cancelar antes.
+            </span>
+          </li>
+          <li className="flex items-start gap-2.5 text-[13px] leading-snug text-stone-600">
+            <CreditCard size={15} className="mt-0.5 shrink-0 text-orange-500" />
+            <span>
+              <strong className="font-semibold text-stone-800">Você cancela pelo próprio app</strong>,
+              em Configurações, quando quiser — sem ligação e sem falar com vendedor.
+            </span>
+          </li>
+          <li className="flex items-start gap-2.5 text-[13px] leading-snug text-stone-600">
+            <ShieldCheck size={15} className="mt-0.5 shrink-0 text-orange-500" />
+            <span>
+              <strong className="font-semibold text-stone-800">Quem processa é o Stripe</strong>, o
+              mesmo sistema de pagamento usado por Amazon e Uber. O cartão é digitado no ambiente
+              deles — não passa por nós.
+            </span>
+          </li>
+        </ul>
 
         {cancelado && (
           <p className="mt-4 rounded-xl bg-amber-50 px-3 py-2 text-[13px] text-amber-800">
@@ -88,14 +116,21 @@ export default async function AssinarPage({
           <IniciarTrialButton />
         </div>
 
-        <div className="mt-4 flex items-center justify-center gap-4 text-[11px] text-stone-400">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-stone-400">
           <span className="flex items-center gap-1">
-            <ShieldCheck size={13} /> Pagamento seguro via Stripe
+            <Lock size={13} /> Conexão criptografada
           </span>
           <span className="flex items-center gap-1">
-            <CreditCard size={13} /> Cancele quando quiser
+            <ShieldCheck size={13} /> Processado pelo Stripe
+          </span>
+          <span className="flex items-center gap-1">
+            <CreditCard size={13} /> Sem fidelidade
           </span>
         </div>
+        <p className="mt-3 text-center text-[11px] leading-snug text-stone-400">
+          Pedindo o cancelamento durante o teste, você não é cobrado e mantém o acesso até o fim dos{" "}
+          {DIAS_TESTE_GRATIS} dias.
+        </p>
       </div>
 
       <form action={signOutAction} className="mt-6 text-center">

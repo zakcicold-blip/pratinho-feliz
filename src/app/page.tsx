@@ -71,6 +71,11 @@ export default async function HomePage({
             graca, assinar. Os rotulos encurtam no celular para os tres caberem
             lado a lado em 375px sem quebrar linha.
           */}
+          {/*
+            O caminho padrao e criar a conta e montar o cardapio antes de falar
+            de cartao. Comprar direto continua existindo, mas so na secao de
+            planos — por isso "Ver planos" aqui e ancora, nao botao principal.
+          */}
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/login"
@@ -78,18 +83,18 @@ export default async function HomePage({
             >
               Entrar
             </Link>
-            <Link
-              href="/cadastro"
-              className="rounded-full border border-stone-300 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-stone-700 transition hover:border-stone-400 hover:bg-white sm:px-4 sm:text-sm"
-            >
-              Criar conta
-            </Link>
             <a
               href="#planos"
+              className="hidden text-[13px] font-medium whitespace-nowrap text-stone-600 hover:text-stone-900 sm:block sm:text-sm"
+            >
+              Ver planos
+            </a>
+            <Link
+              href="/cadastro"
               className="rounded-full bg-orange-500 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600 sm:px-4 sm:text-sm"
             >
-              Assinar
-            </a>
+              Começar grátis
+            </Link>
           </div>
         </div>
       </header>
@@ -111,27 +116,27 @@ export default async function HomePage({
             </p>
             <p className="mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700">
               <Zap size={14} className="mr-1.5 inline align--2 text-orange-500" />
-              Você escolhe por onde começar: assine e entre na hora, ou crie sua conta e teste 7
-              dias antes de decidir.
+              Crie a conta, responda sobre a criança e veja o cardápio dela montado — só depois
+              disso o app pede pagamento, com 7 dias grátis.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
-              <a
-                href="#planos"
-                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
-              >
-                Assinar e acessar <ArrowRight size={16} />
-              </a>
               <Link
                 href="/cadastro"
+                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
+              >
+                Montar o cardápio grátis <ArrowRight size={16} />
+              </Link>
+              <a
+                href="#planos"
                 className="flex items-center gap-1.5 rounded-full border border-stone-300 bg-white/70 px-6 py-3.5 font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-white"
               >
-                Testar 7 dias grátis
-              </Link>
+                Já quero assinar
+              </a>
             </div>
             <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Acesso na hora ao assinar</span>
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cancele quando quiser</span>
-              <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento seguro</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cardápio antes do cartão</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> 7 dias grátis</span>
+              <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento via Stripe</span>
             </div>
           </div>
           <div className="flex justify-center md:justify-end">
@@ -240,7 +245,7 @@ export default async function HomePage({
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
           <div className="mb-10 text-center">
             <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Como funciona</h2>
-            <p className="mt-2 text-sm text-stone-500">Da entrada ao primeiro cardápio em minutos.</p>
+            <p className="mt-2 text-sm text-stone-500">Do cadastro ao primeiro cardápio em minutos.</p>
           </div>
           {/*
             Sem a foto publicada o espaco nao existe, e a coluna vazia deixaria
@@ -249,9 +254,9 @@ export default async function HomePage({
           */}
           <div className={mostraFotoRotina ? "grid items-center gap-8 md:grid-cols-[1fr_0.8fr]" : ""}>
             <div className={mostraFotoRotina ? "grid gap-6 sm:grid-cols-3 md:grid-cols-1" : "grid gap-6 md:grid-cols-3"}>
-              <Passo numero={1} titulo="Entre por onde preferir" texto="Assine e acesse na hora, ou crie a conta e teste 7 dias." />
+              <Passo numero={1} titulo="Crie sua conta" texto="E-mail e senha. Nenhum cartão é pedido nesta etapa." />
               <Passo numero={2} titulo="Conte sobre a criança" texto="Idade, gostos, recusas e restrições — leva menos de 5 minutos." />
-              <Passo numero={3} titulo="Receba o plano" texto="30 dias de refeições e a lista de compras, prontos pra usar." />
+              <Passo numero={3} titulo="Veja o plano e decida" texto="O cardápio é montado na sua frente. Só então você libera os 30 dias, com 7 dias grátis." />
             </div>
             {mostraFotoRotina && <FotoDoSite foto={FOTO_ROTINA} sizes="(min-width: 768px) 40vw, 100vw" />}
           </div>
@@ -377,13 +382,18 @@ export default async function HomePage({
       {/* PLANOS */}
       <section id="planos" className="mx-auto w-full max-w-5xl scroll-mt-20 px-6 py-14">
         <div className="text-center">
-          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Escolha seu plano</h2>
+          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
+            Pague e libere seu acesso agora mesmo
+          </h2>
           <p className="mt-2 text-sm text-stone-500">
-            Assinando, o app abre na hora. Prefere experimentar antes?{" "}
+            Sem teste e sem espera: você paga, cria sua senha na tela seguinte e já entra no app.
+          </p>
+          <p className="mt-1.5 text-sm text-stone-500">
+            Prefere conhecer antes?{" "}
             <Link href="/cadastro" className="font-semibold text-orange-600 hover:underline">
-              Comece pelos 7 dias grátis
-            </Link>
-            .
+              Monte o cardápio grátis
+            </Link>{" "}
+            e decida no fim.
           </p>
         </div>
         <div className="mx-auto mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
