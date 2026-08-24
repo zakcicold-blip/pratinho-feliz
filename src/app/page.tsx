@@ -72,9 +72,9 @@ export default async function HomePage({
             lado a lado em 375px sem quebrar linha.
           */}
           {/*
-            O caminho padrao e criar a conta e montar o cardapio antes de falar
-            de cartao. Comprar direto continua existindo, mas so na secao de
-            planos — por isso "Ver planos" aqui e ancora, nao botao principal.
+            So duas portas no topo: entrar e criar conta. O botao de assinatura
+            saiu daqui — comprar direto continua existindo, mas na secao de
+            planos, depois de a pessoa ter visto o que o app faz.
           */}
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
@@ -83,12 +83,6 @@ export default async function HomePage({
             >
               Entrar
             </Link>
-            <a
-              href="#planos"
-              className="hidden text-[13px] font-medium whitespace-nowrap text-stone-600 hover:text-stone-900 sm:block sm:text-sm"
-            >
-              Ver planos
-            </a>
             <Link
               href="/cadastro"
               className="rounded-full bg-orange-500 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600 sm:px-4 sm:text-sm"
