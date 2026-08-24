@@ -23,7 +23,8 @@
     "stripe:setup": "node scripts/stripe-setup.mjs",
     "db:migrate": "prisma migrate deploy",
     "icons:generate": "node scripts/generate-icons.mjs",
-    "screens": "node scripts/screenshots.mjs"
+    "screens": "node scripts/screenshots.mjs",
+    "senha:reset": "tsx scripts/resetarSenha.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
