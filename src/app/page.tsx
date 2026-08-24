@@ -23,6 +23,11 @@ import {
   Clock,
   Lock,
   ChevronDown,
+  ChefHat,
+  ListChecks,
+  Sparkles,
+  Heart,
+  X,
   type LucideIcon,
 } from "lucide-react";
 
@@ -172,6 +177,64 @@ export default async function HomePage({
         <GaleriaDoApp />
       </section>
 
+      {/* O APP NO SEU DIA — o que a pessoa realmente faz, na ordem em que faz */}
+      <section className="bg-white">
+        <div className="mx-auto w-full max-w-5xl px-6 py-14">
+          <div className="mb-10 text-center">
+            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
+              O app no seu dia
+            </h2>
+            <p className="mt-2 text-sm text-stone-500">
+              Não é uma lista de receitas. É o que resolver o almoço exige, na ordem em que aparece.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Recurso
+              icon={Clock}
+              tone="text-orange-500 bg-orange-50"
+              titulo="De manhã, você abre e já sabe"
+              texto="A tela de hoje mostra café, almoço, lanche e jantar da criança, com o passo a passo de cada um."
+              detalhe="Nada de decidir de estômago vazio às 11h."
+            />
+            <Recurso
+              icon={RefreshCw}
+              tone="text-blue-500 bg-blue-50"
+              titulo="Não deu pra fazer? Troca"
+              texto="Qualquer refeição sai por outra equivalente em um toque — inclusive por opções com o que já tem em casa."
+              detalhe="A troca respeita idade, alergias e o que a criança recusa."
+            />
+            <Recurso
+              icon={Heart}
+              tone="text-rose-500 bg-rose-50"
+              titulo="Você marca o que ele aceitou"
+              texto="Dois toques depois da refeição: aceitou, comeu pouco ou recusou. É o que ensina o app."
+              detalhe="O mês seguinte já vem diferente, insistindo menos no que não desce."
+            />
+            <Recurso
+              icon={Moon}
+              tone="text-indigo-500 bg-indigo-50"
+              titulo="Dia ruim conta na conta"
+              texto="Registrando sono e disposição, o cardápio se ajusta — dia de creche cansativa não pede prato elaborado."
+              detalhe="Sem registro, o plano segue normalmente."
+            />
+            <Recurso
+              icon={ShoppingCart}
+              tone="text-emerald-500 bg-emerald-50"
+              titulo="A lista de compras se monta sozinha"
+              texto="Tudo que a semana pede, somado por ingrediente, com o que você já tem na despensa marcado."
+              detalhe="Dá para copiar a lista inteira e mandar no WhatsApp."
+            />
+            <Recurso
+              icon={ChefHat}
+              tone="text-amber-500 bg-amber-50"
+              titulo="Cozinha com o que você tem"
+              texto="Você diz quais equipamentos existem na sua casa — fogão, forno, airfryer, micro-ondas — e as receitas se adaptam."
+              detalhe="Cada filho tem seu perfil, com rotina e restrições próprias."
+            />
+          </div>
+        </div>
+      </section>
+
       {/* COMO FUNCIONA */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
@@ -214,16 +277,89 @@ export default async function HomePage({
         </section>
       )}
 
-      {/* SEGURANÇA */}
+      {/* PARA QUEM É */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
           <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Feito com segurança para cada idade</h2>
+            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
+              Feito para três situações
+            </h2>
+            <p className="mt-2 text-sm text-stone-500">
+              Se você se reconhece em alguma delas, o app foi desenhado para o seu caso.
+            </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Confianca icon={Baby} texto="Receitas e porções pela faixa etária, incluindo papinhas de introdução alimentar." />
-            <Confianca icon={ShieldCheck} texto="Bloqueios por idade — mel só após 1 ano, oleaginosas inteiras após os 3." />
-            <Confianca icon={Check} texto="Respeita alergias e restrições: o cardápio nunca sugere o que você vetou." />
+          <div className="grid gap-4 md:grid-cols-3">
+            <Perfil
+              icon={Baby}
+              titulo="Começando a introdução alimentar"
+              texto="Papinhas e primeiras texturas na ordem certa, com os bloqueios da idade respeitados — mel, oleaginosas inteiras, sal."
+            />
+            <Perfil
+              icon={Salad}
+              titulo="Criança seletiva"
+              texto="Você marca o que ele recusa e o app para de insistir, propondo caminhos diferentes para o mesmo nutriente."
+            />
+            <Perfil
+              icon={Clock}
+              titulo="Rotina sem tempo"
+              texto="Cardápio pensado para o tempo que você tem, com lista de compras pronta e opções rápidas quando o dia apertar."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ANTES E DEPOIS */}
+      <section className="mx-auto w-full max-w-5xl px-6 py-14">
+        <div className="mb-10 text-center">
+          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
+            O que muda na prática
+          </h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-3xl border border-stone-200/60 bg-white p-6">
+            <div className="text-sm font-semibold text-stone-400">Como costuma ser</div>
+            <ul className="mt-4 space-y-3">
+              {["Decidir o almoço com a criança já com fome", "Repetir os mesmos quatro pratos o mês inteiro", "Descobrir no fogão que falta um ingrediente", "Adivinhar se a porção está certa para a idade", "Insistir num prato que ele recusa há semanas"].map((t) => (
+                <li key={t} className="flex items-start gap-2.5 text-sm text-stone-500">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-stone-100 text-stone-400">
+                    <X size={12} />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-3xl border border-orange-200/70 bg-white p-6 shadow-card">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+              <Sparkles size={15} /> Com o Pratinho Feliz
+            </div>
+            <ul className="mt-4 space-y-3">
+              {["O dia já abre com as quatro refeições definidas", "30 dias variados, montados pela idade da criança", "Lista de compras da semana pronta antes do mercado", "Porção e nutrientes por refeição, com base na TACO", "O cardápio aprende as recusas e muda o rumo"].map((t) => (
+                <li key={t} className="flex items-start gap-2.5 text-sm text-stone-700">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                    <Check size={12} />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* SEGURANÇA */}
+      <section className="bg-white">
+        <div className="mx-auto w-full max-w-5xl px-6 py-14">
+          <div className="mb-7 text-center">
+            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Feito com segurança para cada idade</h2>
+            <p className="mt-2 text-sm text-stone-500">
+              De 6 meses a 12 anos, incluindo papinhas de introdução alimentar.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2.5">
+            <Confianca icon={Baby} texto="Porções pela faixa etária" />
+            <Confianca icon={ShieldCheck} texto="Mel só após 1 ano, oleaginosas após os 3" />
+            <Confianca icon={Check} texto="Nunca sugere o que você vetou" />
           </div>
           <p className="mt-6 text-center text-xs text-stone-400">
             Ferramenta de apoio à rotina alimentar. Não substitui pediatra ou nutricionista.
@@ -324,14 +460,56 @@ function Passo({ numero, titulo, texto }: { numero: number; titulo: string; text
   );
 }
 
+/** Item do "no seu dia": o que a pessoa faz, e a consequencia disso logo abaixo. */
+function Recurso({
+  icon: Icon,
+  tone,
+  titulo,
+  texto,
+  detalhe,
+}: {
+  icon: LucideIcon;
+  tone: string;
+  titulo: string;
+  texto: string;
+  detalhe: string;
+}) {
+  return (
+    <div className="flex gap-4 rounded-3xl border border-stone-200/60 bg-[#fdfaf6] p-5">
+      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${tone}`}>
+        <Icon size={20} />
+      </span>
+      <div>
+        <h3 className="font-semibold text-stone-800">{titulo}</h3>
+        <p className="mt-1 text-sm leading-relaxed text-stone-600">{texto}</p>
+        <p className="mt-2 flex items-start gap-1.5 text-[12.5px] leading-snug text-stone-400">
+          <ListChecks size={13} className="mt-0.5 shrink-0" />
+          {detalhe}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Perfil({ icon: Icon, titulo, texto }: { icon: LucideIcon; titulo: string; texto: string }) {
+  return (
+    <div className="rounded-3xl border border-stone-200/60 bg-[#fdfaf6] p-6 text-center">
+      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-orange-500 shadow-sm">
+        <Icon size={22} />
+      </span>
+      <h3 className="mt-3 font-semibold text-stone-800">{titulo}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-stone-600">{texto}</p>
+    </div>
+  );
+}
+
+/** Selo compacto: a informacao e curta demais para justificar um card inteiro. */
 function Confianca({ icon: Icon, texto }: { icon: LucideIcon; texto: string }) {
   return (
-    <div className="flex items-start gap-3 rounded-3xl border border-stone-200/60 bg-[#fdfaf6] p-5">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-500">
-        <Icon size={18} />
-      </span>
-      <p className="text-sm text-stone-600">{texto}</p>
-    </div>
+    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200/70 bg-emerald-50/60 py-2 pl-3 pr-4 text-[13px] font-medium text-stone-700">
+      <Icon size={15} className="shrink-0 text-emerald-600" />
+      {texto}
+    </span>
   );
 }
 
