@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { irParaCheckoutDireto } from "@/lib/actions/checkoutDireto";
 import PhoneCarousel from "@/components/PhoneCarousel";
 import BotaoAssinar from "@/components/BotaoAssinar";
 import GaleriaDoApp from "@/components/GaleriaDoApp";
@@ -130,7 +129,7 @@ export default async function HomePage({
             <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
               <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cardápio antes do cartão</span>
               <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> 7 dias grátis</span>
-              <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento via Stripe</span>
+              <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento seguro</span>
             </div>
           </div>
           <div className="flex justify-center md:justify-end">
@@ -366,7 +365,7 @@ export default async function HomePage({
         <TituloSecao
           sobrelinha="Planos"
           titulo="Pague e libere seu acesso agora mesmo"
-          texto="Sem teste e sem espera: você paga, cria sua senha na tela seguinte e já entra no app."
+          texto="Cobrança imediata, acesso liberado assim que o pagamento é confirmado."
           espaco="mb-2"
         />
         <p className="text-center text-sm text-stone-500">
@@ -391,11 +390,12 @@ export default async function HomePage({
         <ul className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-stone-500">
           <li className="flex items-center gap-1.5"><Clock size={15} className="text-emerald-500" /> Acesso imediato após pagar</li>
           <li className="flex items-center gap-1.5"><Check size={15} className="text-emerald-500" /> Sem fidelidade — cancele quando quiser</li>
-          <li className="flex items-center gap-1.5"><Lock size={15} className="text-emerald-500" /> Pagamento seguro via Stripe</li>
+          <li className="flex items-center gap-1.5"><Lock size={15} className="text-emerald-500" /> Cartão ou PIX, em ambiente seguro</li>
         </ul>
         <p className="mt-8 text-center text-xs text-stone-400">
-          Assinatura recorrente, cobrada pelo Stripe. Você cancela a qualquer momento pelo próprio
-          app e mantém o acesso até o fim do período já pago.
+          Assinatura recorrente, processada pela Cakto, que cobra R$ 0,99 de taxa de serviço no
+          pagamento. Você cancela a qualquer momento pelo próprio app e mantém o acesso até o fim
+          do período já pago.
         </p>
       </section>
 
@@ -439,7 +439,7 @@ export default async function HomePage({
               </a>
             </div>
             <p className="mt-5 text-xs text-stone-400">
-              7 dias grátis no teste · cancele pelo app · pagamento processado pelo Stripe
+              7 dias grátis no teste · cancele pelo app · pagamento em ambiente seguro
             </p>
           </div>
         </div>
@@ -648,8 +648,7 @@ function PlanoCard({
   destaque: boolean;
 }) {
   return (
-    <form
-      action={irParaCheckoutDireto.bind(null, plano)}
+    <div
       className={`relative flex h-full flex-col rounded-3xl border bg-white p-6 ${
         destaque
           ? "border-orange-300 shadow-card-lg ring-2 ring-orange-200"
@@ -680,7 +679,7 @@ function PlanoCard({
           </li>
         ))}
       </ul>
-      <BotaoAssinar plano={plano} valor={plano === "TRIMESTRAL" ? 59.9 : 29.9} destaque={destaque} />
-    </form>
+      <BotaoAssinar plano={plano} destaque={destaque} />
+    </div>
   );
 }

@@ -1,58 +1,59 @@
 "use client";
 
-import { useRef } from "react";
-import { useFormStatus } from "react-dom";
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { trackPixel } from "@/lib/fbpixel";
+import { registrarInicioCheckout } from "@/lib/actions/checkoutDireto";
+import { CHECKOUT_CAKTO, VALOR_PLANO, type PlanoCheckout } from "@/lib/checkoutLinks";
 
 /**
- * Botao que leva ao Stripe — e o ponto onde nasce o InitiateCheckout.
+ * Botao que leva ao checkout da Cakto.
  *
- * O envio do formulario e uma server action que redireciona para fora do site,
- * entao o evento precisa sair ANTES da navegacao. O mesmo eventId vai no campo
- * escondido: o servidor manda o gemeo pela Conversions API e a Meta junta os
- * dois pelo id, em vez de contar dois checkouts.
+ * O checkout mora fora do nosso dominio, entao o InitiateCheckout precisa sair
+ * antes da navegacao. Sai em duas vias com o mesmo eventId — pixel aqui e
+ * Conversions API no servidor — porque a via do navegador se perde com
+ * bloqueador de anuncio ou quando a aba troca rapido demais.
  */
 export default function BotaoAssinar({
   plano,
-  valor,
   destaque,
 }: {
-  plano: "MENSAL" | "TRIMESTRAL";
-  valor: number;
+  plano: PlanoCheckout;
   destaque: boolean;
 }) {
-  const campoEventId = useRef<HTMLInputElement>(null);
-  const { pending } = useFormStatus();
+  const [saindo, setSaindo] = useState(false);
 
-  function aoClicar() {
+  async function irParaCheckout() {
+    if (saindo) return;
+    setSaindo(true);
+
     const eventId = crypto.randomUUID();
-    if (campoEventId.current) campoEventId.current.value = eventId;
     trackPixel(
       "InitiateCheckout",
-      { value: valor, currency: "BRL", content_name: `Plano ${plano}` },
+      { value: VALOR_PLANO[plano], currency: "BRL", content_name: `Plano ${plano}` },
       { eventID: eventId },
     );
+    // Não trava a ida ao checkout se o evento do servidor demorar.
+    void registrarInicioCheckout(plano, eventId);
+
+    window.location.href = CHECKOUT_CAKTO[plano];
   }
 
   return (
-    <>
-      <input ref={campoEventId} type="hidden" name="eventId" />
-      <button
-        type="submit"
-        onClick={aoClicar}
-        disabled={pending}
-        className={cn(
-          "mt-5 flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-70",
-          destaque
-            ? "bg-orange-500 text-white hover:bg-orange-600"
-            : "bg-stone-900 text-white hover:bg-stone-800",
-        )}
-      >
-        {pending ? "Abrindo o pagamento…" : "Assinar e acessar"}
-        {!pending && <ArrowRight size={16} />}
-      </button>
-    </>
+    <button
+      type="button"
+      onClick={irParaCheckout}
+      disabled={saindo}
+      className={cn(
+        "mt-5 flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-70",
+        destaque
+          ? "bg-orange-500 text-white hover:bg-orange-600"
+          : "bg-stone-900 text-white hover:bg-stone-800",
+      )}
+    >
+      {saindo ? "Abrindo o pagamento…" : "Assinar e acessar"}
+      {!saindo && <ArrowRight size={16} />}
+    </button>
   );
 }

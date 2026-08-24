@@ -1,7 +1,6 @@
 "use server";
 
 import { headers, cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import type Stripe from "stripe";
 import { db } from "@/lib/db";
@@ -10,15 +9,17 @@ import { signIn } from "@/auth";
 import { enviarEventoCapi } from "@/lib/metaCapi";
 
 // ---------------------------------------------------------------------------
-// Opção B do funil: pague primeiro, receba acesso.
-// Diferente do fluxo de trial (billing.ts), aqui a pessoa NÃO tem conta ainda.
-// O checkout cobra na hora (sem trial), o Stripe coleta o e-mail e cria o
-// customer, e o provisionamento acontece na página /bem-vindo (sem depender de
-// e-mail transacional).
+// Compra direta: pague primeiro, receba acesso.
+//
+// O checkout passou a ser hospedado pela Cakto (src/lib/checkoutLinks.ts), que
+// nao devolve session_id. O provisionamento por /bem-vindo abaixo continua
+// valendo para quem comprou pelo Stripe antes da troca — e volta a ser o
+// caminho de todo mundo se o webhook da Cakto for ligado no futuro.
 // ---------------------------------------------------------------------------
 
 export type PlanoDireto = "MENSAL" | "TRIMESTRAL";
 
+/** Host de onde a pessoa veio, para carimbar o evento com a URL certa. */
 async function origem(): Promise<string> {
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host");
@@ -27,60 +28,29 @@ async function origem(): Promise<string> {
   return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 }
 
-function priceIdDoPlano(plano: PlanoDireto): string | undefined {
-  return plano === "TRIMESTRAL"
-    ? process.env.STRIPE_PRICE_ID_TRIMESTRAL
-    : process.env.STRIPE_PRICE_ID;
-}
-
-function valorDoPlano(plano: PlanoDireto): number {
-  return plano === "TRIMESTRAL" ? 59.9 : 29.9;
-}
-
-/** Cria o checkout SEM trial e manda a pessoa para o Stripe. */
-export async function irParaCheckoutDireto(plano: PlanoDireto = "MENSAL", formData?: FormData) {
-  const priceId = priceIdDoPlano(plano);
-  if (!priceId) redirect(`/?erro=${encodeURIComponent("Plano ainda não configurado.")}#planos`);
-
-  const base = await origem();
+/**
+ * InitiateCheckout pelo servidor, disparado quando a pessoa clica em assinar.
+ *
+ * O checkout agora e uma pagina da Cakto, fora do nosso dominio — nao ha mais
+ * sessao do Stripe para criar aqui. O evento continua saindo em duas vias
+ * (pixel no navegador + esta, pela Conversions API) com o mesmo eventId, que e
+ * como a Meta sabe que os dois sao o mesmo checkout.
+ */
+export async function registrarInicioCheckout(plano: PlanoDireto, eventId: string): Promise<void> {
   const h = await headers();
   const jar = await cookies();
-  const fbp = jar.get("_fbp")?.value ?? "";
-  const fbc = jar.get("_fbc")?.value ?? "";
-  const purchaseEventId = crypto.randomUUID();
 
-  // InitiateCheckout pelo servidor, com o mesmo id que o botao usou no pixel.
-  // Sem isso o funil do Meta ficava com 0 ICs: o evento so existia no fluxo
-  // antigo de teste gratis, e a ida para o Stripe e uma navegacao para fora
-  // do site — bloqueador de anuncio ou aba fechada rapido matavam o pixel.
   await enviarEventoCapi({
     eventName: "InitiateCheckout",
-    eventId: String(formData?.get("eventId") ?? "") || crypto.randomUUID(),
-    fbp,
-    fbc,
+    eventId: eventId || crypto.randomUUID(),
+    fbp: jar.get("_fbp")?.value ?? null,
+    fbc: jar.get("_fbc")?.value ?? null,
     clientIp: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
     userAgent: h.get("user-agent"),
-    value: valorDoPlano(plano),
+    value: plano === "TRIMESTRAL" ? 59.9 : 29.9,
     currency: "BRL",
-    eventSourceUrl: `${base}/#planos`,
+    eventSourceUrl: `${await origem()}/#planos`,
   });
-
-  const stripe = getStripe();
-  const checkout = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    line_items: [{ price: priceId!, quantity: 1 }],
-    // Sem trial_period_days → cobrança imediata. Stripe coleta e-mail e cria o customer.
-    subscription_data: { metadata: { fbp, fbc, purchaseEventId, origem: "oferta" } },
-    metadata: { purchaseEventId, plano, origem: "oferta" },
-    custom_text: {
-      submit: { message: "Seu acesso é liberado assim que o pagamento for confirmado." },
-    },
-    success_url: `${base}/bem-vindo?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${base}/?cancelado=1#planos`,
-  });
-
-  if (!checkout.url) redirect(`/?erro=${encodeURIComponent("Não foi possível iniciar o pagamento.")}#planos`);
-  redirect(checkout.url);
 }
 
 export type ProvisaoState = { error?: string } | undefined;
