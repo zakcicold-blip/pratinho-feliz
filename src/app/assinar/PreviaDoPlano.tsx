@@ -43,7 +43,7 @@ export default async function PreviaDoPlano({ userId }: { userId: string }) {
   const restantes = Math.max(0, totalRefeicoes - slots.length);
 
   return (
-    <div className="mb-4 overflow-hidden rounded-3xl border border-stone-200/70 bg-white shadow-card">
+    <div className="overflow-hidden rounded-3xl border border-stone-200/70 bg-white shadow-card">
       <div className="border-b border-stone-100 bg-gradient-to-br from-emerald-50 to-white px-5 py-4">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
           <Sparkles size={12} /> Plano pronto
@@ -52,8 +52,8 @@ export default async function PreviaDoPlano({ userId }: { userId: string }) {
           O cardápio de {child.nome} já está montado
         </h2>
         <p className="mt-1 text-[13px] leading-relaxed text-stone-600">
-          Geramos {totalRefeicoes} refeições a partir do que você contou — idade, rotina, o que ele
-          aceita e o que tem na sua cozinha. Veja como começa:
+          São {totalRefeicoes} refeições montadas a partir do que você contou — idade, rotina, o que ele
+          aceita e o que tem na sua cozinha. Estas são as primeiras:
         </p>
       </div>
 
