@@ -57,19 +57,22 @@ export async function POST(req: Request) {
           const sub = await stripe.subscriptions.retrieve(subId);
           await sincronizarAssinaturaStripe(sub);
 
-          // StartTrial server-side (CAPI), deduplicado com o pixel pelo mesmo
-          // event_id gravado no checkout.
+          // StartTrial so faz sentido quando existe teste gratis. No funil de
+          // pagamento direto a assinatura ja nasce ativa: quem marca a conversao
+          // ali e o Purchase da fatura, logo abaixo.
           const { fbp, fbc, startTrialEventId } = trackingDaSub(sub);
-          await enviarEventoCapi({
-            eventName: "StartTrial",
-            eventId: startTrialEventId || `trial:${sub.id}`,
-            email: sessao.customer_details?.email ?? null,
-            fbp,
-            fbc,
-            value: valorDaSub(sub),
-            currency: "BRL",
-            eventSourceUrl: `${APP_URL}/hoje`,
-          });
+          if (sub.status === "trialing") {
+            await enviarEventoCapi({
+              eventName: "StartTrial",
+              eventId: startTrialEventId || `trial:${sub.id}`,
+              email: sessao.customer_details?.email ?? null,
+              fbp,
+              fbc,
+              value: valorDaSub(sub),
+              currency: "BRL",
+              eventSourceUrl: `${APP_URL}/hoje`,
+            });
+          }
         }
         break;
       }

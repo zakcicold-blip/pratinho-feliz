@@ -18,7 +18,7 @@ function sha256(valor?: string | null): string | undefined {
 }
 
 export type EventoCapi = {
-  eventName: "StartTrial" | "Purchase" | "Subscribe";
+  eventName: "InitiateCheckout" | "StartTrial" | "Purchase" | "Subscribe";
   /** Mesmo id usado no pixel do navegador quando houver, para deduplicar. */
   eventId: string;
   email?: string | null;

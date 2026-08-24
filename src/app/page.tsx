@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { irParaCheckoutDireto } from "@/lib/actions/checkoutDireto";
 import PhoneCarousel from "@/components/PhoneCarousel";
+import BotaoAssinar from "@/components/BotaoAssinar";
 import {
   UtensilsCrossed,
   Check,
@@ -297,14 +298,7 @@ function PlanoCard({
         <span className="font-display text-3xl font-extrabold text-stone-900">{preco}</span>
         <span className="text-sm text-stone-400">{periodo}</span>
       </div>
-      <button
-        type="submit"
-        className={`mt-5 flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition active:scale-[0.98] ${
-          destaque ? "bg-orange-500 text-white hover:bg-orange-600" : "bg-stone-900 text-white hover:bg-stone-800"
-        }`}
-      >
-        Assinar e acessar <ArrowRight size={16} />
-      </button>
+      <BotaoAssinar plano={plano} valor={plano === "TRIMESTRAL" ? 59.9 : 29.9} destaque={destaque} />
     </form>
   );
 }

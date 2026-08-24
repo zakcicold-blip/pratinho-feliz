@@ -7,6 +7,7 @@ import type Stripe from "stripe";
 import { db } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 import { signIn } from "@/auth";
+import { enviarEventoCapi } from "@/lib/metaCapi";
 
 // ---------------------------------------------------------------------------
 // Opção B do funil: pague primeiro, receba acesso.
@@ -32,16 +33,37 @@ function priceIdDoPlano(plano: PlanoDireto): string | undefined {
     : process.env.STRIPE_PRICE_ID;
 }
 
+function valorDoPlano(plano: PlanoDireto): number {
+  return plano === "TRIMESTRAL" ? 59.9 : 29.9;
+}
+
 /** Cria o checkout SEM trial e manda a pessoa para o Stripe. */
-export async function irParaCheckoutDireto(plano: PlanoDireto = "MENSAL") {
+export async function irParaCheckoutDireto(plano: PlanoDireto = "MENSAL", formData?: FormData) {
   const priceId = priceIdDoPlano(plano);
   if (!priceId) redirect(`/?erro=${encodeURIComponent("Plano ainda não configurado.")}#planos`);
 
   const base = await origem();
+  const h = await headers();
   const jar = await cookies();
   const fbp = jar.get("_fbp")?.value ?? "";
   const fbc = jar.get("_fbc")?.value ?? "";
   const purchaseEventId = crypto.randomUUID();
+
+  // InitiateCheckout pelo servidor, com o mesmo id que o botao usou no pixel.
+  // Sem isso o funil do Meta ficava com 0 ICs: o evento so existia no fluxo
+  // antigo de teste gratis, e a ida para o Stripe e uma navegacao para fora
+  // do site — bloqueador de anuncio ou aba fechada rapido matavam o pixel.
+  await enviarEventoCapi({
+    eventName: "InitiateCheckout",
+    eventId: String(formData?.get("eventId") ?? "") || crypto.randomUUID(),
+    fbp,
+    fbc,
+    clientIp: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
+    userAgent: h.get("user-agent"),
+    value: valorDoPlano(plano),
+    currency: "BRL",
+    eventSourceUrl: `${base}/#planos`,
+  });
 
   const stripe = getStripe();
   const checkout = await stripe.checkout.sessions.create({
