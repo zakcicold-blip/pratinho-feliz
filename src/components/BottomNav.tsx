@@ -17,7 +17,10 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky bottom-0 z-20 px-3 pb-[calc(env(safe-area-inset-bottom)+0.625rem)] pt-1.5">
+    <nav
+      data-bottom-nav
+      className="sticky bottom-0 z-20 px-3 pb-[calc(env(safe-area-inset-bottom)+0.625rem)] pt-1.5"
+    >
       <div className="mx-auto flex max-w-2xl items-center justify-between gap-1 rounded-[26px] border border-stone-200/60 bg-white/95 p-1.5 shadow-float backdrop-blur-md">
         {ITEMS.map(({ href, label, Icon }) => {
           const active = pathname?.startsWith(href);

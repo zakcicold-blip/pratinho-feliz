@@ -5,6 +5,7 @@ import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import TrackingHead from "@/components/TrackingHead";
 import RegistrarServiceWorker from "@/components/RegistrarServiceWorker";
+import InstalarAppModal from "@/components/InstalarAppModal";
 
 // Sans geométrica moderna, usada em todo o app (títulos e corpo). Sem serifas.
 const jakarta = Plus_Jakarta_Sans({
@@ -69,6 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Suspense>
         <RegistrarServiceWorker />
         {children}
+        {/* Tutorial de instalacao: so no celular e so fora do app ja instalado. */}
+        <InstalarAppModal />
       </body>
     </html>
   );
