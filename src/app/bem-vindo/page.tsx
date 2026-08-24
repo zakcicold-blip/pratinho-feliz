@@ -39,7 +39,7 @@ export default async function BemVindoPage({
             titulo="Página de acesso"
             texto="Não encontramos os dados do pagamento. Se você acabou de pagar, volte pelo link de sucesso do checkout."
           >
-            <Link href="/oferta" className="text-sm font-semibold text-orange-600 hover:underline">
+            <Link href="/" className="text-sm font-semibold text-orange-600 hover:underline">
               Voltar para a oferta
             </Link>
           </Estado>

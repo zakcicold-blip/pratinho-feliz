@@ -35,7 +35,7 @@ function priceIdDoPlano(plano: PlanoDireto): string | undefined {
 /** Cria o checkout SEM trial e manda a pessoa para o Stripe. */
 export async function irParaCheckoutDireto(plano: PlanoDireto = "MENSAL") {
   const priceId = priceIdDoPlano(plano);
-  if (!priceId) redirect(`/oferta?erro=${encodeURIComponent("Plano ainda não configurado.")}`);
+  if (!priceId) redirect(`/?erro=${encodeURIComponent("Plano ainda não configurado.")}#planos`);
 
   const base = await origem();
   const jar = await cookies();
@@ -54,10 +54,10 @@ export async function irParaCheckoutDireto(plano: PlanoDireto = "MENSAL") {
       submit: { message: "Seu acesso é liberado assim que o pagamento for confirmado." },
     },
     success_url: `${base}/bem-vindo?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${base}/oferta?cancelado=1`,
+    cancel_url: `${base}/?cancelado=1#planos`,
   });
 
-  if (!checkout.url) redirect(`/oferta?erro=${encodeURIComponent("Não foi possível iniciar o pagamento.")}`);
+  if (!checkout.url) redirect(`/?erro=${encodeURIComponent("Não foi possível iniciar o pagamento.")}#planos`);
   redirect(checkout.url);
 }
 
