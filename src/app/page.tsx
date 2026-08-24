@@ -4,6 +4,9 @@ import { auth } from "@/auth";
 import { irParaCheckoutDireto } from "@/lib/actions/checkoutDireto";
 import PhoneCarousel from "@/components/PhoneCarousel";
 import BotaoAssinar from "@/components/BotaoAssinar";
+import GaleriaDoApp from "@/components/GaleriaDoApp";
+import FotoDoSite from "@/components/FotoDoSite";
+import { FOTOS_CRIANCAS, FOTO_MESA, FOTO_ROTINA, algumaPublicada } from "@/lib/fotosSite";
 import {
   UtensilsCrossed,
   Check,
@@ -40,6 +43,13 @@ export default async function HomePage({
   // Quem já assinou vai direto para o app. ?site=1 permite ver a página de
   // vendas mesmo logado — útil para conferir a oferta sem sair da conta.
   if (session?.user && site !== "1") redirect("/hoje");
+
+  // Em desenvolvimento os espacos de foto aparecem como placeholder, para dar
+  // para ver onde as imagens entram. Em producao, so quando existirem mesmo.
+  const mostrandoEspacos = process.env.NODE_ENV !== "production";
+  const mostraFotoRotina = FOTO_ROTINA.arquivo !== null || mostrandoEspacos;
+  const mostraFotosCriancas = algumaPublicada(FOTOS_CRIANCAS) || mostrandoEspacos;
+  const mostraFotoMesa = FOTO_MESA.arquivo !== null || mostrandoEspacos;
 
   return (
     <main className="flex-1 overflow-x-hidden bg-[#fdfaf6]">
@@ -95,9 +105,9 @@ export default async function HomePage({
               pronta. Sem cozinhar no improviso.
             </p>
             <p className="mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700">
-              <Lock size={14} className="mr-1.5 inline align--2 text-orange-500" />
-              O app é liberado pela assinatura: assim que o pagamento é confirmado, você cria sua
-              senha e entra na hora.
+              <Zap size={14} className="mr-1.5 inline align--2 text-orange-500" />
+              Você escolhe por onde começar: assine e entre na hora, ou crie sua conta e teste 7
+              dias antes de decidir.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
               <a
@@ -106,9 +116,15 @@ export default async function HomePage({
               >
                 Assinar e acessar <ArrowRight size={16} />
               </a>
+              <Link
+                href="/cadastro"
+                className="flex items-center gap-1.5 rounded-full border border-stone-300 bg-white/70 px-6 py-3.5 font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-white"
+              >
+                Testar 7 dias grátis
+              </Link>
             </div>
             <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Acesso na hora</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Acesso na hora ao assinar</span>
               <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cancele quando quiser</span>
               <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento seguro</span>
             </div>
@@ -145,18 +161,58 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* COMO FUNCIONA */}
+      {/* POR DENTRO DO APP — prints reais */}
       <section className="mx-auto w-full max-w-5xl px-6 py-14">
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Como funciona</h2>
-          <p className="mt-2 text-sm text-stone-500">Do pagamento ao primeiro cardápio em minutos.</p>
+        <div className="mb-8 text-center">
+          <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Por dentro do app</h2>
+          <p className="mt-2 text-sm text-stone-500">
+            Telas de verdade — é exatamente isso que você abre no celular.
+          </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          <Passo numero={1} titulo="Assine e crie a senha" texto="Pague com segurança e defina sua senha na tela seguinte." />
-          <Passo numero={2} titulo="Conte sobre a criança" texto="Idade, gostos, recusas e restrições — leva menos de 5 minutos." />
-          <Passo numero={3} titulo="Receba o plano" texto="30 dias de refeições e a lista de compras, prontos pra usar." />
+        <GaleriaDoApp />
+      </section>
+
+      {/* COMO FUNCIONA */}
+      <section className="bg-white">
+        <div className="mx-auto w-full max-w-5xl px-6 py-14">
+          <div className="mb-10 text-center">
+            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Como funciona</h2>
+            <p className="mt-2 text-sm text-stone-500">Da entrada ao primeiro cardápio em minutos.</p>
+          </div>
+          {/*
+            Sem a foto publicada o espaco nao existe, e a coluna vazia deixaria
+            os passos espremidos na metade da largura — por isso a grade de
+            duas colunas so entra quando ha o que colocar na segunda.
+          */}
+          <div className={mostraFotoRotina ? "grid items-center gap-8 md:grid-cols-[1fr_0.8fr]" : ""}>
+            <div className={mostraFotoRotina ? "grid gap-6 sm:grid-cols-3 md:grid-cols-1" : "grid gap-6 md:grid-cols-3"}>
+              <Passo numero={1} titulo="Entre por onde preferir" texto="Assine e acesse na hora, ou crie a conta e teste 7 dias." />
+              <Passo numero={2} titulo="Conte sobre a criança" texto="Idade, gostos, recusas e restrições — leva menos de 5 minutos." />
+              <Passo numero={3} titulo="Receba o plano" texto="30 dias de refeições e a lista de compras, prontos pra usar." />
+            </div>
+            {mostraFotoRotina && <FotoDoSite foto={FOTO_ROTINA} sizes="(min-width: 768px) 40vw, 100vw" />}
+          </div>
         </div>
       </section>
+
+      {/* FOTOS REAIS — como fica na mesa */}
+      {mostraFotosCriancas && (
+        <section className="mx-auto w-full max-w-5xl px-6 py-14">
+          <div className="mb-8 text-center">
+            <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
+              Como fica na mesa
+            </h2>
+            <p className="mt-2 text-sm text-stone-500">
+              Refeições montadas pelo plano, na casa de quem já usa.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {FOTOS_CRIANCAS.map((foto, i) => (
+              <FotoDoSite key={i} foto={foto} sizes="(min-width: 640px) 33vw, 100vw" />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* SEGURANÇA */}
       <section className="bg-white">
@@ -175,12 +231,23 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* FAIXA LARGA — foto da semana montada */}
+      {mostraFotoMesa && (
+        <section className="mx-auto w-full max-w-5xl px-6 pb-4">
+          <FotoDoSite foto={FOTO_MESA} sizes="(min-width: 1024px) 1024px, 100vw" />
+        </section>
+      )}
+
       {/* PLANOS */}
       <section id="planos" className="mx-auto w-full max-w-5xl scroll-mt-20 px-6 py-14">
         <div className="text-center">
           <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">Escolha seu plano</h2>
           <p className="mt-2 text-sm text-stone-500">
-            É a assinatura que libera o app — sem pagamento, não há acesso ao cardápio.
+            Assinando, o app abre na hora. Prefere experimentar antes?{" "}
+            <Link href="/cadastro" className="font-semibold text-orange-600 hover:underline">
+              Comece pelos 7 dias grátis
+            </Link>
+            .
           </p>
         </div>
         <div className="mx-auto mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
@@ -226,7 +293,7 @@ export default async function HomePage({
 }
 
 const FAQ = [
-  { q: "Quando eu recebo o acesso?", a: "Na hora. Assim que o pagamento é confirmado, você define sua senha e já entra no app para montar o plano." },
+  { q: "Quando eu recebo o acesso?", a: "Na hora. Se você assinar, define sua senha logo após o pagamento e já entra. Se preferir testar antes, cria a conta e usa 7 dias grátis." },
   { q: "Posso cancelar quando quiser?", a: "Sim, sem fidelidade. Você cancela a qualquer momento e mantém o acesso até o fim do período já pago." },
   { q: "Para qual idade serve?", a: "De 6 meses a 12 anos. As receitas e porções seguem a faixa etária, incluindo papinhas de introdução alimentar." },
   { q: "E se meu filho tem alergia ou restrição?", a: "Você informa no início e o cardápio nunca sugere receitas com aqueles ingredientes. Dá para ajustar quando quiser." },
