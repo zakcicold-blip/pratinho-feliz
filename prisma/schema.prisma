@@ -105,6 +105,7 @@ model User {
   subscription  Subscription?
   auditLogs     AuditLog[]
   cancelamentos SolicitacaoCancelamento[]
+  convitesCriados ConviteCortesia[] @relation("ConvitesCriados")
 }
 
 model ChildProfile {
@@ -404,6 +405,12 @@ model Subscription {
   cortesiaMotivo   String?
   cortesiaEm       DateTime?
 
+  // Convite que originou a cortesia, quando ela veio de um link em vez do
+  // botao na lista de usuarios. Guarda a origem para o admin saber qual link
+  // trouxe cada pessoa.
+  conviteId        String?
+  convite          ConviteCortesia? @relation(fields: [conviteId], references: [id], onDelete: SetNull)
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -456,6 +463,29 @@ model PushSubscription {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+/**
+ * Link de cadastro com acesso de cortesia.
+ *
+ * O admin gera o link e envia para a pessoa; quem se cadastra por ele ja nasce
+ * com acessoCortesia e nao passa pelo paywall. O token e a credencial do
+ * convite: quem tem o link consegue criar a conta, por isso ele e sorteado,
+ * tem limite de usos e pode expirar ou ser revogado.
+ */
+model ConviteCortesia {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  rotulo      String
+  motivo      String?
+  maxUsos     Int      @default(1)
+  usos        Int      @default(0)
+  expiraEm    DateTime?
+  revogadoEm  DateTime?
+  criadoPorId String
+  criadoPor   User     @relation("ConvitesCriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  assinaturas Subscription[]
+  createdAt   DateTime @default(now())
 }
 
 model AuditLog {
