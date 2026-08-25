@@ -1,8 +1,14 @@
 import { db } from "@/lib/db";
 import TopBar from "@/components/TopBar";
 import BibliotecaReceitas from "./BibliotecaReceitas";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 export default async function ReceitasPage() {
+  const { conta } = await getConta();
+  if (!podeUsar("catalogo", conta.subscription)) return <Bloqueado recurso="catalogo" />;
+
   const receitas = await db.recipe.findMany({
     where: { ativo: true },
     orderBy: { nome: "asc" },

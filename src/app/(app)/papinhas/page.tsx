@@ -8,6 +8,9 @@ import { Baby, ArrowRight, TriangleAlert, Utensils, ShieldAlert } from "lucide-r
 import MetodoInicio from "./MetodoInicio";
 import type { TipoRefeicao } from "@prisma/client";
 import { cn } from "@/lib/cn";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 type Receita = {
   id: string;
@@ -21,6 +24,9 @@ const nomeContem = (termos: string[]) =>
   termos.map((t) => ({ nome: { contains: t, mode: "insensitive" as const } }));
 
 export default async function PapinhasPage() {
+  const { conta } = await getConta();
+  if (!podeUsar("catalogo", conta.subscription)) return <Bloqueado recurso="catalogo" />;
+
   const [inicio, amassados, pedacos] = await Promise.all([
     // Sem `take`, esta consulta listava TODAS as receitas liberadas aos 6
     // meses — 71 delas depois das variacoes, o que fazia a tela chegar a

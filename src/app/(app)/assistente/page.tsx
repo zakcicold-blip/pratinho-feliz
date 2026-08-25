@@ -4,10 +4,16 @@ import TopBar from "@/components/TopBar";
 import EmptyState from "@/components/ui/EmptyState";
 import AssistenteChat from "./AssistenteChat";
 import { Sparkles } from "lucide-react";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 export const metadata = { title: "Pergunte ao Pratinho" };
 
 export default async function AssistentePage() {
+  const { conta } = await getConta();
+  if (!podeUsar("assistente", conta.subscription)) return <Bloqueado recurso="assistente" />;
+
   const { child } = await getCurrentChild();
 
   if (!assistenteDisponivel()) {

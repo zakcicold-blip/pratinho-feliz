@@ -105,5 +105,5 @@ export async function liberarAcessoCakto(
   });
 
   // compra=1 marca no Pixel que veio de uma compra concluida.
-  await signIn("credentials", { email, password: senha, redirectTo: "/onboarding?novo=1&compra=1" });
+  await signIn("credentials", { email, password: senha, redirectTo: "/hoje?novo=1&compra=1" });
 }

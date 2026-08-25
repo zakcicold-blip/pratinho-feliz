@@ -26,6 +26,9 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { EstadoFeedback, TipoRefeicao } from "@prisma/client";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 const POSITIVO = new Set(["GOSTOU", "ACEITOU"]);
 
@@ -34,6 +37,9 @@ export default async function PlanoPage({
 }: {
   searchParams: Promise<{ view?: string; dia?: string }>;
 }) {
+  const { conta } = await getConta();
+  if (!podeUsar("plano_completo", conta.subscription)) return <Bloqueado recurso="plano_completo" />;
+
   const { view = "semana", dia } = await searchParams;
   const { child } = await getCurrentChild();
 

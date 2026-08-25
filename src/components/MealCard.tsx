@@ -69,6 +69,7 @@ export type MealCardData = {
 export default function MealCard({ data, childId }: { data: MealCardData; childId: string }) {
   const [pending, startTransition] = useTransition();
   const [showTrocar, setShowTrocar] = useState(false);
+  const [limiteTrocas, setLimiteTrocas] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [modoTrocar, setModoTrocar] = useState<"sugeridas" | "despensa">("sugeridas");
   const [alternativas, setAlternativas] = useState<Alternativa[] | null>(null);
@@ -97,7 +98,13 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
 
   function escolherAlternativa(recipeId: string, explicacao: string) {
     startTransition(async () => {
-      await trocarRefeicao(data.slotId, recipeId, explicacao);
+      const r = await trocarRefeicao(data.slotId, recipeId, explicacao);
+      // Limite do plano gratuito: a troca nao aconteceu, entao o card nao pode
+      // mudar de estado — mostra o aviso com o caminho do upgrade.
+      if (r?.limiteAtingido) {
+        setLimiteTrocas(true);
+        return;
+      }
       setShowTrocar(false);
       setStatus("TROCADO");
     });
@@ -287,6 +294,16 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
                 <X size={18} />
               </button>
             </div>
+
+            {limiteTrocas && (
+              <div className="mb-3 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2.5 text-[13px] leading-snug text-stone-700">
+                <strong className="font-semibold">Suas trocas gratuitas acabaram.</strong> No plano
+                completo dá para trocar qualquer refeição quantas vezes quiser.{" "}
+                <a href="/assinar" className="font-semibold text-orange-600 underline-offset-2 hover:underline">
+                  Ver o plano
+                </a>
+              </div>
+            )}
 
             <div className="mb-3 flex gap-1 rounded-xl bg-stone-100 p-1 text-xs font-semibold">
               <button

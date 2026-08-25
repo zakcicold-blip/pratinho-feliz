@@ -128,5 +128,5 @@ export async function provisionarAcesso(
   });
 
   // compra=1 sinaliza ao Pixel que foi uma compra concluída (Opção B).
-  await signIn("credentials", { email, password: senha, redirectTo: "/onboarding?novo=1&compra=1" });
+  await signIn("credentials", { email, password: senha, redirectTo: "/hoje?novo=1&compra=1" });
 }

@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { hojeChave } from "@/lib/dates";
-import { requireSession } from "@/lib/currentChild";
+import { requireSession, getConta } from "@/lib/currentChild";
+import { podeUsar, TROCAS_GRATIS } from "@/lib/plano";
 import {
   gerarAlternativasComDespensa,
   gerarAlternativasParaSlot,
@@ -33,8 +34,37 @@ export async function buscarAlternativasComDespensa(mealSlotId: string) {
   return gerarAlternativasComDespensa(mealSlotId, 3);
 }
 
-export async function trocarRefeicao(mealSlotId: string, novoRecipeId: string, explicacao: string) {
+/**
+ * Troca de refeicao.
+ *
+ * No plano gratuito a troca e limitada: e o momento em que a pessoa quer
+ * controle sobre o cardapio, entao vale como amostra e como argumento. O
+ * contador nao precisa de coluna nova — os slots trocados ficam com status
+ * TROCADO, entao basta conta-los.
+ */
+export async function trocarRefeicao(
+  mealSlotId: string,
+  novoRecipeId: string,
+  explicacao: string,
+): Promise<{ error?: string; limiteAtingido?: boolean } | void> {
   await assertOwnership(mealSlotId);
+
+  const { conta } = await getConta();
+  if (!podeUsar("trocar_refeicao", conta.subscription)) {
+    const usadas = await db.mealSlot.count({
+      where: {
+        status: "TROCADO",
+        mealPlan: { child: { userId: conta.id } },
+      },
+    });
+    if (usadas >= TROCAS_GRATIS) {
+      return {
+        error: `Você usou suas ${TROCAS_GRATIS} trocas gratuitas.`,
+        limiteAtingido: true,
+      };
+    }
+  }
+
   await db.mealSlot.update({
     where: { id: mealSlotId },
     data: { recipeId: novoRecipeId, status: "TROCADO", explicacao },

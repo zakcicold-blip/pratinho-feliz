@@ -16,6 +16,9 @@ import ProgressBar from "@/components/ui/ProgressBar";
 import { CategoriaIcon } from "@/components/categoryIcons";
 import { ShoppingCart, PackageCheck, Home } from "lucide-react";
 import { cn } from "@/lib/cn";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 type Busca = { semana?: string; aba?: string };
 
@@ -24,6 +27,9 @@ export default async function ComprasPage({
 }: {
   searchParams: Promise<Busca>;
 }) {
+  const { conta } = await getConta();
+  if (!podeUsar("lista_compras", conta.subscription)) return <Bloqueado recurso="lista_compras" />;
+
   const { semana, aba } = await searchParams;
   const { child } = await getCurrentChild();
   const naDespensa = aba === "despensa";

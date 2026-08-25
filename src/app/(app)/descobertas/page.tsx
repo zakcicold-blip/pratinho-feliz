@@ -7,8 +7,14 @@ import { ReactionIcon } from "@/components/reactionIcons";
 import Card from "@/components/ui/Card";
 import EmptyState from "@/components/ui/EmptyState";
 import { Sparkles } from "lucide-react";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 export default async function DescobertasPage() {
+  const { conta } = await getConta();
+  if (!podeUsar("catalogo", conta.subscription)) return <Bloqueado recurso="catalogo" />;
+
   const { child } = await getCurrentChild();
 
   const desejados = await db.foodPreference.findMany({

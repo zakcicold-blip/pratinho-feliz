@@ -12,8 +12,14 @@ import NutricaoSemana from "@/components/NutricaoSemana";
 import CompartilharResumo from "./CompartilharResumo";
 import { calcularCoberturaSemana, NUTRIENTES, type NutrienteChave } from "@/lib/metasNutricionais";
 import { faixaEtariaEmMeses } from "@/lib/idade";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 export default async function RelatorioPage() {
+  const { conta } = await getConta();
+  if (!podeUsar("relatorio", conta.subscription)) return <Bloqueado recurso="relatorio" />;
+
   const { child } = await getCurrentChild();
 
   const plano = await db.mealPlan.findFirst({

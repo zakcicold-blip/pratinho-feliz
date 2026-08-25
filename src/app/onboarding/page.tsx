@@ -3,6 +3,8 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
 import OnboardingWizard from "./OnboardingWizard";
+import Bloqueado from "@/components/Bloqueado";
+import { podeUsar } from "@/lib/plano";
 
 export default async function OnboardingPage() {
   const session = await auth();
@@ -16,6 +18,16 @@ export default async function OnboardingPage() {
     categoria,
     itens: ingredientes.filter((i) => i.categoria === categoria),
   })).filter((g) => g.itens.length > 0);
+
+  // Sem filho nenhum, quem cadastra e o modal dentro do app.
+  if (filhosExistentes === 0) redirect("/hoje");
+
+  // Adicionar outro filho e do plano completo.
+  const assinatura = await db.subscription.findUnique({
+    where: { userId: session.user.id },
+    select: { status: true, stripeSubscriptionId: true, acessoCortesia: true },
+  });
+  if (!podeUsar("varios_filhos", assinatura)) return <Bloqueado recurso="varios_filhos" />;
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-2xl px-4 py-8">

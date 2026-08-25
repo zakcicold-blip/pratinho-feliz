@@ -9,10 +9,16 @@ import { Moon, Bike, Clock3, CalendarCheck, Star } from "lucide-react";
 import { lerObjetivoRotina } from "@/lib/rotinaSinais";
 import { sugestoesDaRotina } from "@/lib/planEngine";
 import { cn } from "@/lib/cn";
+import Bloqueado from "@/components/Bloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 
 const SONO_MAX_H = 14; // escala do gráfico
 
 export default async function RotinaPage() {
+  const { conta } = await getConta();
+  if (!podeUsar("rotina", conta.subscription)) return <Bloqueado recurso="rotina" />;
+
   const { child } = await getCurrentChild();
 
   const hoje = hojeChave();

@@ -185,6 +185,9 @@ export default function OnboardingWizard({
       // próxima conta criada no mesmo navegador.
       localStorage.removeItem(draftKey);
       router.push("/hoje");
+      // O modal de cadastro vive no layout do app, que e do servidor: sem o
+      // refresh ele continuaria na tela mesmo com a crianca ja criada.
+      router.refresh();
     } catch {
       // Falha transitória (ex.: banco acordando). Não deixa a tela de loading
       // travada — devolve o controle e permite tentar de novo.

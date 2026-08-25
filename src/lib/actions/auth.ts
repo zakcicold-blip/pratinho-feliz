@@ -52,11 +52,12 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
 
   await registrarEtapa("conta_criada", { email, path: "/cadastro" });
 
+  // Vai direto para o app: o cadastro da crianca virou modal dentro dele.
   // novo=1 sinaliza ao Meta Pixel que é um cadastro recém-concluído.
   await signIn("credentials", {
     email,
     password,
-    redirectTo: "/onboarding?novo=1",
+    redirectTo: "/hoje?novo=1",
   });
 }
 
@@ -158,7 +159,7 @@ export async function registerComConvite(
 
   // cortesia=1 marca a origem para o onboarding; novo=1 e o mesmo sinal de
   // cadastro novo que o Pixel ja escuta.
-  await signIn("credentials", { email, password, redirectTo: "/onboarding?novo=1&cortesia=1" });
+  await signIn("credentials", { email, password, redirectTo: "/hoje?novo=1&cortesia=1" });
 }
 
 class ConviteIndisponivel extends Error {}

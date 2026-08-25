@@ -4,6 +4,9 @@ import { db } from "@/lib/db";
 import TopBar from "@/components/TopBar";
 import CapaReceita from "@/components/CapaReceita";
 import ModoCozinha from "./ModoCozinha";
+import ModoCozinhaBloqueado from "./ModoCozinhaBloqueado";
+import { getConta } from "@/lib/currentChild";
+import { podeUsar } from "@/lib/plano";
 import FavoriteButton from "./FavoriteButton";
 import { MEAL_COLOR } from "@/components/mealIcons";
 import { TriangleAlert, Leaf } from "lucide-react";
@@ -12,6 +15,9 @@ import TabelaNutricional from "@/components/TabelaNutricional";
 import { calcularNutricao } from "@/lib/nutricao";
 
 export default async function ReceitaPage({ params }: { params: Promise<{ id: string }> }) {
+  const { conta } = await getConta();
+  const cozinhaLiberada = podeUsar("modo_cozinha", conta.subscription);
+
   const { id } = await params;
   const { child } = await getCurrentChild();
 
@@ -45,6 +51,7 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
         />
 
         <div className="mb-3">
+          {cozinhaLiberada ? (
           <ModoCozinha
             nome={recipe.nome}
             passos={passos}
@@ -52,6 +59,9 @@ export default async function ReceitaPage({ params }: { params: Promise<{ id: st
               (ri) => `${ri.ingredient.nome} — ${ri.quantidade}`
             )}
           />
+          ) : (
+            <ModoCozinhaBloqueado />
+          )}
         </div>
 
         <Card padding="lg">
