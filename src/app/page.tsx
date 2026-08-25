@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import PhoneCarousel from "@/components/PhoneCarousel";
 import BotaoAssinar from "@/components/BotaoAssinar";
+import BotaoCheckoutDireto from "@/components/BotaoCheckoutDireto";
 import GaleriaDoApp from "@/components/GaleriaDoApp";
 import FotoDoSite from "@/components/FotoDoSite";
 import { FOTOS_CRIANCAS, FOTO_MESA, FOTO_ROTINA, algumaPublicada } from "@/lib/fotosSite";
@@ -10,7 +11,6 @@ import { registrarEtapa } from "@/lib/funil";
 import {
   UtensilsCrossed,
   Check,
-  ArrowRight,
   ShieldCheck,
   Zap,
   CalendarDays,
@@ -109,26 +109,21 @@ export default async function HomePage({
             </p>
             <p className="mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700">
               <Zap size={14} className="mr-1.5 inline align--2 text-orange-500" />
-              Crie a conta, responda sobre a criança e veja o cardápio dela montado — só depois
-              disso o app pede pagamento, com 7 dias grátis.
+              Assine e o app abre na hora: você cria sua senha e já responde sobre a criança
+              para o cardápio dela ser montado.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
-              <Link
-                href="/cadastro"
-                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
-              >
-                Montar o cardápio grátis <ArrowRight size={16} />
-              </Link>
+              <BotaoCheckoutDireto rotulo="Assinar por R$ 29,90" />
               <a
                 href="#planos"
                 className="flex items-center gap-1.5 rounded-full border border-stone-300 bg-white/70 px-6 py-3.5 font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-white"
               >
-                Já quero assinar
+                Ver planos
               </a>
             </div>
             <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cardápio antes do cartão</span>
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> 7 dias grátis</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Acesso na hora</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cancele quando quiser</span>
               <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento seguro</span>
             </div>
           </div>
@@ -236,7 +231,7 @@ export default async function HomePage({
           <TituloSecao
             sobrelinha="Primeiros minutos"
             titulo="Como funciona"
-            texto="Do cadastro ao primeiro cardápio, sem cartão no caminho."
+            texto="Do pagamento ao primeiro cardápio em minutos."
           />
           {/*
             Sem a foto publicada o espaco nao existe, e a coluna vazia deixaria
@@ -245,9 +240,9 @@ export default async function HomePage({
           */}
           <div className={mostraFotoRotina ? "grid items-center gap-8 md:grid-cols-[1fr_0.8fr]" : ""}>
             <div className={mostraFotoRotina ? "grid gap-6 sm:grid-cols-3 md:grid-cols-1" : "grid gap-6 md:grid-cols-3"}>
-              <Passo numero={1} titulo="Crie sua conta" texto="E-mail e senha. Nenhum cartão é pedido nesta etapa." />
+              <Passo numero={1} titulo="Assine o plano" texto="Cartão ou PIX, em ambiente seguro da Cakto." />
               <Passo numero={2} titulo="Conte sobre a criança" texto="Idade, gostos, recusas e restrições — leva menos de 5 minutos." />
-              <Passo numero={3} titulo="Veja o plano e decida" texto="O cardápio é montado na sua frente. Só então você libera os 30 dias, com 7 dias grátis." />
+              <Passo numero={3} titulo="Receba o plano" texto="30 dias de refeições e a lista de compras, prontos para usar." />
             </div>
             {mostraFotoRotina && <FotoDoSite foto={FOTO_ROTINA} sizes="(min-width: 768px) 40vw, 100vw" />}
           </div>
@@ -369,11 +364,7 @@ export default async function HomePage({
           espaco="mb-2"
         />
         <p className="text-center text-sm text-stone-500">
-          Prefere conhecer antes?{" "}
-          <Link href="/cadastro" className="font-semibold text-orange-600 hover:underline">
-            Monte o cardápio grátis
-          </Link>{" "}
-          e decida no fim.
+          Os dois planos abrem o app inteiro. A diferença é só o tempo de renovação.
         </p>
         <div className="mx-auto mt-8 grid max-w-2xl items-start gap-4 sm:grid-cols-2">
           <PlanoCard nome="Mensal" preco="R$ 29,90" periodo="por mês" plano="MENSAL" destaque={false} />
@@ -421,25 +412,20 @@ export default async function HomePage({
               Amanhã de manhã, o almoço já está decidido
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-[0.97rem] leading-relaxed text-stone-300">
-              Monte o cardápio do seu filho agora e veja o mês inteiro pronto antes de decidir
-              qualquer coisa sobre pagamento.
+              Assine agora e o mês inteiro de refeições do seu filho fica pronto ainda hoje.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <Link
-                href="/cadastro"
-                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/30 transition hover:bg-orange-600"
-              >
-                Montar o cardápio grátis <ArrowRight size={17} />
-              </Link>
-              <a
-                href="#planos"
-                className="flex items-center gap-1.5 rounded-full border border-white/25 px-7 py-3.5 font-semibold text-white transition hover:bg-white/10"
-              >
-                Assinar direto
-              </a>
+              <BotaoCheckoutDireto rotulo="Assinar por R$ 29,90" className="px-7" />
+              <BotaoCheckoutDireto
+                rotulo="Ver o trimestral"
+                plano="TRIMESTRAL"
+                variante="claro"
+                className="px-7"
+                comSeta={false}
+              />
             </div>
             <p className="mt-5 text-xs text-stone-400">
-              7 dias grátis no teste · cancele pelo app · pagamento em ambiente seguro
+              Acesso na hora · cancele pelo app · pagamento em ambiente seguro
             </p>
           </div>
         </div>
@@ -462,9 +448,9 @@ export default async function HomePage({
                 Começar
               </div>
               <div className="mt-3 flex flex-col gap-2 text-sm">
-                <Link href="/cadastro" className="text-stone-500 hover:text-stone-700">
-                  Criar conta grátis
-                </Link>
+                <a href="#planos" className="text-stone-500 hover:text-stone-700">
+                  Assinar
+                </a>
                 <a href="#planos" className="text-stone-500 hover:text-stone-700">
                   Ver planos
                 </a>
@@ -497,7 +483,7 @@ export default async function HomePage({
 }
 
 const FAQ = [
-  { q: "Quando eu recebo o acesso?", a: "Na hora. Se você assinar, define sua senha logo após o pagamento e já entra. Se preferir testar antes, cria a conta e usa 7 dias grátis." },
+  { q: "Quando eu recebo o acesso?", a: "Assim que o pagamento é confirmado. Você volta ao site, cria sua senha com o mesmo e-mail do pagamento e já entra no app." },
   { q: "Posso cancelar quando quiser?", a: "Sim, não existe fidelidade. O pedido de cancelamento sai pelo próprio app, em Configurações, e você mantém o acesso até o fim do período já pago." },
   { q: "Para qual idade serve?", a: "De 6 meses a 12 anos. As receitas e porções seguem a faixa etária, incluindo papinhas de introdução alimentar." },
   { q: "E se meu filho tem alergia ou restrição?", a: "Você informa no início e o cardápio nunca sugere receitas com aqueles ingredientes. Dá para ajustar quando quiser." },

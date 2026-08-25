@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { UtensilsCrossed, ArrowRight, Rss } from "lucide-react";
+import { UtensilsCrossed, Rss } from "lucide-react";
 import { CATEGORIAS, contarPorCategoria } from "@/lib/blog";
+import BotaoCheckoutDireto from "@/components/BotaoCheckoutDireto";
 
 export function BlogHeader() {
   const contagem = contarPorCategoria();
@@ -25,13 +26,11 @@ export function BlogHeader() {
           >
             Conheça o app
           </Link>
-          <Link
-            href="/cadastro"
-            data-heat="blog-header-cadastro"
-            className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600"
-          >
-            Começar grátis
-          </Link>
+          <BotaoCheckoutDireto
+            rotulo="Assinar"
+            comSeta={false}
+            className="px-4 py-2 text-sm"
+          />
         </nav>
       </div>
 
@@ -70,7 +69,7 @@ export function BlogCTA() {
         />
         <div className="relative">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-orange-200">
-            7 dias grátis
+            Acesso imediato
           </span>
           <h2 className="font-display mt-4 text-2xl font-extrabold text-white sm:text-3xl">
             Ler é fácil. Fazer todo dia é que cansa.
@@ -79,13 +78,9 @@ export function BlogCTA() {
             O Pratinho Feliz monta o mês inteiro de refeições do seu filho, aprende o que ele aceita
             e ainda gera a lista de compras. Você só serve.
           </p>
-          <Link
-            href="/cadastro"
-            data-heat="blog-cta-rodape"
-            className="mt-7 inline-flex items-center gap-2 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/30 transition hover:bg-orange-600"
-          >
-            Criar conta grátis <ArrowRight size={17} />
-          </Link>
+          <div className="mt-7 flex justify-center">
+            <BotaoCheckoutDireto rotulo="Assinar por R$ 29,90" className="px-7" />
+          </div>
         </div>
       </div>
     </section>
@@ -111,8 +106,8 @@ export function BlogFooter() {
           <Link href="/" className="text-stone-500 hover:text-stone-700">
             O app
           </Link>
-          <Link href="/cadastro" className="text-stone-500 hover:text-stone-700">
-            Criar conta
+          <Link href="/#planos" className="text-stone-500 hover:text-stone-700">
+            Assinar
           </Link>
           <Link href="/login" className="text-stone-500 hover:text-stone-700">
             Entrar

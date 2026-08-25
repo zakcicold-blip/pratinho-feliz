@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { Lightbulb, CircleAlert, Info, ArrowRight, type LucideIcon } from "lucide-react";
+import { Lightbulb, CircleAlert, Info, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
+import BotaoCheckoutDireto from "@/components/BotaoCheckoutDireto";
 
 type TomDestaque = "dica" | "atencao" | "info";
 
@@ -63,13 +63,9 @@ export function CTAInline({
     <div className="not-prose my-8 overflow-hidden rounded-3xl border border-orange-200/70 bg-gradient-to-br from-orange-50 to-amber-50/60 p-6">
       <div className="font-display text-lg font-extrabold text-stone-900">{titulo}</div>
       <p className="mt-1.5 text-[0.95rem] leading-relaxed text-stone-600">{texto}</p>
-      <Link
-        href="/cadastro"
-        data-heat="blog-cta-inline"
-        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
-      >
-        Testar 7 dias grátis <ArrowRight size={15} />
-      </Link>
+      <div className="mt-4">
+        <BotaoCheckoutDireto rotulo="Assinar por R$ 29,90" className="px-5 py-2.5 text-sm" />
+      </div>
     </div>
   );
 }
