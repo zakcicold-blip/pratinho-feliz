@@ -107,9 +107,6 @@ export default async function RotinaPage() {
           </div>
         </section>
 
-        {/* Leitura da rotina (insight + sugestões) */}
-        <LeituraRotinaCard childId={child.id} leitura={leitura} sugestoes={sugestoes} />
-
         {/* Registrar hoje */}
         <section>
           <h2 className="font-display mb-3 px-1 text-base font-semibold text-stone-800">Registrar hoje</h2>
@@ -140,6 +137,14 @@ export default async function RotinaPage() {
             />
           </div>
         </section>
+
+        {/*
+          A leitura da rotina fecha a tela, depois dos parametros. Ela e a
+          consequencia do que a pessoa acabou de informar: em cima, como estava
+          antes, a recomendacao aparecia sem nenhum dado ter sido dado naquela
+          visita — parecia palpite em vez de resposta.
+        */}
+        <LeituraRotinaCard childId={child.id} leitura={leitura} sugestoes={sugestoes} />
       </div>
     </>
   );
