@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { db } from "@/lib/db";
 import Badge from "@/components/ui/Badge";
 import { avaliarConvite, urlDoConvite } from "@/lib/convites";
+import { dataBR } from "@/lib/dates";
 import NovoConviteForm from "./NovoConviteForm";
 import LinkConvite from "./LinkConvite";
 import RevogarConviteButton from "./RevogarConviteButton";
@@ -16,7 +17,7 @@ async function baseDoSite(): Promise<string> {
 }
 
 function dataCurta(d: Date | null): string {
-  return d ? d.toLocaleDateString("pt-BR") : "—";
+  return d ? dataBR(d) : "—";
 }
 
 export default async function AdminConvitesPage() {

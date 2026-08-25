@@ -2,6 +2,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import StatCard from "@/components/ui/StatCard";
 import Card from "@/components/ui/Card";
+import { dataHoraCompletaBR } from "@/lib/dates";
 import {
   LifeBuoy,
   ArrowRight,
@@ -160,7 +161,7 @@ export default async function AdminDashboard() {
                   {log.evento} {log.user ? `· ${log.user.name}` : ""}
                 </span>
                 <span className="text-xs text-stone-400">
-                  {log.createdAt.toLocaleString("pt-BR")}
+                  {dataHoraCompletaBR(log.createdAt)}
                 </span>
               </li>
             ))}

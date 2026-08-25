@@ -96,3 +96,45 @@ export function formatDiaSemana(date: Date): string {
 export function sameDay(a: Date, b: Date): boolean {
   return startOfDay(a).getTime() === startOfDay(b).getTime();
 }
+
+// ---------------------------------------------------------------------------
+// Instantes (createdAt e afins) formatados no fuso de Sao Paulo.
+//
+// Sem timeZone explicito, o toLocaleString usa o fuso do processo — UTC na
+// Vercel. Era o que fazia o painel mostrar 14:37 para um evento das 11:37.
+// ---------------------------------------------------------------------------
+
+/** Data e hora curtas: 25/08, 11:37. */
+export function dataHoraBR(instante: Date): string {
+  return instante.toLocaleString("pt-BR", {
+    timeZone: FUSO_APP,
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+/** Data e hora completas: 25/08/2026 11:37. */
+export function dataHoraCompletaBR(instante: Date): string {
+  return instante.toLocaleString("pt-BR", { timeZone: FUSO_APP });
+}
+
+/** Só a data: 25/08/2026. */
+export function dataBR(instante: Date): string {
+  return instante.toLocaleDateString("pt-BR", { timeZone: FUSO_APP });
+}
+
+/**
+ * Meia-noite de hoje em Sao Paulo, como instante real.
+ *
+ * Diferente de chaveDoDia (que devolve 00:00Z do dia-calendario), aqui o que
+ * se quer e o comeco do dia para comparar com createdAt. O deslocamento e
+ * calculado, nao fixado em -3, para nao quebrar se o horario de verao voltar.
+ */
+export function inicioDoDiaSaoPaulo(agora: Date = new Date()): Date {
+  const emUtc = new Date(agora.toLocaleString("en-US", { timeZone: "UTC" }));
+  const emSaoPaulo = new Date(agora.toLocaleString("en-US", { timeZone: FUSO_APP }));
+  const deslocamento = emUtc.getTime() - emSaoPaulo.getTime();
+  return new Date(chaveDoDia(agora).getTime() + deslocamento);
+}

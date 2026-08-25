@@ -3,6 +3,7 @@ import Badge from "@/components/ui/Badge";
 import DeletarUsuarioButton from "./DeletarUsuarioButton";
 import CortesiaButton from "./CortesiaButton";
 import { Gift } from "lucide-react";
+import { dataBR } from "@/lib/dates";
 
 const STATUS_LABEL: Record<string, string> = {
   TESTE: "Em teste",
@@ -77,7 +78,7 @@ export default async function AdminUsuariosPage() {
                       </Badge>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-stone-400">{u.createdAt.toLocaleDateString("pt-BR")}</td>
+                  <td className="px-4 py-3 text-stone-400">{dataBR(u.createdAt)}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap items-center gap-x-1 gap-y-1.5">
                       <CortesiaButton userId={u.id} nome={u.name} liberado={cortesia} />

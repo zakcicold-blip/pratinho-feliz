@@ -3,6 +3,7 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { LifeBuoy } from "lucide-react";
 import ResolverButtons from "./ResolverButtons";
+import { dataHoraCompletaBR } from "@/lib/dates";
 
 const STATUS_TONE = { PENDENTE: "amber", APROVADO: "emerald", RECUSADO: "red" } as const;
 const STATUS_LABEL = { PENDENTE: "Pendente", APROVADO: "Aprovado", RECUSADO: "Recusado" } as const;
@@ -60,8 +61,8 @@ export default async function CancelamentosPage() {
                 </p>
 
                 <p className="mt-2 text-xs text-stone-400">
-                  Enviado em {s.createdAt.toLocaleString("pt-BR")}
-                  {s.resolvidoEm && ` · resolvido em ${s.resolvidoEm.toLocaleString("pt-BR")}`}
+                  Enviado em {dataHoraCompletaBR(s.createdAt)}
+                  {s.resolvidoEm && ` · resolvido em ${dataHoraCompletaBR(s.resolvidoEm)}`}
                   {!s.user.subscription?.stripeSubscriptionId && s.status === "PENDENTE" && (
                     <span className="text-amber-600"> · sem assinatura Stripe ativa</span>
                   )}

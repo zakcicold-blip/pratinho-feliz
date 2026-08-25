@@ -2,6 +2,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { ETAPAS, ETAPA_LABEL, type Etapa } from "@/lib/funil";
 import { cn } from "@/lib/cn";
+import { dataHoraBR, inicioDoDiaSaoPaulo } from "@/lib/dates";
 import { TrendingUp, Info } from "lucide-react";
 
 /**
@@ -21,11 +22,9 @@ const PERIODOS = [
 ];
 
 function inicioDoPeriodo(dias: number): Date {
+  // "Hoje" e o dia em Sao Paulo, nao o dia UTC do servidor.
+  if (dias === 1) return inicioDoDiaSaoPaulo();
   const d = new Date();
-  if (dias === 1) {
-    d.setHours(0, 0, 0, 0);
-    return d;
-  }
   d.setDate(d.getDate() - dias);
   return d;
 }
@@ -225,7 +224,7 @@ export default async function AdminFunilPage({
             {ultimas.map((e) => (
               <tr key={e.id} className="border-t border-stone-100">
                 <td className="px-4 py-2.5 whitespace-nowrap text-stone-500">
-                  {e.createdAt.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+                  {dataHoraBR(e.createdAt)}
                 </td>
                 <td className="px-4 py-2.5 text-stone-700">
                   {ETAPA_LABEL[e.etapa as Etapa] ?? e.etapa}
