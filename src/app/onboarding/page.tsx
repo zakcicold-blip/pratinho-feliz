@@ -19,15 +19,17 @@ export default async function OnboardingPage() {
     itens: ingredientes.filter((i) => i.categoria === categoria),
   })).filter((g) => g.itens.length > 0);
 
-  // Sem filho nenhum, quem cadastra e o modal dentro do app.
-  if (filhosExistentes === 0) redirect("/hoje");
-
-  // Adicionar outro filho e do plano completo.
-  const assinatura = await db.subscription.findUnique({
-    where: { userId: session.user.id },
-    select: { status: true, stripeSubscriptionId: true, acessoCortesia: true },
-  });
-  if (!podeUsar("varios_filhos", assinatura)) return <Bloqueado recurso="varios_filhos" />;
+  // Adicionar OUTRO filho e do plano completo. O primeiro cadastro acontece no
+  // modal dentro do app, mas esta rota continua valendo — e para onde
+  // getCurrentChild manda quem ainda nao tem crianca, e uma pagina que
+  // funciona e melhor do que um redirect que pode virar loop.
+  if (filhosExistentes > 0) {
+    const assinatura = await db.subscription.findUnique({
+      where: { userId: session.user.id },
+      select: { status: true, stripeSubscriptionId: true, acessoCortesia: true },
+    });
+    if (!podeUsar("varios_filhos", assinatura)) return <Bloqueado recurso="varios_filhos" />;
+  }
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-2xl px-4 py-8">

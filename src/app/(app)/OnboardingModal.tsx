@@ -26,7 +26,7 @@ export default function OnboardingModal({
   const primeiroNome = nome.trim().split(" ")[0];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#fdfaf6]">
+    <div className="min-h-screen bg-[#fdfaf6]">
       <div className="mx-auto w-full max-w-2xl px-4 py-8">
         <div className="mb-6 text-center">
           <div className="flex items-center justify-center gap-2 text-base font-bold text-stone-800">

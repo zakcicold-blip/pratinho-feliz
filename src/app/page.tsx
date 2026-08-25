@@ -11,6 +11,7 @@ import { registrarEtapa } from "@/lib/funil";
 import {
   UtensilsCrossed,
   Check,
+  ArrowRight,
   ShieldCheck,
   Zap,
   CalendarDays,
@@ -109,11 +110,16 @@ export default async function HomePage({
             </p>
             <p className="mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700">
               <Zap size={14} className="mr-1.5 inline align--2 text-orange-500" />
-              Assine e o app abre na hora: você cria sua senha e já responde sobre a criança
-              para o cardápio dela ser montado.
+              Crie sua conta de graça, responda sobre a criança e veja o cardápio dela montado
+              hoje mesmo. Assinar é o que abre o mês inteiro.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
-              <BotaoCheckoutDireto rotulo="Assinar por R$ 29,90" />
+              <Link
+                href="/cadastro"
+                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
+              >
+                Criar conta grátis <ArrowRight size={16} />
+              </Link>
               <a
                 href="#planos"
                 className="flex items-center gap-1.5 rounded-full border border-stone-300 bg-white/70 px-6 py-3.5 font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-white"
@@ -122,8 +128,8 @@ export default async function HomePage({
               </a>
             </div>
             <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Acesso na hora</span>
-              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Cancele quando quiser</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Grátis para começar</span>
+              <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Sem cartão no cadastro</span>
               <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento seguro</span>
             </div>
           </div>
@@ -412,20 +418,25 @@ export default async function HomePage({
               Amanhã de manhã, o almoço já está decidido
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-[0.97rem] leading-relaxed text-stone-300">
-              Assine agora e o mês inteiro de refeições do seu filho fica pronto ainda hoje.
+              Comece de graça: monte o cardápio do seu filho hoje e decida depois se quer o mês
+              inteiro.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <BotaoCheckoutDireto rotulo="Assinar por R$ 29,90" className="px-7" />
+              <Link
+                href="/cadastro"
+                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/30 transition hover:bg-orange-600"
+              >
+                Criar conta grátis <ArrowRight size={17} />
+              </Link>
               <BotaoCheckoutDireto
-                rotulo="Ver o trimestral"
-                plano="TRIMESTRAL"
+                rotulo="Assinar por R$ 29,90"
                 variante="claro"
                 className="px-7"
                 comSeta={false}
               />
             </div>
             <p className="mt-5 text-xs text-stone-400">
-              Acesso na hora · cancele pelo app · pagamento em ambiente seguro
+              Grátis para começar · sem cartão no cadastro · cancele quando quiser
             </p>
           </div>
         </div>

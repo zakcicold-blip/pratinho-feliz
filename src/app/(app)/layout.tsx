@@ -25,19 +25,28 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const grupos = precisaCadastrar ? await gruposDeIngredientes() : [];
 
-  return (
-    <div className="flex min-h-screen flex-col">
-      <HeatOptOut />
-      <div className="mx-auto w-full max-w-2xl flex-1 pb-4">{children}</div>
-      <BottomNav />
-
-      {precisaCadastrar && (
+  // Sem filho, o app nao e renderizado — nem o menu, nem a pagina. Isso nao e
+  // so estetica: as telas chamam getCurrentChild, que redireciona para
+  // /onboarding quando nao ha crianca. Com a pagina renderizando por baixo do
+  // modal, esse redirect entrava em loop com o /onboarding.
+  if (precisaCadastrar) {
+    return (
+      <>
+        <HeatOptOut />
         <OnboardingModal
           grupos={grupos}
           userId={conta.id}
           nome={session.user.name ?? "por aqui"}
         />
-      )}
+      </>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <HeatOptOut />
+      <div className="mx-auto w-full max-w-2xl flex-1 pb-4">{children}</div>
+      <BottomNav />
     </div>
   );
 }
