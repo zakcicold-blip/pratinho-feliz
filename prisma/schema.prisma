@@ -528,6 +528,43 @@ model CompraCakto {
   @@index([email])
 }
 
+/**
+ * Marcos do funil, gravados pelo proprio site.
+ *
+ * Existe para responder "de onde veio quem paga" sem depender de ferramenta
+ * externa nem do pixel — bloqueador de anuncio derruba o navegador, nao o
+ * servidor. Guarda so os passos do funil, nao page view bruto.
+ *
+ * A atribuicao vem do cookie de primeira parte gravado na chegada: a UTM do
+ * primeiro toque acompanha a sessao ate a compra.
+ */
+model EventoFunil {
+  id          String   @id @default(cuid())
+  // Mesma sessao usada pelo mapa de calor, quando existir.
+  sessionId   String?
+  etapa       String
+  path        String?
+  valor       Float?
+  // Identificacao possivel do lado de ca. O e-mail e o que permite casar a
+  // compra da Cakto — que chega sem cookie — com a visita que a originou.
+  userId      String?
+  email       String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+  fbclid      String?
+  referrer    String?
+  viewport    String?
+  createdAt   DateTime @default(now())
+
+  @@index([etapa, createdAt])
+  @@index([createdAt])
+  @@index([utmCampaign])
+  @@index([email])
+}
+
 model AuditLog {
   id        String   @id @default(cuid())
   userId    String?

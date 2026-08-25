@@ -5,6 +5,7 @@ import { requireSession } from "@/lib/currentChild";
 import { podeAcessarApp, reconciliarAssinatura } from "@/lib/assinatura";
 import { DIAS_TESTE_GRATIS } from "@/lib/stripe";
 import { signOutAction } from "@/lib/actions/auth-signout";
+import { registrarEtapa } from "@/lib/funil";
 import IniciarTrialButton from "./IniciarTrialButton";
 import PreviaDoPlano from "./PreviaDoPlano";
 
@@ -38,6 +39,8 @@ export default async function AssinarPage({
 
   // Escrito na chave do que a pessoa ja montou no onboarding — nesta altura o
   // plano dela existe, e o cartao so destrava o que ela ja viu.
+  void registrarEtapa("paywall_visto", { userId: session.user.id, path: "/assinar" });
+
   const crianca = await db.childProfile.findFirst({
     where: { userId: session.user.id },
     orderBy: { createdAt: "desc" },

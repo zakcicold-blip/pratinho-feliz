@@ -6,6 +6,7 @@ import BotaoAssinar from "@/components/BotaoAssinar";
 import GaleriaDoApp from "@/components/GaleriaDoApp";
 import FotoDoSite from "@/components/FotoDoSite";
 import { FOTOS_CRIANCAS, FOTO_MESA, FOTO_ROTINA, algumaPublicada } from "@/lib/fotosSite";
+import { registrarEtapa } from "@/lib/funil";
 import {
   UtensilsCrossed,
   Check,
@@ -48,6 +49,10 @@ export default async function HomePage({
   // vendas mesmo logado — útil para conferir a oferta sem sair da conta.
   if (session?.user && site !== "1") redirect("/hoje");
 
+  // Primeiro marco do funil. Nao bloqueia a renderizacao: se a medicao falhar,
+  // a pagina abre do mesmo jeito.
+  if (!session?.user) void registrarEtapa("visita", { path: "/" });
+
   // Em desenvolvimento os espacos de foto aparecem como placeholder, para dar
   // para ver onde as imagens entram. Em producao, so quando existirem mesmo.
   const mostrandoEspacos = process.env.NODE_ENV !== "production";
@@ -65,11 +70,6 @@ export default async function HomePage({
             </span>
             Pratinho Feliz
           </div>
-          {/*
-            Tres portas no topo, na ordem de compromisso: entrar, testar de
-            graca, assinar. Os rotulos encurtam no celular para os tres caberem
-            lado a lado em 375px sem quebrar linha.
-          */}
           {/*
             So duas portas no topo: entrar e criar conta. O botao de assinatura
             saiu daqui — comprar direto continua existindo, mas na secao de

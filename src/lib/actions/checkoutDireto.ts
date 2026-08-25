@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 import { signIn } from "@/auth";
 import { enviarEventoCapi } from "@/lib/metaCapi";
+import { registrarEtapa } from "@/lib/funil";
 
 // ---------------------------------------------------------------------------
 // Compra direta: pague primeiro, receba acesso.
@@ -39,6 +40,11 @@ async function origem(): Promise<string> {
 export async function registrarInicioCheckout(plano: PlanoDireto, eventId: string): Promise<void> {
   const h = await headers();
   const jar = await cookies();
+
+  await registrarEtapa("checkout_iniciado", {
+    valor: plano === "TRIMESTRAL" ? 59.9 : 29.9,
+    path: "/#planos",
+  });
 
   await enviarEventoCapi({
     eventName: "InitiateCheckout",

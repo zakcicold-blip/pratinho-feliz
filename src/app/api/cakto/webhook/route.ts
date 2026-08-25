@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { enviarEventoCapi } from "@/lib/metaCapi";
+import { registrarEtapaSemCookie } from "@/lib/funil";
 
 /**
  * Webhook da Cakto.
@@ -199,6 +200,14 @@ async function liberar(c: CompraRecebida) {
       }`,
     },
   });
+
+  if (c.evento === "purchase_approved") {
+    await registrarEtapaSemCookie("compra_aprovada", {
+      email: c.email,
+      valor: c.valor ?? undefined,
+      userId: usuario?.id,
+    });
+  }
 
   // Purchase para o Meta. Sem cookie do navegador aqui, o casamento com o
   // anuncio fica por conta do e-mail com hash — e o que o CAPI aceita.

@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { requireSession } from "@/lib/currentChild";
 import { getStripe, DIAS_TESTE_GRATIS } from "@/lib/stripe";
 import { enviarEventoCapi } from "@/lib/metaCapi";
+import { registrarEtapa } from "@/lib/funil";
 
 /** Origem da requisição (https://host), para montar as URLs de retorno. */
 async function origem(): Promise<string> {
@@ -131,6 +132,12 @@ export async function irParaCheckout(plano: PlanoAssinado = "MENSAL", formData?:
   // chega de qualquer forma, e a Meta junta os dois pelo id.
   const h = await headers();
   const jar = await cookies();
+
+  await registrarEtapa("checkout_iniciado", {
+    valor: plano === "TRIMESTRAL" ? 59.9 : 29.9,
+    path: "/assinar",
+  });
+
   await enviarEventoCapi({
     eventName: "InitiateCheckout",
     eventId: String(formData?.get("eventId") ?? "") || crypto.randomUUID(),

@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { buscarConvite, RECUSA_LABEL } from "@/lib/convites";
+import { registrarEtapa } from "@/lib/funil";
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome."),
@@ -48,6 +49,8 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
       },
     },
   });
+
+  await registrarEtapa("conta_criada", { email, path: "/cadastro" });
 
   // novo=1 sinaliza ao Meta Pixel que é um cadastro recém-concluído.
   await signIn("credentials", {
@@ -150,6 +153,8 @@ export async function registerComConvite(
       detalhes: `${email} entrou pelo convite "${convite.rotulo}" (id ${convite.id}).`,
     },
   });
+
+  await registrarEtapa("conta_criada", { email, path: "/convite" });
 
   // cortesia=1 marca a origem para o onboarding; novo=1 e o mesmo sinal de
   // cadastro novo que o Pixel ja escuta.
