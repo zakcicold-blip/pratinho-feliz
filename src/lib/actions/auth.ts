@@ -8,7 +8,7 @@ import { buscarConvite, RECUSA_LABEL } from "@/lib/convites";
 import { registrarEtapa } from "@/lib/funil";
 import { cookies } from "next/headers";
 import { COOKIE_INDICACAO, registrarIndicacao } from "@/lib/parceiras";
-import { consumir, ipDaRequisicao, liberar, mensagemDeEspera } from "@/lib/rateLimit";
+import { consumir, ipDaRequisicao, mensagemDeEspera } from "@/lib/rateLimit";
 import { avaliarSenha, campoSenha, gerarHash } from "@/lib/senha";
 
 const registerSchema = z.object({
@@ -83,23 +83,12 @@ export async function loginAction(_prev: FormState, formData: FormData): Promise
   const email = String(formData.get("email") ?? "").toLowerCase().trim();
 
   /*
-   * Duas contagens, propositos diferentes.
-   *
-   * Por e-mail (5/15min) trava forca bruta contra UMA conta. Por IP (20/15min)
-   * trava a lista de e-mails vazados sendo testada em sequencia, que passaria
-   * pelo primeiro limite sem encostar nele.
-   *
-   * O limite por e-mail e checado ANTES do de IP para que quem esta so
-   * errando a propria senha receba a mensagem que descreve a situacao dele.
+   * A CONTAGEM em si vive no authorize do NextAuth (src/auth.ts), que e o
+   * funil por onde passam tanto este formulario quanto um POST direto no
+   * endpoint de credenciais. Aqui so olhamos o veredito ja formado, para
+   * poder dizer a pessoa quanto falta esperar — o authorize consegue recusar,
+   * mas nao consegue devolver mensagem.
    */
-  const ip = await ipDaRequisicao();
-  if (email) {
-    const porEmail = await consumir("login_email", email);
-    if (!porEmail.ok) return { error: mensagemDeEspera(porEmail) };
-  }
-  const porIp = await consumir("login_ip", ip);
-  if (!porIp.ok) return { error: mensagemDeEspera(porIp) };
-
   try {
     await signIn("credentials", {
       email,
@@ -108,11 +97,13 @@ export async function loginAction(_prev: FormState, formData: FormData): Promise
     });
   } catch (err) {
     if (err instanceof AuthError) {
+      // O authorize recusa por credencial errada E por limite estourado, sem
+      // distinguir os dois. Consultar o contador aqui separa as mensagens:
+      // quem esbarrou no limite precisa saber que e so esperar.
+      const veredito = await consumir("login_email", email || "desconhecido");
+      if (!veredito.ok) return { error: mensagemDeEspera(veredito) };
       return { error: "E-mail ou senha incorretos." };
     }
-    // signIn com redirectTo lanca NEXT_REDIRECT quando da certo: e por aqui
-    // que o sucesso passa, e e onde o contador daquele e-mail e zerado.
-    if (email) await liberar("login_email", email);
     throw err;
   }
 }
