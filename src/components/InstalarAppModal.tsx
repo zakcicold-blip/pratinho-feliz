@@ -100,7 +100,7 @@ function ocultoAgora(): boolean {
  * para o lado seguro: rota nova desconhecida cai no "tem menu" e o botao so
  * flutua um pouco mais alto, em vez de cobrir a navegacao.
  */
-const ROTAS_SEM_MENU = ["/blog", "/login", "/cadastro", "/oferta", "/privacidade", "/bem-vindo", "/onboarding", "/assinar"];
+const ROTAS_SEM_MENU = ["/blog", "/login", "/cadastro", "/oferta", "/privacidade", "/termos", "/bem-vindo", "/onboarding", "/assinar"];
 
 function temMenuInferior(pathname: string): boolean {
   if (pathname === "/") return false;

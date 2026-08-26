@@ -481,6 +481,9 @@ export default async function HomePage({
                 <Link href="/privacidade" className="text-stone-500 hover:text-stone-700">
                   Política de privacidade
                 </Link>
+                <Link href="/termos" className="text-stone-500 hover:text-stone-700">
+                  Termos de uso
+                </Link>
               </div>
             </div>
           </div>

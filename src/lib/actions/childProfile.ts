@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/currentChild";
-import { signOut } from "@/auth";
 import { Objetivo, Praticidade, StatusPreferencia } from "@prisma/client";
 
 export type PerfilInput = {
@@ -72,8 +71,10 @@ export async function atualizarPerfilCrianca(childId: string, input: PerfilInput
   return { ok: true };
 }
 
-export async function excluirConta() {
-  const session = await requireSession();
-  await db.user.delete({ where: { id: session.user.id } });
-  await signOut({ redirectTo: "/" });
-}
+/**
+ * Substituida por excluirMinhaConta, em @/lib/actions/meusDados.
+ *
+ * A versao daqui so apagava o User. O delete em cascata nao alcanca
+ * EventoFunil nem CompraCakto, entao o e-mail de quem pediu exclusao
+ * continuava no banco — que e exatamente o que o Art. 18, VI da LGPD proibe.
+ */

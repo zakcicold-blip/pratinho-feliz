@@ -97,6 +97,25 @@ export default function CadastroPage() {
             {pending ? "Criando conta…" : "Criar conta e começar"} <ArrowRight size={16} />
           </button>
 
+          {/*
+            Aceite no ato do envio, e nao numa caixa a marcar. A LGPD exige
+            destaque para o consentimento dos dados da CRIANCA — e esse vem
+            depois, no cadastro do perfil dela. Aqui e contrato de servico, e
+            o que a lei pede e que a pessoa saiba a que esta aderindo e consiga
+            ler antes.
+          */}
+          <p className="text-center text-[11px] leading-relaxed text-stone-400">
+            Ao criar a conta você concorda com os{" "}
+            <Link href="/termos" className="underline hover:text-stone-600">
+              Termos de uso
+            </Link>{" "}
+            e com a{" "}
+            <Link href="/privacidade" className="underline hover:text-stone-600">
+              Política de privacidade
+            </Link>
+            .
+          </p>
+
           <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 pt-1 text-[11px] font-medium text-stone-400">
             <li className="flex items-center gap-1"><Check size={12} className="text-emerald-500" /> Menos de 5 min</li>
             <li className="flex items-center gap-1"><Check size={12} className="text-emerald-500" /> Edite tudo depois</li>

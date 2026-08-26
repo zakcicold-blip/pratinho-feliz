@@ -22,7 +22,7 @@ const ROTAS_PUBLICAS = [
   "/login",
   "/oferta",
   "/assinar",
-  "/privacidade",
+  "/privacidade", "/termos",
   "/bem-vindo",
   "/onboarding",
 ];
