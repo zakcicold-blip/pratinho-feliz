@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import { dataBR } from "@/lib/dates";
 import { mesDe, reais, resumirParceira } from "@/lib/parceiras";
+import Link from "next/link";
+import { Eye } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import NovaParceiraForm from "./NovaParceiraForm";
 import LinhaParceira from "./LinhaParceira";
@@ -86,6 +88,12 @@ export default async function AdminParceirasPage() {
                   {p.user.email} · /p/{p.codigo} · desde {dataBR(p.createdAt)}
                 </p>
                 {p.observacao && <p className="mt-1 text-xs text-stone-500">{p.observacao}</p>}
+                <Link
+                  href={`/admin/parceiras/${p.id}`}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-semibold text-stone-600 transition hover:bg-stone-50"
+                >
+                  <Eye size={13} /> Ver o painel dela
+                </Link>
               </div>
 
               <LinhaParceira
