@@ -59,10 +59,10 @@ export default function FormConvite({ token }: { token: string }) {
           type="password"
           name="password"
           required
-          minLength={6}
+          minLength={8}
           autoComplete="new-password"
           className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
-          placeholder="Mínimo 6 caracteres"
+          placeholder="Mínimo 8 caracteres"
         />
       </div>
 

@@ -1,7 +1,6 @@
 "use server";
 
 import { z } from "zod";
-import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
@@ -9,12 +8,14 @@ import { buscarConvite, RECUSA_LABEL } from "@/lib/convites";
 import { registrarEtapa } from "@/lib/funil";
 import { cookies } from "next/headers";
 import { COOKIE_INDICACAO, registrarIndicacao } from "@/lib/parceiras";
+import { consumir, ipDaRequisicao, liberar, mensagemDeEspera } from "@/lib/rateLimit";
+import { avaliarSenha, campoSenha, gerarHash } from "@/lib/senha";
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome."),
   email: z.string().trim().toLowerCase().email("E-mail inválido."),
   telefone: z.string().trim().max(30).optional(),
-  password: z.string().min(6, "A senha precisa ter ao menos 6 caracteres."),
+  password: campoSenha,
 });
 
 export type FormState = { error?: string } | undefined;
@@ -33,12 +34,21 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
 
   const { name, email, telefone, password } = parsed.data;
 
+  // Cinco contas por hora por IP. Segura criacao em massa sem incomodar uma
+  // familia inteira cadastrando do mesmo wi-fi.
+  const forca = avaliarSenha(password, { nome: name, email });
+  if (!forca.ok) return { error: forca.erro };
+
+  const ip = await ipDaRequisicao();
+  const limite = await consumir("cadastro_ip", ip);
+  if (!limite.ok) return { error: mensagemDeEspera(limite) };
+
   const existing = await db.user.findUnique({ where: { email } });
   if (existing) {
     return { error: "Já existe uma conta com esse e-mail." };
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await gerarHash(password);
 
   const criado = await db.user.create({
     data: {
@@ -70,9 +80,29 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
 }
 
 export async function loginAction(_prev: FormState, formData: FormData): Promise<FormState> {
+  const email = String(formData.get("email") ?? "").toLowerCase().trim();
+
+  /*
+   * Duas contagens, propositos diferentes.
+   *
+   * Por e-mail (5/15min) trava forca bruta contra UMA conta. Por IP (20/15min)
+   * trava a lista de e-mails vazados sendo testada em sequencia, que passaria
+   * pelo primeiro limite sem encostar nele.
+   *
+   * O limite por e-mail e checado ANTES do de IP para que quem esta so
+   * errando a propria senha receba a mensagem que descreve a situacao dele.
+   */
+  const ip = await ipDaRequisicao();
+  if (email) {
+    const porEmail = await consumir("login_email", email);
+    if (!porEmail.ok) return { error: mensagemDeEspera(porEmail) };
+  }
+  const porIp = await consumir("login_ip", ip);
+  if (!porIp.ok) return { error: mensagemDeEspera(porIp) };
+
   try {
     await signIn("credentials", {
-      email: String(formData.get("email") ?? "").toLowerCase().trim(),
+      email,
       password: String(formData.get("password") ?? ""),
       redirectTo: "/hoje",
     });
@@ -80,6 +110,9 @@ export async function loginAction(_prev: FormState, formData: FormData): Promise
     if (err instanceof AuthError) {
       return { error: "E-mail ou senha incorretos." };
     }
+    // signIn com redirectTo lanca NEXT_REDIRECT quando da certo: e por aqui
+    // que o sucesso passa, e e onde o contador daquele e-mail e zerado.
+    if (email) await liberar("login_email", email);
     throw err;
   }
 }
@@ -116,11 +149,15 @@ export async function registerComConvite(
   const convite = validacao.convite;
 
   const { name, email, telefone, password } = parsed.data;
+
+  const forca = avaliarSenha(password, { nome: name, email });
+  if (!forca.ok) return { error: forca.erro };
+
   if (await db.user.findUnique({ where: { email } })) {
     return { error: "Já existe uma conta com esse e-mail." };
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await gerarHash(password);
 
   try {
     await db.$transaction(async (tx) => {

@@ -1,0 +1,18 @@
+# Nada de .env vai para o deploy.
+#
+# Isto ja aconteceu no projeto irmao: um .env local com placeholder subiu
+# junto, a producao passou a apontar para localhost e o cadastro parou de
+# funcionar. As variaveis reais vivem no painel da Vercel, e so la.
+.env
+.env.*
+!.env.example
+
+# Lixo de desenvolvimento
+.next
+node_modules
+*.log
+.DS_Store
+
+# Scripts e anotacoes que nao fazem parte do runtime
+scripts/local
+*.xlsx

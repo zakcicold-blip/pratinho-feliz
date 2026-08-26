@@ -695,3 +695,22 @@ model HeatEvent {
   @@index([path, tipo, createdAt])
   @@index([createdAt])
 }
+
+/**
+ * Contador de tentativas por janela de tempo.
+ *
+ * Fica no banco, e nao em memoria, porque cada requisicao na Vercel pode cair
+ * numa instancia diferente: um contador em memoria zera sozinho e nao segura
+ * ninguem. Uma linha por chave (acao + quem), com a janela gravada junto.
+ *
+ * As linhas vencidas sao apagadas pelo proprio uso e pelo cron diario — nao
+ * vale um job so para isso.
+ */
+model RateLimit {
+  chave     String   @id
+  contagem  Int      @default(0)
+  janelaFim DateTime
+  createdAt DateTime @default(now())
+
+  @@index([janelaFim])
+}

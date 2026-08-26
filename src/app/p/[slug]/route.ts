@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { COOKIE_INDICACAO, DIAS_INDICACAO } from "@/lib/parceiras";
+import { consumir, ipDaRequest } from "@/lib/rateLimit";
 
 /**
  * O link da parceira: /p/<slug>.
@@ -52,12 +53,19 @@ export async function GET(request: NextRequest, ctx: { params: Promise<{ slug: s
 
   // Contagem sem bloquear o redirect: a pessoa nao espera o banco para ver a
   // pagina. Se falhar, perde-se um clique, nao a visita.
-  db.linkParceira
-    .update({
-      where: { id: link.id },
-      data: { cliques: { increment: 1 }, ultimoCliqueEm: new Date() },
-    })
-    .catch(() => {});
+  //
+  // O limite por IP nao protege o servidor, protege o NUMERO: sem ele, dar
+  // F5 trinta vezes infla o painel da parceira e a metrica de conversao dela
+  // deixa de significar qualquer coisa.
+  const podeContar = await consumir("link_parceira", `${slug}:${ipDaRequest(request)}`);
+  if (podeContar.ok) {
+    db.linkParceira
+      .update({
+        where: { id: link.id },
+        data: { cliques: { increment: 1 }, ultimoCliqueEm: new Date() },
+      })
+      .catch(() => {});
+  }
 
   return resposta;
 }

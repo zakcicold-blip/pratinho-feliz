@@ -1,9 +1,9 @@
 "use server";
 
 import { headers, cookies } from "next/headers";
-import bcrypt from "bcryptjs";
 import type Stripe from "stripe";
 import { db } from "@/lib/db";
+import { avaliarSenha, gerarHash } from "@/lib/senha";
 import { getStripe } from "@/lib/stripe";
 import { signIn } from "@/auth";
 import { enviarEventoCapi } from "@/lib/metaCapi";
@@ -72,7 +72,8 @@ export async function provisionarAcesso(
   formData: FormData,
 ): Promise<ProvisaoState> {
   const senha = String(formData.get("senha") ?? "");
-  if (senha.length < 6) return { error: "A senha precisa ter ao menos 6 caracteres." };
+  const forca = avaliarSenha(senha);
+  if (!forca.ok) return { error: forca.erro };
   if (!sessionId) return { error: "Sessão de pagamento não encontrada." };
 
   const stripe = getStripe();
@@ -107,7 +108,7 @@ export async function provisionarAcesso(
   const priceId = sub?.items?.data?.[0]?.price?.id ?? null;
   const fimPeriodo = sub?.current_period_end ? new Date(sub.current_period_end * 1000) : null;
 
-  const passwordHash = await bcrypt.hash(senha, 10);
+  const passwordHash = await gerarHash(senha);
   await db.user.create({
     data: {
       name: nome,

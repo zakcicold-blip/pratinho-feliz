@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { HEAT_TIPOS } from "@/lib/heat";
+import { consumir, ipDaRequest } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -25,6 +26,12 @@ function texto(v: unknown, max: number): string | null {
 // erro de tracking impactar o visitante). sendBeacon manda o corpo como texto.
 export async function POST(req: Request) {
   try {
+    // Rota de escrita sem login: sem limite, qualquer um enche a tabela de
+    // eventos. 204 mesmo ao recusar — quem estiver abusando nao ganha um
+    // sinal de que foi barrado, e o visitante legitimo nunca ve erro.
+    const limite = await consumir("heat_ip", ipDaRequest(req));
+    if (!limite.ok) return new NextResponse(null, { status: 204 });
+
     const raw = await req.text();
     if (!raw || raw.length > 100_000) return new NextResponse(null, { status: 204 });
 

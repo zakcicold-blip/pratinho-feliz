@@ -1,9 +1,10 @@
 "use server";
 
-import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { signIn } from "@/auth";
+import { consumir, ipDaRequisicao, mensagemDeEspera } from "@/lib/rateLimit";
+import { avaliarSenha, campoSenha, gerarHash } from "@/lib/senha";
 
 /**
  * Criacao de conta para quem pagou na Cakto.
@@ -19,7 +20,7 @@ const MAX_TENTATIVAS = 8;
 const schema = z.object({
   email: z.string().trim().toLowerCase().email("E-mail inválido."),
   documento: z.string().trim().regex(/^\d{4}$/, "Informe os 4 últimos dígitos do CPF."),
-  senha: z.string().min(6, "A senha precisa ter ao menos 6 caracteres."),
+  senha: campoSenha,
   nome: z.string().trim().min(2, "Informe seu nome.").max(80),
 });
 
@@ -38,6 +39,15 @@ export async function liberarAcessoCakto(
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Dados inválidos." };
 
   const { email, documento, senha, nome } = parsed.data;
+
+  // O contador por compra so trava DEPOIS de achar uma compra. Quem varre
+  // e-mails para descobrir quem comprou nunca encosta nele — por isso o
+  // limite por IP vem antes de qualquer consulta.
+  const forca = avaliarSenha(senha, { nome, email });
+  if (!forca.ok) return { error: forca.erro };
+
+  const limite = await consumir("reivindicar_ip", await ipDaRequisicao());
+  if (!limite.ok) return { error: mensagemDeEspera(limite) };
 
   const compra = await db.compraCakto.findFirst({
     where: { email, liberadaEm: null },
@@ -74,7 +84,7 @@ export async function liberarAcessoCakto(
     };
   }
 
-  const passwordHash = await bcrypt.hash(senha, 10);
+  const passwordHash = await gerarHash(senha);
   const usuario = await db.user.create({
     data: {
       name: compra.nome?.trim() || nome,

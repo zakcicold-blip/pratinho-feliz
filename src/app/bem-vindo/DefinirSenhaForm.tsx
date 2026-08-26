@@ -36,9 +36,9 @@ export default function DefinirSenhaForm({
           name="senha"
           type="password"
           required
-          minLength={6}
+          minLength={8}
           autoComplete="new-password"
-          placeholder="Mínimo 6 caracteres"
+          placeholder="Mínimo 8 caracteres"
           className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-800 outline-none focus:border-orange-400"
         />
       </div>

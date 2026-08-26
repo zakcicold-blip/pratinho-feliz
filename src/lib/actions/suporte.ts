@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { requireSession } from "@/lib/currentChild";
 import { requireAdmin } from "@/lib/admin";
 import { getStripe } from "@/lib/stripe";
+import { consumir, mensagemDeEspera } from "@/lib/rateLimit";
 
 /**
  * A pessoa pede o cancelamento escrevendo o motivo. Não cancela nada sozinho —
@@ -13,6 +14,10 @@ import { getStripe } from "@/lib/stripe";
  */
 export async function solicitarCancelamento(motivo: string) {
   const session = await requireSession();
+
+  const limite = await consumir("suporte_user", session.user.id);
+  if (!limite.ok) return { error: mensagemDeEspera(limite) };
+
   const texto = motivo.trim().slice(0, 1000);
   if (texto.length < 3) return { error: "Conte brevemente o motivo do cancelamento." };
 
