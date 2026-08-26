@@ -11,6 +11,7 @@ const ITEMS = [
   { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/cancelamentos", label: "Cancelamentos" },
   { href: "/admin/convites", label: "Convites" },
+  { href: "/admin/parceiras", label: "Parceiras" },
   { href: "/admin/videos", label: "Vídeos" },
   { href: "/admin/funil", label: "Funil" },
   { href: "/admin/heatmap", label: "Mapa de calor" },

@@ -7,6 +7,8 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { buscarConvite, RECUSA_LABEL } from "@/lib/convites";
 import { registrarEtapa } from "@/lib/funil";
+import { cookies } from "next/headers";
+import { COOKIE_INDICACAO, registrarIndicacao } from "@/lib/parceiras";
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome."),
@@ -38,7 +40,7 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await db.user.create({
+  const criado = await db.user.create({
     data: {
       name,
       email,
@@ -48,7 +50,13 @@ export async function registerAction(_prev: FormState, formData: FormData): Prom
         create: { plano: "ESSENCIAL", status: "TESTE" },
       },
     },
+    select: { id: true },
   });
+
+  // Veio de uma parceira? O cookie foi gravado la em /p/<slug>. Nao pode
+  // atrapalhar o cadastro, entao registrarIndicacao engole os proprios erros.
+  const indicacao = (await cookies()).get(COOKIE_INDICACAO)?.value;
+  await registrarIndicacao(criado.id, indicacao);
 
   await registrarEtapa("conta_criada", { email, path: "/cadastro" });
 

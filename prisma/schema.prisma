@@ -71,6 +71,8 @@ enum StatusAssinatura {
 enum PapelUsuario {
   RESPONSAVEL
   ADMIN
+  /** Parceira: ve o proprio painel de indicacoes, nunca o backoffice. */
+  PARCEIRA
 }
 
 enum QualidadeSono {
@@ -106,6 +108,86 @@ model User {
   auditLogs     AuditLog[]
   cancelamentos SolicitacaoCancelamento[]
   convitesCriados ConviteCortesia[] @relation("ConvitesCriados")
+  parceira      Parceira?
+  indicacao     Indicacao?
+}
+
+/**
+ * Parceira de divulgacao.
+ *
+ * Loga com a MESMA conta do app — nao existe login separado, que seria mais
+ * uma senha para vazar. O que muda e o papel: PARCEIRA abre /parceira e nada
+ * mais. Ela nunca chega ao backoffice.
+ */
+model Parceira {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /** Nome publico, como ela quer aparecer. */
+  nome        String
+  /** Slug curto e estavel: pratinhofeliz.com.br/p/<codigo>. */
+  codigo      String   @unique
+  /**
+   * Percentual da comissao. Fica congelado em cada indicacao no momento em
+   * que ela acontece: renegociar a porcentagem nao pode mudar o valor do que
+   * ja foi indicado meses atras.
+   */
+  comissaoPct Float    @default(30)
+  ativa       Boolean  @default(true)
+  observacao  String?
+  /**
+   * Chave PIX de repasse. E dado pessoal e fica aqui pelo tempo da parceria —
+   * so o admin le, e a propria parceira pode apagar quando quiser.
+   */
+  chavePix    String?
+  links       LinkParceira[]
+  indicacoes  Indicacao[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/**
+ * Um link de divulgacao.
+ *
+ * Mais de um por parceira de proposito: o link da bio e o link do story
+ * respondem perguntas diferentes, e sem separar nao da para saber qual peca
+ * funcionou.
+ */
+model LinkParceira {
+  id             String    @id @default(cuid())
+  parceiraId     String
+  parceira       Parceira  @relation(fields: [parceiraId], references: [id], onDelete: Cascade)
+  slug           String    @unique
+  rotulo         String
+  cliques        Int       @default(0)
+  ultimoCliqueEm DateTime?
+  revogadoEm     DateTime?
+  indicacoes     Indicacao[]
+  createdAt      DateTime  @default(now())
+
+  @@index([parceiraId])
+}
+
+/**
+ * Quem veio por qual parceira.
+ *
+ * Uma conta pertence a no maximo uma parceira (userId unico): primeira
+ * indicacao vence. Sem isso, duas parceiras poderiam reivindicar a mesma
+ * pessoa e a comissao sairia dobrada.
+ */
+model Indicacao {
+  id          String   @id @default(cuid())
+  parceiraId  String
+  parceira    Parceira @relation(fields: [parceiraId], references: [id], onDelete: Cascade)
+  linkId      String?
+  link        LinkParceira? @relation(fields: [linkId], references: [id], onDelete: SetNull)
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /** Copia do percentual vigente quando a indicacao entrou. */
+  comissaoPct Float
+  createdAt   DateTime @default(now())
+
+  @@index([parceiraId, createdAt])
 }
 
 model ChildProfile {

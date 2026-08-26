@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { db } from "@/lib/db";
 import { getConta } from "@/lib/currentChild";
 import { CATEGORIA_INGREDIENTE_ORDEM } from "@/lib/constants";
@@ -22,6 +24,30 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // perfil de novo.
   const { session, conta } = await getConta();
   const precisaCadastrar = conta.children.length === 0;
+  const ehParceira = (session.user as { role?: string }).role === "PARCEIRA";
+
+  // Parceira sem filho cadastrado nao pode cair no modal de onboarding: ela
+  // entrou para acompanhar indicacoes, nao para montar cardapio, e o modal
+  // nao tem saida. Ela ainda pode usar o app — basta cadastrar uma crianca.
+  if (precisaCadastrar && ehParceira) {
+    return (
+      <main className="mx-auto w-full max-w-md px-6 py-16 text-center">
+        <h1 className="text-xl font-bold text-stone-800">Olá!</h1>
+        <p className="mt-2 text-sm leading-relaxed text-stone-600">
+          Seu painel de parceira tem os links, as indicações e a comissão do mês.
+        </p>
+        <Link
+          href="/parceira"
+          className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+        >
+          Ir para o meu painel <ArrowRight size={15} />
+        </Link>
+        <p className="mt-6 text-xs leading-relaxed text-stone-400">
+          Quer usar o app também? Cadastre uma criança em Configurações e ele abre normalmente.
+        </p>
+      </main>
+    );
+  }
 
   const grupos = precisaCadastrar ? await gruposDeIngredientes() : [];
 
@@ -45,6 +71,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen flex-col">
       <HeatOptOut />
+      {ehParceira && (
+        <Link
+          href="/parceira"
+          className="flex items-center justify-center gap-1.5 bg-orange-500 px-4 py-2 text-xs font-semibold text-white"
+        >
+          Abrir meu painel de parceira <ArrowRight size={13} />
+        </Link>
+      )}
       <div className="mx-auto w-full max-w-2xl flex-1 pb-4">{children}</div>
       <BottomNav />
     </div>
