@@ -6,6 +6,7 @@ import BotaoAssinar from "@/components/BotaoAssinar";
 import BotaoCheckoutDireto from "@/components/BotaoCheckoutDireto";
 import GaleriaDoApp from "@/components/GaleriaDoApp";
 import FotoDoSite from "@/components/FotoDoSite";
+import UmDiaComum from "@/components/UmDiaComum";
 import { FOTOS_CRIANCAS, FOTO_MESA, FOTO_ROTINA, algumaPublicada } from "@/lib/fotosSite";
 import { registrarEtapa } from "@/lib/funil";
 import {
@@ -147,8 +148,17 @@ export default async function HomePage({
         </div>
       )}
 
+      {/*
+        UM DIA COMUM — reconhecimento antes de argumento.
+
+        Vem antes de "o que voce recebe" de proposito: lista de beneficio so
+        convence quem ja aceitou que tem um problema. As quatro cenas fazem
+        esse trabalho primeiro.
+      */}
+      <UmDiaComum />
+
       {/* O QUE VOCÊ RECEBE */}
-      <section className="bg-white">
+      <section>
         <div className="mx-auto w-full max-w-5xl px-6 py-14">
           <TituloSecao
             sobrelinha="O que está incluso"
