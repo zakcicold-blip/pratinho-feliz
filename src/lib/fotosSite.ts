@@ -47,10 +47,10 @@ export type CenaDoDia = {
 export const CENAS_DO_DIA: CenaDoDia[] = [
   {
     foto: {
-      arquivo: null,
-      alt: "Criança pequena de boca fechada, virando o rosto para o prato na mesa",
-      proporcao: "4 / 3",
-      dica: "1200×900 — criança recusando comida, expressão fechada",
+      arquivo: "recusa.jpg",
+      alt: "Menino pequeno com as mãos no rosto e expressão fechada diante de uma tigela de brócolis",
+      proporcao: "3 / 4",
+      dica: "1600×2133 (retrato 3:4) — criança recusando comida",
     },
     etapa: "Terça, 12h10",
     titulo: "Ele empurra o prato de novo",
@@ -59,10 +59,10 @@ export const CENAS_DO_DIA: CenaDoDia[] = [
   },
   {
     foto: {
-      arquivo: null,
-      alt: "Mãe de pé olhando dentro da geladeira aberta no fim da tarde",
-      proporcao: "4 / 3",
-      dica: "1200×900 — geladeira aberta, fim de tarde, luz baixa",
+      arquivo: "geladeira.jpg",
+      alt: "Mulher parada diante da geladeira aberta numa cozinha escura, sem decidir o que fazer",
+      proporcao: "3 / 2",
+      dica: "1600×1067 (paisagem 3:2) — geladeira aberta, fim de tarde",
     },
     etapa: "Terça, 18h05",
     titulo: "A geladeira aberta e nenhuma ideia",
@@ -71,10 +71,10 @@ export const CENAS_DO_DIA: CenaDoDia[] = [
   },
   {
     foto: {
-      arquivo: null,
-      alt: "Mãe dando comida na boca do filho pequeno, os dois sentados à mesa",
-      proporcao: "4 / 3",
-      dica: "1200×900 — mãe dando comida, momento tranquilo",
+      arquivo: "almoco-decidido.jpg",
+      alt: "Mãe e filho rindo juntos na cozinha, com legumes já cortados na bancada",
+      proporcao: "1 / 1",
+      dica: "1600×1600 (quadrada) — mãe e filho na cozinha, com a comida à vista",
     },
     etapa: "Quinta, 12h",
     titulo: "O almoço que já estava decidido às sete da manhã",
@@ -83,15 +83,15 @@ export const CENAS_DO_DIA: CenaDoDia[] = [
   },
   {
     foto: {
-      arquivo: null,
-      alt: "Lancheira montada sobre a bancada, pronta para a escola",
-      proporcao: "4 / 3",
-      dica: "1200×900 — lancheira ou marmita pronta na bancada",
+      arquivo: "mae-aliviada.jpg",
+      alt: "Mãe rindo com o filho no colo perto da janela, sem pressa",
+      proporcao: "3 / 2",
+      dica: "1600×1067 (paisagem 3:2) — mãe aliviada com o filho",
     },
     etapa: "Sexta, 7h20",
     titulo: "A semana montada antes de começar",
     texto:
-      "Trinta dias no ar, a lista pronta, o que ele recusou fora do caminho. Você continua cozinhando — só parou de decidir tudo em cima da hora.",
+      "Trinta dias no ar, a lista pronta, o que ele recusou fora do caminho. Você continua cozinhando — só parou de decidir tudo em cima da hora. E o tempo que isso devolve não volta para a cozinha.",
   },
 ];
 

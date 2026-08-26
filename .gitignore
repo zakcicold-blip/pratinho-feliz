@@ -48,3 +48,7 @@ next-env.d.ts
 # Fontes/renderizacoes das animacoes Lottie — so os .json sao usados em runtime
 public/Lotties/**/*.aep
 public/Lotties/**/*.mp4
+
+# Previas geradas ao conferir corte de foto
+.previa-*.jpg
+.chk-*.jpg
