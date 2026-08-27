@@ -7,6 +7,8 @@ import BotaoCheckoutDireto from "@/components/BotaoCheckoutDireto";
 import GaleriaDoApp from "@/components/GaleriaDoApp";
 import FotoDoSite from "@/components/FotoDoSite";
 import UmDiaComum from "@/components/UmDiaComum";
+import Revelar from "@/components/Revelar";
+import ListaQueEntra from "@/components/ListaQueEntra";
 import { FOTOS_CRIANCAS, FOTO_MESA, FOTO_ROTINA, algumaPublicada } from "@/lib/fotosSite";
 import { registrarEtapa } from "@/lib/funil";
 import {
@@ -29,7 +31,6 @@ import {
   ListChecks,
   Sparkles,
   Heart,
-  X,
   type LucideIcon,
 } from "lucide-react";
 
@@ -99,27 +100,48 @@ export default async function HomePage({
         <div aria-hidden className="pointer-events-none absolute -top-24 right-[-10%] h-80 w-80 rounded-full bg-orange-200/40 blur-3xl" />
         <div className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 py-14 md:grid-cols-2 md:py-20">
           <div className="text-center md:text-left">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">
+            {/*
+              Entrada do hero em cascata. Os atrasos sobem de 70 em 70ms: a
+              pessoa le na ordem em que os elementos assentam, e o olho chega
+              no botao por ultimo — que e onde ele deveria parar.
+            */}
+            <span
+              className="entrada inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600"
+              style={{ "--atraso": "0ms" } as React.CSSProperties}
+            >
               <Zap size={13} /> Acesso imediato · sem espera
             </span>
-            <h1 className="font-display mt-4 text-[2.1rem] font-extrabold leading-[1.08] text-stone-900 md:text-[3rem]">
+            <h1
+              className="entrada font-display mt-4 text-[2.1rem] font-extrabold leading-[1.08] text-stone-900 md:text-[3rem]"
+              style={{ "--atraso": "70ms" } as React.CSSProperties}
+            >
               O cardápio do seu filho, <span className="text-orange-500">resolvido hoje.</span>
             </h1>
-            <p className="mt-4 text-lg text-stone-600">
+            <p
+              className="entrada mt-4 text-lg text-stone-600"
+              style={{ "--atraso": "140ms" } as React.CSSProperties}
+            >
               30 dias de refeições pela idade da criança, nutrição de verdade e a lista de compras
               pronta. Sem cozinhar no improviso.
             </p>
-            <p className="mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700">
+            <p
+              className="entrada mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700"
+              style={{ "--atraso": "210ms" } as React.CSSProperties}
+            >
               <Zap size={14} className="mr-1.5 inline align--2 text-orange-500" />
               Crie sua conta de graça, responda sobre a criança e veja o cardápio dela montado
               hoje mesmo. Assinar é o que abre o mês inteiro.
             </p>
-            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+            <div
+              className="entrada mt-7 flex flex-wrap justify-center gap-3 md:justify-start"
+              style={{ "--atraso": "280ms" } as React.CSSProperties}
+            >
               <Link
                 href="/cadastro"
-                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
+                className="group flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600 hover:shadow-md active:scale-[0.98]"
               >
-                Criar conta grátis <ArrowRight size={16} />
+                Criar conta grátis
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
               <a
                 href="#planos"
@@ -128,13 +150,19 @@ export default async function HomePage({
                 Ver planos
               </a>
             </div>
-            <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start">
+            <div
+              className="entrada mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs font-medium text-stone-500 md:justify-start"
+              style={{ "--atraso": "350ms" } as React.CSSProperties}
+            >
               <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Grátis para começar</span>
               <span className="flex items-center gap-1"><Check size={13} className="text-emerald-500" /> Sem cartão no cadastro</span>
               <span className="flex items-center gap-1"><Lock size={13} className="text-emerald-500" /> Pagamento seguro</span>
             </div>
           </div>
-          <div className="flex justify-center md:justify-end">
+          <div
+            className="entrada flex justify-center md:justify-end"
+            style={{ "--atraso": "180ms" } as React.CSSProperties}
+          >
             <PhoneCarousel />
           </div>
         </div>
@@ -315,31 +343,31 @@ export default async function HomePage({
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-3xl border border-stone-200/60 bg-white p-6">
             <div className="text-sm font-semibold text-stone-400">Como costuma ser</div>
-            <ul className="mt-4 space-y-3">
-              {["Decidir o almoço com a criança já com fome", "Repetir os mesmos quatro pratos o mês inteiro", "Descobrir no fogão que falta um ingrediente", "Adivinhar se a porção está certa para a idade", "Insistir num prato que ele recusa há semanas"].map((t) => (
-                <li key={t} className="flex items-start gap-2.5 text-sm text-stone-500">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-stone-100 text-stone-400">
-                    <X size={12} />
-                  </span>
-                  {t}
-                </li>
-              ))}
-            </ul>
+            <ListaQueEntra
+              tipo="antes"
+              itens={[
+                "Decidir o almoço com a criança já com fome",
+                "Repetir os mesmos quatro pratos o mês inteiro",
+                "Descobrir no fogão que falta um ingrediente",
+                "Adivinhar se a porção está certa para a idade",
+                "Insistir num prato que ele recusa há semanas",
+              ]}
+            />
           </div>
           <div className="rounded-3xl border border-orange-200/70 bg-white p-6 shadow-card">
             <div className="flex items-center gap-1.5 text-sm font-semibold text-orange-600">
               <Sparkles size={15} /> Com o Pratinho Feliz
             </div>
-            <ul className="mt-4 space-y-3">
-              {["O dia já abre com as quatro refeições definidas", "30 dias variados, montados pela idade da criança", "Lista de compras da semana pronta antes do mercado", "Porção e nutrientes por refeição, com base na TACO", "O cardápio aprende as recusas e muda o rumo"].map((t) => (
-                <li key={t} className="flex items-start gap-2.5 text-sm text-stone-700">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                    <Check size={12} />
-                  </span>
-                  {t}
-                </li>
-              ))}
-            </ul>
+            <ListaQueEntra
+              tipo="depois"
+              itens={[
+                "O dia já abre com as quatro refeições definidas",
+                "30 dias variados, montados pela idade da criança",
+                "Lista de compras da semana pronta antes do mercado",
+                "Porção e nutrientes por refeição, com base na TACO",
+                "O cardápio aprende as recusas e muda o rumo",
+              ]}
+            />
           </div>
         </div>
       </section>
@@ -533,19 +561,19 @@ function TituloSecao({
   espaco?: string;
 }) {
   return (
-    <div className={`${espaco} text-center`}>
+    <Revelar className={`${espaco} text-center`}>
       <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange-500">
         {sobrelinha}
       </span>
       <h2 className="font-display mt-2 text-2xl font-bold text-stone-900 md:text-3xl">{titulo}</h2>
       {texto && <p className="mx-auto mt-2 max-w-xl text-sm text-stone-500">{texto}</p>}
-    </div>
+    </Revelar>
   );
 }
 
 function Beneficio({ icon: Icon, tone, titulo, texto }: { icon: LucideIcon; tone: string; titulo: string; texto: string }) {
   return (
-    <div className="rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
+    <div className="levita rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
       <span className={`flex h-11 w-11 items-center justify-center rounded-2xl ${tone}`}>
         <Icon size={20} />
       </span>
@@ -557,7 +585,7 @@ function Beneficio({ icon: Icon, tone, titulo, texto }: { icon: LucideIcon; tone
 
 function Passo({ numero, titulo, texto }: { numero: number; titulo: string; texto: string }) {
   return (
-    <div className="relative rounded-3xl border border-stone-200/60 bg-white p-6 shadow-card">
+    <div className="levita relative rounded-3xl border border-stone-200/60 bg-white p-6 shadow-card">
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm font-bold text-white">
         {numero}
       </span>
@@ -600,7 +628,7 @@ function Recurso({
 
 function Perfil({ icon: Icon, titulo, texto }: { icon: LucideIcon; titulo: string; texto: string }) {
   return (
-    <div className="rounded-3xl border border-stone-200/60 bg-[#fdfaf6] p-6 text-center">
+    <div className="levita rounded-3xl border border-stone-200/60 bg-[#fdfaf6] p-6 text-center">
       <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-orange-500 shadow-sm">
         <Icon size={22} />
       </span>

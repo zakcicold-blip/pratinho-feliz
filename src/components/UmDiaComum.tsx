@@ -1,5 +1,7 @@
 import { CENAS_DO_DIA, caminhoDaFoto } from "@/lib/fotosSite";
 import FotoDoSite from "@/components/FotoDoSite";
+import Revelar from "@/components/Revelar";
+import LinhaDoDia from "@/components/LinhaDoDia";
 
 /**
  * "Um dia comum" — a seção de reconhecimento.
@@ -21,7 +23,7 @@ export default function UmDiaComum() {
   return (
     <section className="bg-white">
       <div className="mx-auto w-full max-w-5xl px-6 py-16">
-        <div className="mx-auto max-w-2xl text-center">
+        <Revelar className="mx-auto max-w-2xl text-center">
           <div className="text-xs font-semibold uppercase tracking-[0.14em] text-orange-500">
             Um dia comum
           </div>
@@ -31,9 +33,10 @@ export default function UmDiaComum() {
           <p className="mt-3 text-[15px] leading-relaxed text-stone-500">
             Não é falta de cuidado, e não é birra. É decisão demais para tomar no fim do dia.
           </p>
-        </div>
+        </Revelar>
 
-        <ol className="mt-12 space-y-10 sm:space-y-14">
+        <LinhaDoDia>
+        <ol className="mt-12 space-y-16 sm:space-y-24">
           {CENAS_DO_DIA.map((cena, i) => {
             const invertida = i % 2 === 1;
             const temFoto = caminhoDaFoto(cena.foto) !== null;
@@ -48,23 +51,33 @@ export default function UmDiaComum() {
                 }`}
               >
                 {mostraColunaDeFoto && (
-                  <div className={invertida ? "md:order-2" : undefined}>
+                  /*
+                    A foto entra pelo lado em que ela está, e o texto vem 120ms
+                    depois. Chegarem juntos parece um bloco piscando; em
+                    sequência, parece uma cena sendo contada.
+                  */
+                  <Revelar
+                    direcao={invertida ? "direita" : "esquerda"}
+                    distancia={20}
+                    className={invertida ? "md:order-2" : undefined}
+                  >
                     <FotoDoSite
                       foto={cena.foto}
                       sizes="(min-width: 768px) 50vw, 100vw"
                       className="w-full"
                     />
-                  </div>
+                  </Revelar>
                 )}
 
-                <div
+                <Revelar
+                  atraso={120}
                   className={`${invertida ? "md:order-1" : ""} ${
                     mostraColunaDeFoto ? "" : "mx-auto max-w-2xl"
                   }`}
                 >
                   {/* A hora é o que amarra as quatro cenas num dia só. */}
                   <div className="flex items-center gap-2.5">
-                    <span className="h-px w-6 bg-orange-300" />
+                    <span className="h-px w-6 origin-left bg-orange-300" />
                     <span className="text-xs font-semibold uppercase tracking-wider text-orange-500">
                       {cena.etapa}
                     </span>
@@ -73,11 +86,12 @@ export default function UmDiaComum() {
                     {cena.titulo}
                   </h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-stone-600">{cena.texto}</p>
-                </div>
+                </Revelar>
               </li>
             );
           })}
         </ol>
+        </LinhaDoDia>
       </div>
     </section>
   );

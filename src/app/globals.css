@@ -69,6 +69,71 @@ body {
   animation: fade-in 0.25s ease-out;
 }
 
+/* ---------------------------------------------------------------------------
+   Movimento.
+
+   Uma direcao so: as coisas ASSENTAM. Nada entra voando, nada quica, nada faz
+   parallax. O produto vende alivio de decisao para mae cansada — animacao
+   agitada contradiz a promessa antes de o texto ser lido.
+
+   Tudo aqui anima apenas opacity e transform, as duas propriedades que o
+   navegador resolve na GPU sem recalcular layout. Em celular fraco, que e o
+   aparelho da maior parte deste publico, a diferenca entre isso e animar
+   height ou top e a diferenca entre liso e travado.
+   --------------------------------------------------------------------------- */
+
+@keyframes assentar {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+  Entrada do hero: a unica animacao que roda no carregamento, sem esperar
+  rolagem. O escalonamento vem de --atraso, definido no proprio elemento.
+*/
+.entrada {
+  animation: assentar 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--atraso, 0ms);
+}
+
+/* Cartao que sobe de leve ao passar o mouse. So no ponteiro fino: em toque
+   nao existe hover, e o efeito ficaria preso depois do tap. */
+@media (hover: hover) and (pointer: fine) {
+  .levita {
+    transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .levita:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card-lg);
+  }
+}
+
+/*
+  A regra que fecha tudo.
+
+  Movimento nao e enfeite para quem tem enxaqueca vestibular ou transtorno de
+  equilibrio — e sintoma. Quem pediu menos movimento no sistema recebe a mesma
+  pagina, inteira, parada. Nao e um modo degradado.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 .scrollbar-none {
   scrollbar-width: none;
   -ms-overflow-style: none;
