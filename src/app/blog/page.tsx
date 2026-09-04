@@ -70,7 +70,7 @@ export default function BlogIndexPage() {
           </span>
           <h1 className="font-display mx-auto mt-4 max-w-3xl text-[2.1rem] leading-[1.08] font-extrabold text-balance text-stone-900 md:text-[3rem]">
             Alimentação infantil sem culpa e{" "}
-            <span className="text-blue-500">sem achismo.</span>
+            <span className="text-pink-500">sem achismo.</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-stone-600">
             Nutrição, introdução alimentar, rotina, receitas e desenvolvimento — explicados de forma

@@ -122,7 +122,7 @@ export default async function HojePage() {
           >
             <Bell size={18} />
             {naoLidas > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-500 px-1 text-[10px] font-bold text-white">
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-pink-500 px-1 text-[10px] font-bold text-white">
                 {naoLidas > 9 ? "9+" : naoLidas}
               </span>
             )}
@@ -149,7 +149,7 @@ export default async function HojePage() {
 
       {cicloEncerrado ? (
         <Card className="text-center" padding="lg">
-          <PartyPopper className="mx-auto text-blue-500" size={28} />
+          <PartyPopper className="mx-auto text-pink-500" size={28} />
           <p className="mt-2 font-semibold text-stone-800">
             {child.nome} completou os 30 dias!
           </p>
@@ -168,7 +168,7 @@ export default async function HojePage() {
 
             <Link
               href="/plano"
-              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500 to-blue-400 p-5 text-white shadow-card-lg transition active:scale-[0.99]"
+              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-pink-500 to-pink-400 p-5 text-white shadow-card-lg transition active:scale-[0.99]"
             >
               <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
               <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full bg-black/5" />

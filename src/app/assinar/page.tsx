@@ -50,7 +50,7 @@ export default async function AssinarPage() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col justify-center px-5 py-10">
       <div className="rounded-3xl border border-stone-200/70 bg-white p-6 shadow-card">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-pink-50 px-3 py-1 text-xs font-semibold text-pink-600">
           <Sparkles size={14} /> Plano completo
         </span>
 

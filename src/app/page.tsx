@@ -115,7 +115,7 @@ export default async function HomePage({
               className="entrada font-display mt-4 text-[2.1rem] font-extrabold leading-[1.08] text-stone-900 md:text-[3rem]"
               style={{ "--atraso": "70ms" } as React.CSSProperties}
             >
-              O cardápio do seu filho, <span className="text-blue-500">resolvido hoje.</span>
+              O cardápio do seu filho, <span className="text-pink-500">resolvido hoje.</span>
             </h1>
             <p
               className="entrada mt-4 text-lg text-stone-600"
