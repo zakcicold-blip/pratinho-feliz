@@ -174,9 +174,9 @@ export default function AtivarNotificacoes({ chavePublica }: { chavePublica: str
   }
 
   return (
-    <div className="rounded-2xl border border-orange-200/70 bg-gradient-to-br from-orange-50 to-amber-50/60 p-5">
+    <div className="rounded-2xl border border-blue-200/70 bg-gradient-to-br from-blue-50 to-amber-50/60 p-5">
       <div className="flex items-center gap-2">
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-500 text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500 text-white">
           <BellRing size={17} />
         </span>
         <strong className="font-display text-base font-extrabold text-stone-900">
@@ -191,9 +191,9 @@ export default function AtivarNotificacoes({ chavePublica }: { chavePublica: str
         onClick={ativar}
         disabled={pendente}
         className={cn(
-          "mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3",
-          "text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition",
-          "hover:bg-orange-600 active:scale-[0.99] disabled:opacity-60"
+          "mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 py-3",
+          "text-sm font-semibold text-white shadow-sm shadow-blue-900/20 transition",
+          "hover:bg-blue-600 active:scale-[0.99] disabled:opacity-60"
         )}
       >
         {pendente ? <Loader2 size={15} className="animate-spin" /> : <BellRing size={15} />}

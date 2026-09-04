@@ -25,7 +25,7 @@ export default function ParceiraNav() {
             href={item.href}
             className={cn(
               "rounded-lg px-3 py-1.5 transition",
-              ativo ? "bg-orange-50 text-orange-600" : "hover:bg-stone-100",
+              ativo ? "bg-blue-50 text-blue-600" : "hover:bg-stone-100",
             )}
           >
             {item.label}

@@ -24,7 +24,7 @@ export default function UmDiaComum() {
     <section className="bg-white">
       <div className="mx-auto w-full max-w-5xl px-6 py-16">
         <Revelar className="mx-auto max-w-2xl text-center">
-          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-orange-500">
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-500">
             Um dia comum
           </div>
           <h2 className="font-display mt-2 text-3xl font-extrabold leading-tight text-stone-900 sm:text-4xl">
@@ -77,8 +77,8 @@ export default function UmDiaComum() {
                 >
                   {/* A hora é o que amarra as quatro cenas num dia só. */}
                   <div className="flex items-center gap-2.5">
-                    <span className="h-px w-6 origin-left bg-orange-300" />
-                    <span className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+                    <span className="h-px w-6 origin-left bg-blue-300" />
+                    <span className="text-xs font-semibold uppercase tracking-wider text-blue-500">
                       {cena.etapa}
                     </span>
                   </div>

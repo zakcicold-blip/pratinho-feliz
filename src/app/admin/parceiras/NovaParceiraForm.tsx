@@ -29,7 +29,7 @@ export default function NovaParceiraForm() {
       <button
         type="submit"
         disabled={pendente}
-        className="mt-4 flex items-center gap-1.5 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-60"
+        className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-600 disabled:opacity-60"
       >
         <UserPlus size={15} />
         {pendente ? "Criando…" : "Criar parceira"}
@@ -50,7 +50,7 @@ function Campo({
       {label}
       <input
         {...props}
-        className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-orange-400"
+        className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-blue-400"
       />
     </label>
   );

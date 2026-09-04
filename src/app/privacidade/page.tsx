@@ -78,7 +78,7 @@ export default function PrivacidadePage() {
           {IDENTIFICACAO.encarregado}, que você contata em{" "}
           <a
             href={`mailto:${IDENTIFICACAO.emailEncarregado}`}
-            className="text-orange-600 hover:underline"
+            className="text-blue-600 hover:underline"
           >
             {IDENTIFICACAO.emailEncarregado}
           </a>
@@ -297,7 +297,7 @@ export default function PrivacidadePage() {
             href="https://www.gov.br/anpd/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-orange-600 hover:underline"
+            className="text-blue-600 hover:underline"
           >
             Autoridade Nacional de Proteção de Dados (ANPD)
           </a>

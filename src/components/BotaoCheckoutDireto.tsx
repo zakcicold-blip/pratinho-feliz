@@ -48,7 +48,7 @@ export default function BotaoCheckoutDireto({
 
   const estilos = {
     principal:
-      "bg-orange-500 text-white shadow-sm shadow-orange-900/20 hover:bg-orange-600",
+      "bg-blue-500 text-white shadow-sm shadow-blue-900/20 hover:bg-blue-600",
     contorno:
       "border border-stone-300 bg-white/70 text-stone-700 hover:border-stone-400 hover:bg-white",
     claro: "border border-white/25 text-white hover:bg-white/10",

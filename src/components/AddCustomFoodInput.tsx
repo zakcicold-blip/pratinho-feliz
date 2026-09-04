@@ -42,13 +42,13 @@ export default function AddCustomFoodInput({
             }
           }}
           placeholder="Não achou? Digite um alimento..."
-          className="flex-1 rounded-full border border-stone-300 px-3 py-1.5 text-sm outline-none focus:border-orange-400"
+          className="flex-1 rounded-full border border-stone-300 px-3 py-1.5 text-sm outline-none focus:border-blue-400"
         />
         <button
           type="button"
           onClick={adicionar}
           disabled={pending || !valor.trim()}
-          className="flex items-center gap-1 rounded-full bg-orange-500 px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-50"
+          className="flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-50"
         >
           <Plus size={14} /> {pending ? "..." : "Adicionar"}
         </button>

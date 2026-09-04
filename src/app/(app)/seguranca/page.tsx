@@ -120,7 +120,7 @@ export default function SegurancaPage() {
         {/* Regra do formato */}
         <section className="rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
           <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-500">
               <Ruler size={18} />
             </span>
             <h3 className="font-display text-lg font-bold text-stone-900">A regra do formato</h3>
@@ -136,7 +136,7 @@ export default function SegurancaPage() {
               "Até 9 meses, ofereça em bastão do tamanho de dois dedos. Depois da pinça, pedaços pequenos e macios.",
             ].map((t) => (
               <li key={t} className="flex gap-2.5 text-[13px] leading-relaxed text-stone-600">
-                <Check size={15} className="mt-0.5 shrink-0 text-orange-500" />
+                <Check size={15} className="mt-0.5 shrink-0 text-blue-500" />
                 {t}
               </li>
             ))}
@@ -254,7 +254,7 @@ export default function SegurancaPage() {
             Ver as <strong className="text-stone-900">fases da introdução alimentar</strong> e os
             métodos de oferecer.
           </p>
-          <ArrowRight size={18} className="shrink-0 text-orange-500" />
+          <ArrowRight size={18} className="shrink-0 text-blue-500" />
         </Link>
 
         {/* Fontes + aviso */}
@@ -269,7 +269,7 @@ export default function SegurancaPage() {
                   href={f.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-1.5 text-[13px] leading-relaxed font-medium text-orange-600 hover:underline"
+                  className="flex items-start gap-1.5 text-[13px] leading-relaxed font-medium text-blue-600 hover:underline"
                 >
                   <ExternalLink size={13} className="mt-0.5 shrink-0" />
                   {f.nome}

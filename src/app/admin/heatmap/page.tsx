@@ -126,7 +126,7 @@ export default async function HeatmapPage({
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="flex items-center gap-2 text-xl font-bold text-stone-800">
-          <Flame size={20} className="text-orange-500" /> Mapa de calor · Landing
+          <Flame size={20} className="text-blue-500" /> Mapa de calor · Landing
         </h1>
         <div className="flex items-center gap-2">
           {/* Device */}
@@ -205,7 +205,7 @@ export default async function HeatmapPage({
                       <span className="w-40 shrink-0 truncate text-xs text-stone-600">{f.label}</span>
                       <div className="h-5 flex-1 overflow-hidden rounded-md bg-stone-100">
                         <div
-                          className="flex h-full items-center justify-end rounded-md bg-gradient-to-r from-orange-300 to-orange-500 px-2 text-[10px] font-semibold text-white transition-all"
+                          className="flex h-full items-center justify-end rounded-md bg-gradient-to-r from-blue-300 to-blue-500 px-2 text-[10px] font-semibold text-white transition-all"
                           style={{ width: `${Math.max(f.pct, f.pct > 0 ? 8 : 0)}%` }}
                         >
                           {f.pct > 0 ? `${f.pct}%` : ""}

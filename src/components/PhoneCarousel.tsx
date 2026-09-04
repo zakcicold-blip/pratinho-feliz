@@ -47,7 +47,7 @@ export default function PhoneCarousel() {
 
         {/* Cards flutuantes sobrepondo o celular */}
         <div className="absolute -left-3 top-14 flex items-center gap-2 rounded-2xl border border-stone-200/70 bg-white/95 px-3 py-2 shadow-float backdrop-blur-sm">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-500">
             <CalendarDays size={16} />
           </span>
           <span className="leading-tight">
@@ -76,7 +76,7 @@ export default function PhoneCarousel() {
             onClick={() => setI(idx)}
             className={cn(
               "h-1.5 rounded-full transition-all",
-              idx === i ? "w-5 bg-orange-500" : "w-1.5 bg-stone-300 hover:bg-stone-400"
+              idx === i ? "w-5 bg-blue-500" : "w-1.5 bg-stone-300 hover:bg-stone-400"
             )}
           />
         ))}

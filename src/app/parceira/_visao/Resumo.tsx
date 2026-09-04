@@ -66,8 +66,8 @@ export default async function Resumo({ parceira, base, somenteLeitura = false }:
         />
       </div>
 
-      <div className="rounded-2xl border border-orange-200/70 bg-orange-50/60 p-6">
-        <div className="text-xs font-semibold uppercase tracking-wide text-orange-700">
+      <div className="rounded-2xl border border-blue-200/70 bg-blue-50/60 p-6">
+        <div className="text-xs font-semibold uppercase tracking-wide text-blue-700">
           A receber por {mes.rotulo}
         </div>
         <div className="mt-1 text-3xl font-extrabold text-stone-900">
@@ -85,7 +85,7 @@ export default async function Resumo({ parceira, base, somenteLeitura = false }:
         {!somenteLeitura && (
           <Link
             href="/parceira/pagamentos"
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600 hover:text-orange-700"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700"
           >
             Ver como o repasse funciona <ArrowRight size={14} />
           </Link>
@@ -117,7 +117,7 @@ export default async function Resumo({ parceira, base, somenteLeitura = false }:
               </p>
               <Link
                 href="/parceira/links"
-                className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-600"
               >
                 Criar meu primeiro link <ArrowRight size={14} />
               </Link>
@@ -146,7 +146,7 @@ function Cartao({
     <div className="rounded-2xl border border-stone-200/70 bg-white p-5 shadow-card">
       <span
         className={`flex h-8 w-8 items-center justify-center rounded-xl ${
-          destaque ? "bg-orange-50 text-orange-600" : "bg-stone-100 text-stone-500"
+          destaque ? "bg-blue-50 text-blue-600" : "bg-stone-100 text-stone-500"
         }`}
       >
         {icone}

@@ -17,7 +17,7 @@ export default function SectionHeader({
       <h2 className="font-display text-lg font-semibold text-stone-900">{title}</h2>
       {right ??
         (href ? (
-          <Link href={href} className="text-xs font-semibold text-orange-600 hover:underline">
+          <Link href={href} className="text-xs font-semibold text-blue-600 hover:underline">
             {action}
           </Link>
         ) : null)}

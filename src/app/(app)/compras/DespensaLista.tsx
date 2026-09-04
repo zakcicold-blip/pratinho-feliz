@@ -101,7 +101,7 @@ export default function DespensaLista({
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           placeholder="Buscar ingrediente…"
-          className="w-full rounded-2xl border border-stone-200 bg-white py-3 pr-10 pl-10 text-sm outline-none transition focus:border-orange-400"
+          className="w-full rounded-2xl border border-stone-200 bg-white py-3 pr-10 pl-10 text-sm outline-none transition focus:border-blue-400"
         />
         {busca && (
           <button

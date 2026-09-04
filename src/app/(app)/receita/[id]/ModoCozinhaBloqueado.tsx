@@ -12,7 +12,7 @@ export default function ModoCozinhaBloqueado() {
   return (
     <Link
       href="/assinar"
-      className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-orange-300 bg-orange-50/60 py-3 text-sm font-semibold text-orange-700 transition hover:bg-orange-50"
+      className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-blue-300 bg-blue-50/60 py-3 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
     >
       <Lock size={15} /> Modo cozinha — liberar
     </Link>

@@ -193,8 +193,8 @@ export default async function RelatorioPage() {
           )}
         </Card>
 
-        <div className="rounded-2xl border border-orange-200 bg-orange-50 p-5 text-center">
-          <TrendingUp className="mx-auto text-orange-500" size={26} />
+        <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-center">
+          <TrendingUp className="mx-auto text-blue-500" size={26} />
           <p className="mt-2 font-semibold text-stone-800">
             {cicloConcluido
               ? "Ciclo completo! Hora de gerar o próximo mês."

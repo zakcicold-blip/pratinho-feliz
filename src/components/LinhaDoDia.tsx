@@ -78,7 +78,7 @@ export default function LinhaDoDia({ children }: { children: React.ReactNode }) 
       <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 hidden w-px lg:block">
         <div className="absolute inset-0 bg-stone-200" />
         <div
-          className="absolute inset-x-0 top-0 origin-top bg-gradient-to-b from-orange-400 to-orange-300"
+          className="absolute inset-x-0 top-0 origin-top bg-gradient-to-b from-blue-400 to-blue-300"
           style={{
             height: "100%",
             transform: `scaleY(${progresso})`,
@@ -88,7 +88,7 @@ export default function LinhaDoDia({ children }: { children: React.ReactNode }) 
         {/* A marca que desce junto, mostrando onde a leitura está. */}
         {!semMovimento && (
           <span
-            className="absolute -left-[3px] h-1.5 w-1.5 rounded-full bg-orange-500 shadow-[0_0_0_3px_rgba(255,255,255,0.9)]"
+            className="absolute -left-[3px] h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_0_3px_rgba(255,255,255,0.9)]"
             style={{
               top: `${progresso * 100}%`,
               transition: "top 0.12s linear",

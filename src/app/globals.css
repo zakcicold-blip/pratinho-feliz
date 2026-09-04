@@ -32,8 +32,8 @@ body {
 }
 
 ::selection {
-  background: #fed7aa;
-  color: #7c2d12;
+  background: #bfdbfe;
+  color: #1e3a8a;
 }
 
 /* Títulos e números grandes — mesma sans, peso forte e tracking justo. */
@@ -199,7 +199,7 @@ body {
 }
 
 .prose-blog > ul > li::marker {
-  color: #fb923c;
+  color: #60a5fa;
 }
 .prose-blog > ol > li::marker {
   color: #a8a29e;
@@ -208,7 +208,7 @@ body {
 
 .prose-blog > blockquote {
   margin-block: 1.6rem;
-  border-left: 3px solid #fdba74;
+  border-left: 3px solid #93c5fd;
   padding: 0.15rem 0 0.15rem 1.15rem;
   color: #57534e;
   font-style: italic;
@@ -230,16 +230,16 @@ body {
 .prose-blog > p a,
 .prose-blog > ul a,
 .prose-blog > ol a {
-  color: #ea580c;
+  color: #2563eb;
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
-  text-decoration-color: #fed7aa;
+  text-decoration-color: #bfdbfe;
 }
 
 .prose-blog > p a:hover,
 .prose-blog > ul a:hover,
 .prose-blog > ol a:hover {
-  text-decoration-color: #ea580c;
+  text-decoration-color: #2563eb;
 }

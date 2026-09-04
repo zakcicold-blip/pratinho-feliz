@@ -147,7 +147,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-stone-200/70 py-3.5 text-sm text-stone-500">
             <span className="inline-flex items-center gap-2 font-medium text-stone-700">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500 text-white">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500 text-white">
                 <UtensilsCrossed size={13} />
               </span>
               {AUTOR.nome}
@@ -168,14 +168,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             className="mt-8 rounded-2xl border border-stone-200/70 bg-white p-5 shadow-card"
           >
             <div className="flex items-center gap-2 text-sm font-bold text-stone-800">
-              <ListChecks size={16} className="text-orange-500" /> Neste artigo
+              <ListChecks size={16} className="text-blue-500" /> Neste artigo
             </div>
             <ol className="mt-3 space-y-1.5">
               {post.sumario.map((item, i) => (
                 <li key={item.id}>
                   <a
                     href={`#${item.id}`}
-                    className="flex gap-2.5 text-[0.94rem] text-stone-600 transition hover:text-orange-600"
+                    className="flex gap-2.5 text-[0.94rem] text-stone-600 transition hover:text-blue-600"
                   >
                     <span className="w-4 shrink-0 text-right font-semibold text-stone-300 tabular-nums">
                       {i + 1}
@@ -232,7 +232,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
         {/* Assinatura do autor */}
         <section className="mt-12 flex gap-4 rounded-3xl border border-stone-200/70 bg-white p-6 shadow-card">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-500 text-white">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-500 text-white">
             <UtensilsCrossed size={22} />
           </span>
           <div>

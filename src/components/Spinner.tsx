@@ -7,7 +7,7 @@ export default function Spinner({ size = 28, className }: { size?: number; class
       role="status"
       aria-label="Carregando"
       className={cn(
-        "inline-block animate-spin rounded-full border-orange-500 border-t-transparent",
+        "inline-block animate-spin rounded-full border-blue-500 border-t-transparent",
         className
       )}
       style={{ width: size, height: size, borderWidth: Math.max(2, Math.round(size / 10)) }}

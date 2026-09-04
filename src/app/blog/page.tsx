@@ -58,19 +58,19 @@ export default function BlogIndexPage() {
       <section className="relative overflow-hidden">
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-28 right-[-8%] h-72 w-72 rounded-full bg-orange-200/40 blur-3xl"
+          className="pointer-events-none absolute -top-28 right-[-8%] h-72 w-72 rounded-full bg-blue-200/40 blur-3xl"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute top-20 left-[-10%] h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl"
         />
         <div className="relative mx-auto w-full max-w-5xl px-6 pt-14 pb-10 text-center">
-          <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">
+          <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
             Conteúdo gratuito
           </span>
           <h1 className="font-display mx-auto mt-4 max-w-3xl text-[2.1rem] leading-[1.08] font-extrabold text-balance text-stone-900 md:text-[3rem]">
             Alimentação infantil sem culpa e{" "}
-            <span className="text-orange-500">sem achismo.</span>
+            <span className="text-blue-500">sem achismo.</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-stone-600">
             Nutrição, introdução alimentar, rotina, receitas e desenvolvimento — explicados de forma
@@ -123,7 +123,7 @@ export default function BlogIndexPage() {
                     {c.nome}
                     <ArrowRight
                       size={14}
-                      className="text-stone-300 transition group-hover:translate-x-0.5 group-hover:text-orange-500"
+                      className="text-stone-300 transition group-hover:translate-x-0.5 group-hover:text-blue-500"
                     />
                   </div>
                   <p className="mt-0.5 text-sm leading-relaxed text-stone-500">{c.descricao}</p>

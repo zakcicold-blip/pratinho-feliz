@@ -48,7 +48,7 @@ export default function BotaoAssinar({
       className={cn(
         "mt-5 flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-70",
         destaque
-          ? "bg-orange-500 text-white hover:bg-orange-600"
+          ? "bg-blue-500 text-white hover:bg-blue-600"
           : "bg-stone-900 text-white hover:bg-stone-800",
       )}
     >

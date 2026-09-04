@@ -38,7 +38,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </p>
         <Link
           href="/parceira"
-          className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+          className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-600"
         >
           Ir para o meu painel <ArrowRight size={15} />
         </Link>
@@ -74,7 +74,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       {ehParceira && (
         <Link
           href="/parceira"
-          className="flex items-center justify-center gap-1.5 bg-orange-500 px-4 py-2 text-xs font-semibold text-white"
+          className="flex items-center justify-center gap-1.5 bg-blue-500 px-4 py-2 text-xs font-semibold text-white"
         >
           Abrir meu painel de parceira <ArrowRight size={13} />
         </Link>

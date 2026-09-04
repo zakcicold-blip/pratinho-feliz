@@ -110,7 +110,7 @@ export default async function RefeicoesHojePage() {
 
       <div className="space-y-5 px-4 py-4">
         {/* Herói: registradas / total */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500 to-blue-400 p-5 text-white shadow-card-lg">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-white/10" />
           <span className="text-xs font-semibold uppercase tracking-wide text-white/80">Registradas hoje</span>
           <p className="font-display mt-3 text-5xl leading-none">
@@ -124,7 +124,7 @@ export default async function RefeicoesHojePage() {
         {/* Nutrição do dia */}
         <section>
           <h2 className="font-display mb-3 flex items-center gap-2 px-1 text-base font-semibold text-stone-800">
-            <Flame size={16} className="text-orange-500" /> Nutrição do dia
+            <Flame size={16} className="text-blue-500" /> Nutrição do dia
           </h2>
           <div className="rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
             {refeicoesComNutricao === 0 ? (
@@ -168,7 +168,7 @@ export default async function RefeicoesHojePage() {
             <NumeroTile icon={Timer} tone="text-indigo-500" valor={`${tempoTotal}`} unidade="min" label="preparo total" />
             <NumeroTile icon={CircleCheck} tone="text-emerald-500" valor={`${faceis}`} unidade={`/${slots.length}`} label="fáceis" />
             <Link href="/compras" className="block">
-              <NumeroTile icon={ShoppingBasket} tone="text-orange-500" valor={`${ingredientes.size}`} label="ingredientes" />
+              <NumeroTile icon={ShoppingBasket} tone="text-blue-500" valor={`${ingredientes.size}`} label="ingredientes" />
             </Link>
           </div>
         </section>

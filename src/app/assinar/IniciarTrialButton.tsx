@@ -12,7 +12,7 @@ function BotaoPrincipal() {
     <button
       type="submit"
       disabled={pending}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-orange-600 disabled:opacity-60"
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
     >
       {pending ? "Abrindo o ambiente seguro..." : "Começar os 7 dias grátis"}
       {!pending && <ArrowRight size={16} />}
@@ -26,7 +26,7 @@ function BotaoSecundario() {
     <button
       type="submit"
       disabled={pending}
-      className="flex w-full flex-col items-center justify-center rounded-xl border border-stone-200 bg-white py-2.5 text-stone-700 transition-colors hover:border-orange-300 disabled:opacity-60"
+      className="flex w-full flex-col items-center justify-center rounded-xl border border-stone-200 bg-white py-2.5 text-stone-700 transition-colors hover:border-blue-300 disabled:opacity-60"
     >
       <span className="text-sm font-semibold">
         {pending ? "Abrindo o ambiente seguro..." : "Prefiro o trimestral — R$ 59,90"}

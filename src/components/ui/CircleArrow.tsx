@@ -6,7 +6,7 @@ type Tone = "dark" | "accent" | "white" | "light";
 
 const TONES: Record<Tone, string> = {
   dark: "bg-stone-900 text-white",
-  accent: "bg-orange-500 text-white",
+  accent: "bg-blue-500 text-white",
   white: "bg-white text-stone-900",
   light: "bg-stone-100 text-stone-700",
 };

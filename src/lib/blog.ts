@@ -50,8 +50,8 @@ export const CATEGORIAS: Categoria[] = [
     nome: "Introdução alimentar",
     descricao: "Os primeiros meses de comida de verdade, do primeiro dia em diante.",
     icon: Baby,
-    gradiente: "from-orange-400 to-amber-500",
-    chip: "bg-orange-50 text-orange-600",
+    gradiente: "from-blue-400 to-amber-500",
+    chip: "bg-blue-50 text-blue-600",
   },
   {
     slug: "rotina",
@@ -66,7 +66,7 @@ export const CATEGORIAS: Categoria[] = [
     nome: "Receitas",
     descricao: "Ideias práticas que cabem na semana e a criança realmente come.",
     icon: ChefHat,
-    gradiente: "from-rose-400 to-orange-400",
+    gradiente: "from-rose-400 to-blue-400",
     chip: "bg-rose-50 text-rose-700",
   },
   {

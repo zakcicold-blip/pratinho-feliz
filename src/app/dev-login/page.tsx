@@ -49,7 +49,7 @@ export default async function DevLoginPage() {
           >
             <button
               type="submit"
-              className="flex w-full items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4 text-left transition hover:border-orange-300 hover:bg-orange-50/40"
+              className="flex w-full items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40"
             >
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-stone-900 text-sm font-bold text-white">
                 {u.name.charAt(0).toUpperCase()}

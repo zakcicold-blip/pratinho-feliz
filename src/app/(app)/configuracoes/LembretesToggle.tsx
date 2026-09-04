@@ -25,7 +25,7 @@ export default function LembretesToggle({ inicial }: { inicial: boolean }) {
             await alternarLembretes(checked);
           });
         }}
-        className="h-5 w-9 appearance-none rounded-full bg-stone-300 checked:bg-orange-500 relative transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-transform checked:before:translate-x-4"
+        className="h-5 w-9 appearance-none rounded-full bg-stone-300 checked:bg-blue-500 relative transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-transform checked:before:translate-x-4"
       />
     </label>
   );

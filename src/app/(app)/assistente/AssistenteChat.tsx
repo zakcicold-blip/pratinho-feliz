@@ -45,7 +45,7 @@ export default function AssistenteChat({ nomeCrianca }: { nomeCrianca: string })
       <div className="flex-1 space-y-3 px-4 pt-4">
         {mensagens.length === 0 && (
           <div className="rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500 text-white">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-500 text-white">
               <Sparkles size={20} />
             </span>
             <p className="font-display mt-3 text-lg font-extrabold text-stone-900">
@@ -61,7 +61,7 @@ export default function AssistenteChat({ nomeCrianca }: { nomeCrianca: string })
                 <button
                   key={s}
                   onClick={() => enviar(s)}
-                  className="rounded-2xl border border-stone-200 px-4 py-2.5 text-left text-[13px] text-stone-600 transition hover:border-orange-300 hover:bg-orange-50/50"
+                  className="rounded-2xl border border-stone-200 px-4 py-2.5 text-left text-[13px] text-stone-600 transition hover:border-blue-300 hover:bg-blue-50/50"
                 >
                   {s}
                 </button>
@@ -76,7 +76,7 @@ export default function AssistenteChat({ nomeCrianca }: { nomeCrianca: string })
             className={cn("flex gap-2.5", m.de === "pessoa" ? "justify-end" : "justify-start")}
           >
             {m.de === "pratinho" && (
-              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white">
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-500 text-white">
                 <UtensilsCrossed size={15} />
               </span>
             )}
@@ -95,7 +95,7 @@ export default function AssistenteChat({ nomeCrianca }: { nomeCrianca: string })
 
         {pendente && (
           <div className="flex gap-2.5">
-            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white">
+            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-500 text-white">
               <UtensilsCrossed size={15} />
             </span>
             <div className="flex items-center gap-1.5 rounded-3xl border border-stone-200/60 bg-white px-4 py-3.5 shadow-card">
@@ -147,7 +147,7 @@ export default function AssistenteChat({ nomeCrianca }: { nomeCrianca: string })
             type="submit"
             disabled={pendente || !texto.trim()}
             aria-label="Enviar pergunta"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white transition active:scale-95 disabled:opacity-40"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-500 text-white transition active:scale-95 disabled:opacity-40"
           >
             <Send size={16} />
           </button>

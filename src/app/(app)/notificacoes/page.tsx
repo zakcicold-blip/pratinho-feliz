@@ -19,7 +19,7 @@ import {
 export const metadata = { title: "Notificações" };
 
 const ESTILO: Record<string, { Icon: LucideIcon; cor: string }> = {
-  PLANO: { Icon: CalendarDays, cor: "bg-orange-50 text-orange-600" },
+  PLANO: { Icon: CalendarDays, cor: "bg-blue-50 text-blue-600" },
   LEMBRETE: { Icon: UtensilsCrossed, cor: "bg-emerald-50 text-emerald-600" },
   DICA: { Icon: Lightbulb, cor: "bg-amber-50 text-amber-700" },
   SISTEMA: { Icon: Info, cor: "bg-stone-100 text-stone-500" },
@@ -80,7 +80,7 @@ export default async function NotificacoesPage() {
                     "flex items-start gap-3 rounded-2xl border p-4 transition",
                     n.lida
                       ? "border-stone-200/60 bg-white"
-                      : "border-orange-200/70 bg-orange-50/40 shadow-card"
+                      : "border-blue-200/70 bg-blue-50/40 shadow-card"
                   )}
                 >
                   <span

@@ -19,7 +19,7 @@ export default async function ParceiraLayout({ children }: { children: React.Rea
       <header className="border-b border-stone-200 bg-white">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-4">
           <Link href="/parceira" className="flex items-center gap-2 font-bold text-stone-800">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-500 text-white">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500 text-white">
               <UtensilsCrossed size={14} />
             </span>
             Parceiras · {parceira.nome}

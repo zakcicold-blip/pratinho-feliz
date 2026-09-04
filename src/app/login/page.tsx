@@ -11,7 +11,7 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#fdfaf6]">
       <header className="mx-auto flex w-full max-w-md items-center gap-2 px-6 py-6 text-base font-bold text-stone-800">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
           <UtensilsCrossed size={16} />
         </span>
         Pratinho Feliz
@@ -36,7 +36,7 @@ export default function LoginPage() {
               name="email"
               required
               autoComplete="email"
-              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
               placeholder="voce@email.com"
             />
           </div>
@@ -47,7 +47,7 @@ export default function LoginPage() {
               name="password"
               required
               autoComplete="current-password"
-              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
               placeholder="Sua senha"
             />
           </div>
@@ -61,7 +61,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={pending}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3.5 text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition active:scale-[0.98] hover:bg-orange-600 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 py-3.5 text-sm font-semibold text-white shadow-sm shadow-blue-900/20 transition active:scale-[0.98] hover:bg-blue-600 disabled:opacity-60"
           >
             {pending ? "Entrando…" : "Entrar"} <ArrowRight size={16} />
           </button>
@@ -69,7 +69,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-stone-500">
           Ainda não tem conta?{" "}
-          <Link href="/cadastro" className="font-semibold text-orange-600 hover:underline">
+          <Link href="/cadastro" className="font-semibold text-blue-600 hover:underline">
             Criar conta
           </Link>
         </p>

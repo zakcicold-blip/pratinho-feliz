@@ -107,7 +107,7 @@ export default function ShoppingItemRow({
                 await marcarComprado(childId, new Date(semanaInicioISO), ingredientId, checked);
               });
             }}
-            className="h-4 w-4 shrink-0 rounded border-stone-300 text-orange-500"
+            className="h-4 w-4 shrink-0 rounded border-stone-300 text-blue-500"
           />
           <span className="min-w-0 flex-1">
             <span
@@ -149,7 +149,7 @@ export default function ShoppingItemRow({
           <div
             className={cn(
               "flex items-center rounded-full border transition",
-              anotado ? "border-orange-300 bg-orange-50" : "border-stone-200 bg-white"
+              anotado ? "border-blue-300 bg-blue-50" : "border-stone-200 bg-white"
             )}
           >
             <button
@@ -168,7 +168,7 @@ export default function ShoppingItemRow({
               placeholder="0"
               className={cn(
                 "w-12 border-0 bg-transparent p-0 text-center text-sm font-semibold tabular-nums outline-none",
-                anotado ? "text-orange-700" : "text-stone-500"
+                anotado ? "text-blue-700" : "text-stone-500"
               )}
             />
             <button
@@ -181,7 +181,7 @@ export default function ShoppingItemRow({
             </button>
           </div>
 
-          <span className={cn("text-xs font-medium", anotado ? "text-orange-700" : "text-stone-400")}>
+          <span className={cn("text-xs font-medium", anotado ? "text-blue-700" : "text-stone-400")}>
             {unidade}
           </span>
 

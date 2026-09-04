@@ -69,8 +69,8 @@ export default async function PreviaParceiraPage({
         </Link>
       </div>
 
-      <div className="flex items-start gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-4">
-        <Eye size={18} className="mt-0.5 shrink-0 text-orange-600" />
+      <div className="flex items-start gap-3 rounded-2xl border border-blue-200 bg-blue-50 p-4">
+        <Eye size={18} className="mt-0.5 shrink-0 text-blue-600" />
         <div className="text-sm leading-relaxed text-stone-700">
           <p className="font-semibold text-stone-900">
             Você está vendo o painel de {parceira.nome} exatamente como ela vê.

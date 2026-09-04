@@ -44,7 +44,7 @@ export default function PlanoLoading({ nome }: { nome?: string }) {
           <Lottie animationData={data} loop autoplay style={{ width: "100%", height: "100%" }} />
         ) : (
           <span
-            className="inline-block animate-spin rounded-full border-4 border-orange-500 border-t-transparent"
+            className="inline-block animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
             style={{ width: 40, height: 40 }}
           />
         )}

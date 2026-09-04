@@ -22,7 +22,7 @@ export default function NovoLinkForm() {
             required
             maxLength={60}
             placeholder="Ex.: Bio do Instagram"
-            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-orange-400"
+            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-blue-400"
           />
         </label>
 
@@ -32,14 +32,14 @@ export default function NovoLinkForm() {
             name="sufixo"
             maxLength={40}
             placeholder="bio"
-            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-orange-400"
+            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-blue-400"
           />
         </label>
 
         <button
           type="submit"
           disabled={pendente}
-          className="flex items-center justify-center gap-1.5 self-end rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-60"
+          className="flex items-center justify-center gap-1.5 self-end rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-600 disabled:opacity-60"
         >
           <Plus size={15} />
           {pendente ? "Criando…" : "Criar"}

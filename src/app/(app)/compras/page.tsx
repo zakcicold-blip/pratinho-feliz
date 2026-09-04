@@ -201,7 +201,7 @@ export default async function ComprasPage({
                 className={cn(
                   "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition",
                   !mesInteiro && i === semanaIdx
-                    ? "bg-orange-500 text-white shadow-card"
+                    ? "bg-blue-500 text-white shadow-card"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 )}
               >
@@ -213,7 +213,7 @@ export default async function ComprasPage({
               className={cn(
                 "flex h-8 shrink-0 items-center justify-center rounded-full px-3 text-sm font-semibold transition",
                 mesInteiro
-                  ? "bg-orange-500 text-white shadow-card"
+                  ? "bg-blue-500 text-white shadow-card"
                   : "bg-stone-100 text-stone-600 hover:bg-stone-200"
               )}
             >
@@ -303,7 +303,7 @@ export default async function ComprasPage({
               <strong className="text-stone-900">{pantryIds.size}</strong>{" "}
               {pantryIds.size === 1 ? "item marcado" : "itens marcados"} como já em casa
             </span>
-            <span className="shrink-0 text-xs font-semibold text-orange-600">Editar</span>
+            <span className="shrink-0 text-xs font-semibold text-blue-600">Editar</span>
           </Link>
         )}
       </div>

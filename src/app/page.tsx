@@ -68,7 +68,7 @@ export default async function HomePage({
       <header className="sticky top-0 z-10 border-b border-stone-200/60 bg-[#fdfaf6]/85 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 text-base font-bold text-stone-800">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
               <UtensilsCrossed size={16} />
             </span>
             Pratinho Feliz
@@ -87,7 +87,7 @@ export default async function HomePage({
             </Link>
             <Link
               href="/cadastro"
-              className="rounded-full bg-orange-500 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-sm shadow-orange-900/15 transition hover:bg-orange-600 sm:px-4 sm:text-sm"
+              className="rounded-full bg-blue-500 px-3 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-sm shadow-blue-900/15 transition hover:bg-blue-600 sm:px-4 sm:text-sm"
             >
               Começar grátis
             </Link>
@@ -97,7 +97,7 @@ export default async function HomePage({
 
       {/* HERO */}
       <section className="relative">
-        <div aria-hidden className="pointer-events-none absolute -top-24 right-[-10%] h-80 w-80 rounded-full bg-orange-200/40 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -top-24 right-[-10%] h-80 w-80 rounded-full bg-blue-200/40 blur-3xl" />
         <div className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 py-14 md:grid-cols-2 md:py-20">
           <div className="text-center md:text-left">
             {/*
@@ -106,7 +106,7 @@ export default async function HomePage({
               no botao por ultimo — que e onde ele deveria parar.
             */}
             <span
-              className="entrada inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600"
+              className="entrada inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600"
               style={{ "--atraso": "0ms" } as React.CSSProperties}
             >
               <Zap size={13} /> Acesso imediato · sem espera
@@ -115,7 +115,7 @@ export default async function HomePage({
               className="entrada font-display mt-4 text-[2.1rem] font-extrabold leading-[1.08] text-stone-900 md:text-[3rem]"
               style={{ "--atraso": "70ms" } as React.CSSProperties}
             >
-              O cardápio do seu filho, <span className="text-orange-500">resolvido hoje.</span>
+              O cardápio do seu filho, <span className="text-blue-500">resolvido hoje.</span>
             </h1>
             <p
               className="entrada mt-4 text-lg text-stone-600"
@@ -125,10 +125,10 @@ export default async function HomePage({
               pronta. Sem cozinhar no improviso.
             </p>
             <p
-              className="entrada mt-3 rounded-2xl border border-orange-200/70 bg-orange-50/70 px-4 py-3 text-sm font-medium text-stone-700"
+              className="entrada mt-3 rounded-2xl border border-blue-200/70 bg-blue-50/70 px-4 py-3 text-sm font-medium text-stone-700"
               style={{ "--atraso": "210ms" } as React.CSSProperties}
             >
-              <Zap size={14} className="mr-1.5 inline align--2 text-orange-500" />
+              <Zap size={14} className="mr-1.5 inline align--2 text-blue-500" />
               Crie sua conta de graça, responda sobre a criança e veja o cardápio dela montado
               hoje mesmo. Assinar é o que abre o mês inteiro.
             </p>
@@ -138,7 +138,7 @@ export default async function HomePage({
             >
               <Link
                 href="/cadastro"
-                className="group flex items-center gap-1.5 rounded-full bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600 hover:shadow-md active:scale-[0.98]"
+                className="group flex items-center gap-1.5 rounded-full bg-blue-500 px-6 py-3.5 font-semibold text-white shadow-sm shadow-blue-900/20 transition hover:bg-blue-600 hover:shadow-md active:scale-[0.98]"
               >
                 Criar conta grátis
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
@@ -194,9 +194,9 @@ export default async function HomePage({
             texto="Do cardápio à lista de compras, num app só."
           />
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            <Beneficio icon={CalendarDays} tone="text-orange-500 bg-orange-50" titulo="30 dias prontos" texto="Café, almoço, lanche e jantar pela idade — de 6 meses a 12 anos." />
+            <Beneficio icon={CalendarDays} tone="text-blue-500 bg-blue-50" titulo="30 dias prontos" texto="Café, almoço, lanche e jantar pela idade — de 6 meses a 12 anos." />
             <Beneficio icon={Salad} tone="text-emerald-500 bg-emerald-50" titulo="Nutrição de verdade" texto="Valores por porção com base na TACO (NEPA/UNICAMP)." />
-            <Beneficio icon={ShoppingCart} tone="text-orange-500 bg-orange-50" titulo="Lista de compras" texto="Automática, semana a semana. Chega de esquecer item." />
+            <Beneficio icon={ShoppingCart} tone="text-blue-500 bg-blue-50" titulo="Lista de compras" texto="Automática, semana a semana. Chega de esquecer item." />
             <Beneficio icon={BrainCircuit} tone="text-sky-500 bg-sky-50" titulo="Aprende os gostos" texto="Você marca o que a criança aceita e recusa; o mês seguinte melhora." />
             <Beneficio icon={Moon} tone="text-indigo-500 bg-indigo-50" titulo="Guiado pela rotina" texto="Cardápio que considera sono e disposição do seu filho." />
             <Beneficio icon={RefreshCw} tone="text-blue-500 bg-blue-50" titulo="Troca em 1 toque" texto="Não curtiu o prato? Troque na hora, até com o que tem em casa." />
@@ -225,7 +225,7 @@ export default async function HomePage({
           <div className="grid gap-4 md:grid-cols-2">
             <Recurso
               icon={Clock}
-              tone="text-orange-500 bg-orange-50"
+              tone="text-blue-500 bg-blue-50"
               titulo="De manhã, você abre e já sabe"
               texto="A tela de hoje mostra café, almoço, lanche e jantar da criança, com o passo a passo de cada um."
               detalhe="Nada de decidir de estômago vazio às 11h."
@@ -354,8 +354,8 @@ export default async function HomePage({
               ]}
             />
           </div>
-          <div className="rounded-3xl border border-orange-200/70 bg-white p-6 shadow-card">
-            <div className="flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+          <div className="rounded-3xl border border-blue-200/70 bg-white p-6 shadow-card">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-blue-600">
               <Sparkles size={15} /> Com o Pratinho Feliz
             </div>
             <ListaQueEntra
@@ -449,7 +449,7 @@ export default async function HomePage({
         <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-stone-900 to-stone-800 px-7 py-12 text-center sm:px-12">
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-20 -right-12 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl"
+            className="pointer-events-none absolute -top-20 -right-12 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl"
           />
           <div className="relative">
             <h2 className="font-display text-2xl font-extrabold text-white sm:text-3xl">
@@ -462,7 +462,7 @@ export default async function HomePage({
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link
                 href="/cadastro"
-                className="flex items-center gap-1.5 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-orange-900/30 transition hover:bg-orange-600"
+                className="flex items-center gap-1.5 rounded-full bg-blue-500 px-7 py-3.5 font-semibold text-white shadow-sm shadow-blue-900/30 transition hover:bg-blue-600"
               >
                 Criar conta grátis <ArrowRight size={17} />
               </Link>
@@ -485,7 +485,7 @@ export default async function HomePage({
           <div className="grid gap-8 sm:grid-cols-[1.4fr_1fr_1fr]">
             <div>
               <div className="flex items-center gap-2 text-sm font-bold text-stone-700">
-                <UtensilsCrossed size={16} className="text-orange-500" /> Pratinho Feliz
+                <UtensilsCrossed size={16} className="text-blue-500" /> Pratinho Feliz
               </div>
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-stone-400">
                 Valores nutricionais com base na TACO (NEPA/UNICAMP). Ferramenta de apoio à rotina
@@ -562,7 +562,7 @@ function TituloSecao({
 }) {
   return (
     <Revelar className={`${espaco} text-center`}>
-      <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange-500">
+      <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-blue-500">
         {sobrelinha}
       </span>
       <h2 className="font-display mt-2 text-2xl font-bold text-stone-900 md:text-3xl">{titulo}</h2>
@@ -629,7 +629,7 @@ function Recurso({
 function Perfil({ icon: Icon, titulo, texto }: { icon: LucideIcon; titulo: string; texto: string }) {
   return (
     <div className="levita rounded-3xl border border-stone-200/60 bg-[#fdfaf6] p-6 text-center">
-      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-orange-500 shadow-sm">
+      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-500 shadow-sm">
         <Icon size={22} />
       </span>
       <h3 className="mt-3 font-semibold text-stone-800">{titulo}</h3>
@@ -689,12 +689,12 @@ function PlanoCard({
     <div
       className={`relative flex h-full flex-col rounded-3xl border bg-white p-6 ${
         destaque
-          ? "border-orange-300 shadow-card-lg ring-2 ring-orange-200"
+          ? "border-blue-300 shadow-card-lg ring-2 ring-blue-200"
           : "border-stone-200/60 shadow-card"
       }`}
     >
       {selo && (
-        <span className="absolute -top-3 right-5 rounded-full bg-orange-500 px-3 py-1 text-[11px] font-semibold text-white">
+        <span className="absolute -top-3 right-5 rounded-full bg-blue-500 px-3 py-1 text-[11px] font-semibold text-white">
           {selo}
         </span>
       )}

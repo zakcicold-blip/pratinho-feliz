@@ -106,7 +106,7 @@ export function montarHtml(resumo: ResumoDoDia): string {
       O prato de ${resumo.nomeCrianca} hoje
     </div>
     <table style="width:100%;border-collapse:collapse;margin-top:16px">${linhas}</table>
-    <a href="${SITE_URL}/hoje" style="display:inline-block;margin-top:22px;background:#f97316;color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-size:14px;font-weight:600">
+    <a href="${SITE_URL}/hoje" style="display:inline-block;margin-top:22px;background:#3b82f6;color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-size:14px;font-weight:600">
       Abrir o plano de hoje
     </a>
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f0ebe4;font-size:12px;color:#a8a29e">

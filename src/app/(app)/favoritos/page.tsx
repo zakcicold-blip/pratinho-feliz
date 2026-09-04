@@ -31,7 +31,7 @@ export default async function FavoritosPage() {
               <Link
                 key={f.id}
                 href={`/receita/${f.recipeId}`}
-                className="rounded-2xl border border-stone-200/70 bg-white p-4 shadow-card transition hover:border-orange-200"
+                className="rounded-2xl border border-stone-200/70 bg-white p-4 shadow-card transition hover:border-blue-200"
               >
                 <RecipeThumb
                   tipo={f.recipe.tipoRefeicao}

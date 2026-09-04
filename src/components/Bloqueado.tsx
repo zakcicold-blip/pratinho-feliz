@@ -47,8 +47,8 @@ export default async function Bloqueado({
 
   if (compacto) {
     return (
-      <div className="rounded-3xl border border-orange-200/70 bg-orange-50/50 p-5 text-center">
-        <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-orange-500 shadow-sm">
+      <div className="rounded-3xl border border-blue-200/70 bg-blue-50/50 p-5 text-center">
+        <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-blue-500 shadow-sm">
           <Lock size={18} />
         </span>
         <h3 className="mt-3 font-semibold text-stone-800">{motivo.titulo}</h3>
@@ -63,7 +63,7 @@ export default async function Bloqueado({
   return (
     <div className="mx-auto w-full max-w-md px-5 py-10">
       <div className="rounded-3xl border border-stone-200/70 bg-white p-6 text-center shadow-card">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-500">
           <Lock size={24} />
         </span>
         <h1 className="font-display mt-4 text-xl font-extrabold text-stone-900">{motivo.titulo}</h1>

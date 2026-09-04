@@ -40,13 +40,13 @@ export default function SeletorCrianca({
                 disabled={pendente}
                 className={cn(
                   "flex min-w-0 flex-1 items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors",
-                  ativa ? "bg-orange-50" : "hover:bg-stone-50"
+                  ativa ? "bg-blue-50" : "hover:bg-stone-50"
                 )}
               >
                 <span
                   className={cn(
                     "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold",
-                    ativa ? "bg-orange-500 text-white" : "bg-stone-100 text-stone-500"
+                    ativa ? "bg-blue-500 text-white" : "bg-stone-100 text-stone-500"
                   )}
                 >
                   {c.nome.trim().charAt(0).toUpperCase()}
@@ -55,14 +55,14 @@ export default function SeletorCrianca({
                   <span
                     className={cn(
                       "block truncate text-sm font-semibold",
-                      ativa ? "text-orange-700" : "text-stone-700"
+                      ativa ? "text-blue-700" : "text-stone-700"
                     )}
                   >
                     {c.nome}
                   </span>
                   <span className="block truncate text-[11px] text-stone-400">{c.faixaEtaria}</span>
                 </span>
-                {ativa && <Check size={16} className="shrink-0 text-orange-500" />}
+                {ativa && <Check size={16} className="shrink-0 text-blue-500" />}
               </button>
 
               {criancas.length > 1 && (
@@ -109,7 +109,7 @@ export default function SeletorCrianca({
 
       <Link
         href="/onboarding"
-        className="mt-2 flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-stone-300 py-2.5 text-[13px] font-medium text-stone-500 transition-colors hover:border-orange-300 hover:text-orange-600"
+        className="mt-2 flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-stone-300 py-2.5 text-[13px] font-medium text-stone-500 transition-colors hover:border-blue-300 hover:text-blue-600"
       >
         <Plus size={15} /> Adicionar criança
       </Link>

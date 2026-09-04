@@ -105,9 +105,9 @@ function QuickLink({
   return (
     <Link
       href={href}
-      className="flex flex-col items-center gap-1.5 rounded-2xl border border-stone-200/60 bg-white py-3 text-center shadow-card transition active:scale-95 hover:border-orange-200"
+      className="flex flex-col items-center gap-1.5 rounded-2xl border border-stone-200/60 bg-white py-3 text-center shadow-card transition active:scale-95 hover:border-blue-200"
     >
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-50 text-orange-500">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-blue-500">
         <Icon size={17} />
       </span>
       <span className="text-[11px] font-medium text-stone-600">{label}</span>

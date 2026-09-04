@@ -173,7 +173,7 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
         {foraDeCasaAtivo ? (
           <div className="mt-3 flex items-center justify-between">
             <p className="text-sm text-stone-500">Refeição fora de casa hoje.</p>
-            <button onClick={desfazer} className="text-xs font-semibold text-orange-600 hover:underline">
+            <button onClick={desfazer} className="text-xs font-semibold text-blue-600 hover:underline">
               Desfazer
             </button>
           </div>
@@ -208,7 +208,7 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
 
             {data.explicacao && (
               <p className="mt-2 flex items-center gap-1 text-xs text-stone-400">
-                <Sparkles size={12} className="shrink-0 text-orange-300" />
+                <Sparkles size={12} className="shrink-0 text-blue-300" />
                 {data.explicacao}
               </p>
             )}
@@ -296,10 +296,10 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
             </div>
 
             {limiteTrocas && (
-              <div className="mb-3 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2.5 text-[13px] leading-snug text-stone-700">
+              <div className="mb-3 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5 text-[13px] leading-snug text-stone-700">
                 <strong className="font-semibold">Suas trocas gratuitas acabaram.</strong> No plano
                 completo dá para trocar qualquer refeição quantas vezes quiser.{" "}
-                <a href="/assinar" className="font-semibold text-orange-600 underline-offset-2 hover:underline">
+                <a href="/assinar" className="font-semibold text-blue-600 underline-offset-2 hover:underline">
                   Ver o plano
                 </a>
               </div>
@@ -340,7 +340,7 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
                 </p>
                 <Link
                   href="/compras"
-                  className="mt-3 inline-block text-xs font-semibold text-orange-600 hover:underline"
+                  className="mt-3 inline-block text-xs font-semibold text-blue-600 hover:underline"
                 >
                   Ir para Compras →
                 </Link>
@@ -356,7 +356,7 @@ export default function MealCard({ data, childId }: { data: MealCardData; childI
                     key={alt.recipeId}
                     onClick={() => escolherAlternativa(alt.recipeId, alt.explicacao)}
                     disabled={pending}
-                    className="w-full rounded-xl border border-stone-200 p-3 text-left transition hover:border-orange-300 hover:bg-orange-50"
+                    className="w-full rounded-xl border border-stone-200 p-3 text-left transition hover:border-blue-300 hover:bg-blue-50"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <p className="font-semibold text-stone-800">{alt.nome}</p>

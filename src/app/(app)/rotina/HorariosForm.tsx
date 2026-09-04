@@ -33,7 +33,7 @@ export default function HorariosForm({
             setDormir(e.target.value);
             salvar(e.target.value, acordar);
           }}
-          className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
+          className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         />
       </div>
       <div>
@@ -45,7 +45,7 @@ export default function HorariosForm({
             setAcordar(e.target.value);
             salvar(dormir, e.target.value);
           }}
-          className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
+          className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         />
       </div>
     </div>

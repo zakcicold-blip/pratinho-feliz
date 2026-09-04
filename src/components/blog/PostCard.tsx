@@ -77,7 +77,7 @@ export default function PostCard({ post }: { post: PostMeta }) {
           <MetaPost post={post} />
           <ArrowUpRight
             size={16}
-            className="text-stone-300 transition group-hover:text-orange-500"
+            className="text-stone-300 transition group-hover:text-blue-500"
           />
         </div>
       </div>
@@ -105,7 +105,7 @@ export function PostDestaque({ post }: { post: PostMeta }) {
         <p className="mt-3 text-[0.97rem] leading-relaxed text-stone-600">{post.resumo}</p>
         <div className="mt-5 flex items-center gap-3">
           <MetaPost post={post} />
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-orange-600">
+          <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600">
             Ler artigo <ArrowUpRight size={15} />
           </span>
         </div>

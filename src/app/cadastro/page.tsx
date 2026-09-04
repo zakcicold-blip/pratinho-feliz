@@ -11,7 +11,7 @@ export default function CadastroPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#fdfaf6]">
       <header className="mx-auto flex w-full max-w-md items-center gap-2 px-6 py-6 text-base font-bold text-stone-800">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
           <UtensilsCrossed size={16} />
         </span>
         Pratinho Feliz
@@ -19,7 +19,7 @@ export default function CadastroPage() {
 
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 pb-12">
         <div className="mb-6 text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
             <Gift size={13} /> 7 dias grátis
           </span>
           <h1 className="font-display mt-3 text-3xl font-extrabold leading-tight text-stone-900">
@@ -39,7 +39,7 @@ export default function CadastroPage() {
             <input
               name="name"
               required
-              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
               placeholder="Como podemos te chamar?"
             />
           </div>
@@ -50,7 +50,7 @@ export default function CadastroPage() {
               name="email"
               required
               autoComplete="email"
-              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
               placeholder="voce@email.com"
             />
           </div>
@@ -63,7 +63,7 @@ export default function CadastroPage() {
               name="telefone"
               inputMode="tel"
               autoComplete="tel"
-              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
               placeholder="(11) 99999-9999"
             />
             <p className="mt-1 text-[11px] text-stone-400">
@@ -78,7 +78,7 @@ export default function CadastroPage() {
               required
               minLength={8}
               autoComplete="new-password"
-              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+              className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
               placeholder="Mínimo 8 caracteres"
             />
           </div>
@@ -92,7 +92,7 @@ export default function CadastroPage() {
           <button
             type="submit"
             disabled={pending}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3.5 text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition active:scale-[0.98] hover:bg-orange-600 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 py-3.5 text-sm font-semibold text-white shadow-sm shadow-blue-900/20 transition active:scale-[0.98] hover:bg-blue-600 disabled:opacity-60"
           >
             {pending ? "Criando conta…" : "Criar conta e começar"} <ArrowRight size={16} />
           </button>
@@ -125,7 +125,7 @@ export default function CadastroPage() {
 
         <p className="mt-6 text-center text-sm text-stone-500">
           Já tem conta?{" "}
-          <Link href="/login" className="font-semibold text-orange-600 hover:underline">
+          <Link href="/login" className="font-semibold text-blue-600 hover:underline">
             Entrar
           </Link>
         </p>

@@ -24,7 +24,7 @@ export default function Erro({
     >
       <button
         onClick={reset}
-        className="flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-600"
+        className="flex items-center gap-2 rounded-full bg-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-blue-900/20 transition hover:bg-blue-600"
       >
         <RotateCcw size={15} /> Tentar de novo
       </button>

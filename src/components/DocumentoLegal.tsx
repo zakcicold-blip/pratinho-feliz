@@ -26,7 +26,7 @@ export default function DocumentoLegal({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <Link href="/" className="text-sm text-orange-600 hover:underline">
+      <Link href="/" className="text-sm text-blue-600 hover:underline">
         ← Voltar
       </Link>
 
@@ -57,7 +57,7 @@ export default function DocumentoLegal({
       <footer className="mt-12 border-t border-stone-200 pt-6 text-sm text-stone-500">
         <p>
           Dúvidas sobre este documento:{" "}
-          <a href={`mailto:${IDENTIFICACAO.email}`} className="text-orange-600 hover:underline">
+          <a href={`mailto:${IDENTIFICACAO.email}`} className="text-blue-600 hover:underline">
             {IDENTIFICACAO.email}
           </a>
         </p>
@@ -97,6 +97,6 @@ export function Secao({
 /** Bloco de destaque — usado onde a lei exige clausula destacada. */
 export function Destaque({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border-2 border-orange-300 bg-orange-50/70 p-5">{children}</div>
+    <div className="rounded-2xl border-2 border-blue-300 bg-blue-50/70 p-5">{children}</div>
   );
 }

@@ -34,7 +34,7 @@ export default function CopiarLink({ url, compacto = false }: { url: string; com
       <button
         type="button"
         onClick={copiar}
-        className="flex shrink-0 items-center gap-1.5 rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-orange-600"
+        className="flex shrink-0 items-center gap-1.5 rounded-xl bg-blue-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-blue-600"
       >
         {copiado ? <Check size={14} /> : <Copy size={14} />}
         {copiado ? "Copiado" : "Copiar"}

@@ -149,7 +149,7 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
                 className={cn(
                   "rounded-full px-3 py-1.5 text-[13px] font-medium transition",
                   faixa === f.id
-                    ? "bg-orange-500 text-white"
+                    ? "bg-blue-500 text-white"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 )}
               >
@@ -188,7 +188,7 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
             value={busca}
             onChange={(e) => ajustar(() => setBusca(e.target.value))}
             placeholder="Refinar pelo nome…"
-            className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pr-3 pl-9 text-sm outline-none focus:border-orange-300"
+            className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pr-3 pl-9 text-sm outline-none focus:border-blue-300"
           />
         </div>
       </div>
@@ -212,8 +212,8 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
               className={cn(
                 "flex items-center justify-between gap-3 rounded-xl border bg-white px-3 py-2.5 text-left transition",
                 escolhida?.id === r.id
-                  ? "border-orange-400 ring-1 ring-orange-200"
-                  : "border-stone-200 hover:border-orange-300 hover:bg-orange-50/40",
+                  ? "border-blue-400 ring-1 ring-blue-200"
+                  : "border-stone-200 hover:border-blue-300 hover:bg-blue-50/40",
                 pendente && "opacity-60"
               )}
             >
@@ -234,7 +234,7 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
       {faltam > 0 && (
         <button
           onClick={() => setVisiveis((v) => v + POR_PAGINA)}
-          className="mt-3 w-full rounded-xl border border-stone-200 bg-white py-2.5 text-sm font-semibold text-stone-600 transition hover:border-orange-300"
+          className="mt-3 w-full rounded-xl border border-stone-200 bg-white py-2.5 text-sm font-semibold text-stone-600 transition hover:border-blue-300"
         >
           Mostrar mais {Math.min(faltam, POR_PAGINA)} de {faltam}
         </button>
@@ -266,8 +266,8 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
           </div>
 
           {/* Gancho */}
-          <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4">
-            <p className="mb-1 text-[11px] font-bold tracking-wide text-orange-700 uppercase">
+          <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+            <p className="mb-1 text-[11px] font-bold tracking-wide text-blue-700 uppercase">
               Gancho · primeiros 3 segundos
             </p>
             <p className="text-lg font-bold text-stone-900">{roteiro.gancho}</p>
@@ -302,7 +302,7 @@ export default function GeradorRoteiro({ receitas }: { receitas: Receita[] }) {
                   Cena {cena.numero} · até 8 s
                 </span>
                 {roteiro.cenaComApp === cena.numero && (
-                  <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-700">
+                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">
                     cita o app
                   </span>
                 )}

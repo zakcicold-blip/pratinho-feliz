@@ -38,7 +38,7 @@ export default async function ConfiguracoesPage() {
       <TopBar title="Configurações" back />
       <div className="space-y-4 px-4 py-4">
         <Card className="flex items-center gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm font-bold text-orange-600">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600">
             {user.name.charAt(0).toUpperCase()}
           </span>
           <div className="min-w-0">
@@ -104,7 +104,7 @@ export default async function ConfiguracoesPage() {
           </h2>
           <Link
             href="/privacidade"
-            className="flex items-center gap-1 text-sm font-medium text-orange-600 hover:underline"
+            className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:underline"
           >
             Ver política de privacidade <ArrowRight size={13} />
           </Link>

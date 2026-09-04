@@ -31,7 +31,7 @@ export default function AddDesejadoForm({
       <select
         value={selecionado}
         onChange={(e) => setSelecionado(e.target.value)}
-        className="flex-1 rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
+        className="flex-1 rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
       >
         <option value="">Escolha um alimento para apresentar...</option>
         {opcoes.map((o) => (

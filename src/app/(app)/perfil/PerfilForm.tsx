@@ -231,7 +231,7 @@ export default function PerfilForm({
           transition: border-color 0.15s;
         }
         .input:focus {
-          border-color: #fb923c;
+          border-color: #60a5fa;
         }
       `}</style>
     </div>
@@ -270,7 +270,7 @@ function Slider({
     <div>
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium text-stone-700">{label}</label>
-        <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-sm font-bold text-orange-600">{valor}</span>
+        <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-bold text-blue-600">{valor}</span>
       </div>
       <input
         type="range"
@@ -279,7 +279,7 @@ function Slider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-2 w-full accent-orange-500"
+        className="mt-2 w-full accent-blue-500"
       />
       <p className="mt-1 text-xs text-stone-400">{ajuda}</p>
     </div>
@@ -307,7 +307,7 @@ function Segmented({
           className={cn(
             "rounded-2xl border px-3 py-2.5 text-sm font-medium transition active:scale-[0.98]",
             value === v
-              ? "border-orange-400 bg-orange-50 text-orange-700"
+              ? "border-blue-400 bg-blue-50 text-blue-700"
               : "border-stone-200 text-stone-600 hover:bg-stone-50",
           )}
         >

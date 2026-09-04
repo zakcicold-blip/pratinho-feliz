@@ -42,7 +42,7 @@ export default function EquipamentosSelect({
             className={cn(
               "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
               ativo
-                ? "border-orange-400 bg-orange-500 text-white"
+                ? "border-blue-400 bg-blue-500 text-white"
                 : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"
             )}
           >

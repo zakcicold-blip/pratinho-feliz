@@ -52,7 +52,7 @@ export default function BotaoUpgrade({
       className={cn(
         "flex items-center justify-center gap-2 rounded-full font-semibold transition active:scale-[0.98] disabled:opacity-70",
         variante === "principal"
-          ? "bg-orange-500 px-6 py-3.5 text-sm text-white shadow-sm shadow-orange-900/20 hover:bg-orange-600"
+          ? "bg-blue-500 px-6 py-3.5 text-sm text-white shadow-sm shadow-blue-900/20 hover:bg-blue-600"
           : "border border-stone-300 px-5 py-2.5 text-sm text-stone-700 hover:bg-stone-50",
         className,
       )}

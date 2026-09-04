@@ -106,7 +106,7 @@ export default function TermosPage() {
         </Destaque>
         <p>
           O detalhamento de quais dados coletamos, por quê e com quem compartilhamos está na{" "}
-          <a href="/privacidade" className="text-orange-600 hover:underline">
+          <a href="/privacidade" className="text-blue-600 hover:underline">
             Política de Privacidade
           </a>
           , que faz parte destes Termos.

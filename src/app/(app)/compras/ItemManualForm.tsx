@@ -35,7 +35,7 @@ export default function ItemManualForm({
     return (
       <button
         onClick={() => setAberto(true)}
-        className="flex w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-stone-300 py-3 text-sm font-medium text-stone-500 transition-colors hover:border-orange-300 hover:text-orange-600"
+        className="flex w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-stone-300 py-3 text-sm font-medium text-stone-500 transition-colors hover:border-blue-300 hover:text-blue-600"
       >
         <Plus size={16} /> Adicionar item à lista
       </button>
@@ -58,7 +58,7 @@ export default function ItemManualForm({
           }}
           maxLength={80}
           placeholder="Nome do item (ex.: papel toalha)"
-          className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-orange-300"
+          className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-blue-300"
         />
         <div className="flex gap-2">
           <input
@@ -69,12 +69,12 @@ export default function ItemManualForm({
             }}
             maxLength={40}
             placeholder="Quantidade"
-            className="w-32 shrink-0 rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-orange-300"
+            className="w-32 shrink-0 rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-blue-300"
           />
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
-            className="min-w-0 flex-1 rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-orange-300"
+            className="min-w-0 flex-1 rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-blue-300"
           >
             {CATEGORIA_INGREDIENTE_ORDEM.map((c) => (
               <option key={c} value={c}>
@@ -87,7 +87,7 @@ export default function ItemManualForm({
           <button
             onClick={salvar}
             disabled={salvando || !nome.trim()}
-            className="flex-1 rounded-xl bg-orange-500 py-2 text-sm font-semibold text-white disabled:opacity-40"
+            className="flex-1 rounded-xl bg-blue-500 py-2 text-sm font-semibold text-white disabled:opacity-40"
           >
             {salvando ? "Adicionando..." : "Adicionar"}
           </button>

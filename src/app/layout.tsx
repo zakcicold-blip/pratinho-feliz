@@ -47,7 +47,7 @@ export const viewport: Viewport = {
   // Zoom liberado por acessibilidade (quem precisa aproximar consegue). O
   // "efeito elástico" continua contido pelo CSS (overscroll-behavior/touch-action).
   viewportFit: "cover",
-  themeColor: "#f97316",
+  themeColor: "#3b82f6",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

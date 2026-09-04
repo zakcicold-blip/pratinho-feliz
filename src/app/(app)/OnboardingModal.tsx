@@ -30,7 +30,7 @@ export default function OnboardingModal({
       <div className="mx-auto w-full max-w-2xl px-4 py-8">
         <div className="mb-6 text-center">
           <div className="flex items-center justify-center gap-2 text-base font-bold text-stone-800">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
               <UtensilsCrossed size={16} />
             </span>
             Pratinho Feliz

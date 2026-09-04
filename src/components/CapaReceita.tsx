@@ -17,8 +17,8 @@ import type { TipoRefeicao } from "@prisma/client";
 /** Paletas por tipo de refeição — cada uma com 3 variações, escolhidas pelo nome. */
 const PALETAS: Record<TipoRefeicao, string[]> = {
   CAFE_DA_MANHA: [
-    "from-amber-300 to-orange-400",
-    "from-orange-300 to-rose-400",
+    "from-amber-300 to-blue-400",
+    "from-blue-300 to-rose-400",
     "from-yellow-300 to-amber-500",
   ],
   ALMOCO: [
@@ -27,7 +27,7 @@ const PALETAS: Record<TipoRefeicao, string[]> = {
     "from-teal-400 to-cyan-500",
   ],
   LANCHE: [
-    "from-rose-300 to-orange-400",
+    "from-rose-300 to-blue-400",
     "from-fuchsia-300 to-rose-400",
     "from-pink-300 to-rose-500",
   ],

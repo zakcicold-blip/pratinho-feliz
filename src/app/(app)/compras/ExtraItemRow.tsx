@@ -34,7 +34,7 @@ export default function ExtraItemRow({
               await marcarExtraComprado(extraId, checked);
             });
           }}
-          className="h-4 w-4 shrink-0 rounded border-stone-300 text-orange-500"
+          className="h-4 w-4 shrink-0 rounded border-stone-300 text-blue-500"
         />
         <span className="min-w-0 flex-1 truncate">
           <span className={comprado ? "text-stone-400 line-through" : "text-stone-700"}>{nome}</span>

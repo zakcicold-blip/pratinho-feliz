@@ -56,7 +56,7 @@ export default async function Extrato({ parceira, somenteLeitura = false }: Prop
                 <td className="px-4 py-3 capitalize text-stone-700">
                   {m.rotulo}
                   {i === 0 && (
-                    <span className="ml-2 text-[11px] font-semibold text-orange-600">em aberto</span>
+                    <span className="ml-2 text-[11px] font-semibold text-blue-600">em aberto</span>
                   )}
                 </td>
                 <td className="px-4 py-3 text-stone-500">{resumos[i].pagamentosPeriodo}</td>

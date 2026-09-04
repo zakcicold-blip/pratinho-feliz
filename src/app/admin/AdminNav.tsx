@@ -30,7 +30,7 @@ export default function AdminNav() {
             href={item.href}
             className={cn(
               "rounded-lg px-3 py-1.5 transition",
-              active ? "bg-orange-50 text-orange-600" : "hover:bg-stone-100"
+              active ? "bg-blue-50 text-blue-600" : "hover:bg-stone-100"
             )}
           >
             {item.label}

@@ -19,10 +19,10 @@ export const MEAL_COLOR: Record<
     ring: "ring-amber-200",
   },
   ALMOCO: {
-    text: "text-orange-600",
-    bg: "bg-orange-50 text-orange-500",
-    accent: "border-l-orange-300",
-    ring: "ring-orange-200",
+    text: "text-blue-600",
+    bg: "bg-blue-50 text-blue-500",
+    accent: "border-l-blue-300",
+    ring: "ring-blue-200",
   },
   LANCHE: {
     text: "text-emerald-600",

@@ -60,7 +60,7 @@ export function CTAInline({
   texto: string;
 }) {
   return (
-    <div className="not-prose my-8 overflow-hidden rounded-3xl border border-orange-200/70 bg-gradient-to-br from-orange-50 to-amber-50/60 p-6">
+    <div className="not-prose my-8 overflow-hidden rounded-3xl border border-blue-200/70 bg-gradient-to-br from-blue-50 to-amber-50/60 p-6">
       <div className="font-display text-lg font-extrabold text-stone-900">{titulo}</div>
       <p className="mt-1.5 text-[0.95rem] leading-relaxed text-stone-600">{texto}</p>
       <div className="mt-4">

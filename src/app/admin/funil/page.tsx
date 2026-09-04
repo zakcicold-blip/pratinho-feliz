@@ -106,7 +106,7 @@ export default async function AdminFunilPage({
               href={`/admin/funil?dias=${p.dias}`}
               className={cn(
                 "rounded-full px-3 py-1.5 font-medium transition",
-                p.dias === dias ? "bg-orange-50 text-orange-600" : "text-stone-500 hover:bg-stone-100",
+                p.dias === dias ? "bg-blue-50 text-blue-600" : "text-stone-500 hover:bg-stone-100",
               )}
             >
               {p.label}
@@ -127,7 +127,7 @@ export default async function AdminFunilPage({
       {/* FUNIL */}
       <div className="rounded-2xl border border-stone-200/70 bg-white p-5 shadow-card">
         <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-stone-800">
-          <TrendingUp size={16} className="text-orange-500" /> Etapas
+          <TrendingUp size={16} className="text-blue-500" /> Etapas
         </div>
         <div className="space-y-2.5">
           {ETAPAS.map((etapa, i) => {
@@ -145,7 +145,7 @@ export default async function AdminFunilPage({
                 </div>
                 <div className="mt-1 h-2.5 w-full overflow-hidden rounded-full bg-stone-100">
                   <div
-                    className="h-full rounded-full bg-orange-400"
+                    className="h-full rounded-full bg-blue-400"
                     style={{ width: `${largura}%` }}
                   />
                 </div>

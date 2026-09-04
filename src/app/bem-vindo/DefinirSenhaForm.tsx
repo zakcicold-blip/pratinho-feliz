@@ -39,7 +39,7 @@ export default function DefinirSenhaForm({
           minLength={8}
           autoComplete="new-password"
           placeholder="Mínimo 8 caracteres"
-          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-800 outline-none focus:border-orange-400"
+          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-800 outline-none focus:border-blue-400"
         />
       </div>
 
@@ -52,7 +52,7 @@ export default function DefinirSenhaForm({
       <button
         type="submit"
         disabled={pending}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:bg-orange-600 disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:bg-blue-600 disabled:opacity-60"
       >
         {pending ? "Liberando acesso…" : "Entrar no app"} <ArrowRight size={16} />
       </button>

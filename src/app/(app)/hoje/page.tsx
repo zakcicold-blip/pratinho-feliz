@@ -122,7 +122,7 @@ export default async function HojePage() {
           >
             <Bell size={18} />
             {naoLidas > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-orange-500 px-1 text-[10px] font-bold text-white">
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-500 px-1 text-[10px] font-bold text-white">
                 {naoLidas > 9 ? "9+" : naoLidas}
               </span>
             )}
@@ -149,7 +149,7 @@ export default async function HojePage() {
 
       {cicloEncerrado ? (
         <Card className="text-center" padding="lg">
-          <PartyPopper className="mx-auto text-orange-500" size={28} />
+          <PartyPopper className="mx-auto text-blue-500" size={28} />
           <p className="mt-2 font-semibold text-stone-800">
             {child.nome} completou os 30 dias!
           </p>
@@ -168,7 +168,7 @@ export default async function HojePage() {
 
             <Link
               href="/plano"
-              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg transition active:scale-[0.99]"
+              className="relative block overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500 to-blue-400 p-5 text-white shadow-card-lg transition active:scale-[0.99]"
             >
               <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
               <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full bg-black/5" />
@@ -200,7 +200,7 @@ export default async function HojePage() {
             <div className="mt-3 grid grid-cols-2 gap-3">
               <StatMini
                 href="/hoje/refeicoes"
-                tint="bg-orange-50"
+                tint="bg-blue-50"
                 label="Refeições hoje"
                 valor={resolvidas}
                 sub={`de ${cardsData.length} registradas`}
@@ -217,7 +217,7 @@ export default async function HojePage() {
 
           {/* Lembrete */}
           {usuario?.lembretes && resolvidas === 0 && cardsData.length > 0 && (
-            <div className="flex items-start gap-2.5 rounded-2xl border border-orange-200/70 bg-orange-50 px-4 py-3 text-[13px] text-orange-800">
+            <div className="flex items-start gap-2.5 rounded-2xl border border-blue-200/70 bg-blue-50 px-4 py-3 text-[13px] text-blue-800">
               <Bell size={16} className="mt-0.5 shrink-0" />
               <span>
                 Toque em <strong>Gostou / Aceitou / Experimentou / Recusou</strong> em cada refeição
@@ -237,7 +237,7 @@ export default async function HojePage() {
               href="/assistente"
               className="flex items-center gap-3 rounded-3xl border border-stone-200/60 bg-white p-4 shadow-card transition active:scale-[0.99]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-500">
                 <Sparkles size={20} />
               </span>
               <div className="min-w-0 flex-1">

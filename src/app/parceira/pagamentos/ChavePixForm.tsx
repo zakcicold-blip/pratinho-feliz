@@ -27,12 +27,12 @@ export default function ChavePixForm({ chaveAtual }: { chaveAtual: string }) {
           defaultValue={chaveAtual}
           maxLength={140}
           placeholder="CPF, e-mail, telefone ou chave aleatória"
-          className="min-w-0 flex-1 rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-orange-400"
+          className="min-w-0 flex-1 rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-800 outline-none transition focus:border-blue-400"
         />
         <button
           type="submit"
           disabled={pendente}
-          className="rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-60"
+          className="rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-600 disabled:opacity-60"
         >
           {pendente ? "Salvando…" : "Salvar"}
         </button>

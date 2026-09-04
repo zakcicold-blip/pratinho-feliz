@@ -92,7 +92,7 @@ export default async function PapinhasPage() {
 
       <div className="space-y-6 px-4 py-4">
         {/* Herói */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500 to-blue-400 p-5 text-white shadow-card-lg">
           <Baby aria-hidden className="pointer-events-none absolute right-4 top-4 text-white/25" size={44} />
           <span className="text-xs font-semibold uppercase tracking-wide text-white/80">Do purê à comida da família</span>
           <h2 className="font-display mt-2 max-w-[16rem] text-2xl font-bold leading-tight">
@@ -247,7 +247,7 @@ export default async function PapinhasPage() {
             <p className="text-sm text-stone-600">
               A partir daqui, o <strong className="text-stone-900">plano de 30 dias</strong> assume o cardápio completo pela idade.
             </p>
-            <ArrowRight size={18} className="shrink-0 text-orange-500" />
+            <ArrowRight size={18} className="shrink-0 text-blue-500" />
           </Link>
         </section>
       </div>

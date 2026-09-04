@@ -137,7 +137,7 @@ function Cartao({
     <div className="rounded-2xl border border-stone-200/70 bg-white p-5 shadow-card">
       <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">{rotulo}</div>
       <div
-        className={`mt-1 text-2xl font-extrabold ${destaque ? "text-orange-600" : "text-stone-900"}`}
+        className={`mt-1 text-2xl font-extrabold ${destaque ? "text-blue-600" : "text-stone-900"}`}
       >
         {valor}
       </div>
@@ -156,7 +156,7 @@ function Numero({
 }) {
   return (
     <div className="rounded-xl bg-stone-50 p-3">
-      <div className={`font-bold ${destaque ? "text-orange-600" : "text-stone-900"}`}>{valor}</div>
+      <div className={`font-bold ${destaque ? "text-blue-600" : "text-stone-900"}`}>{valor}</div>
       <div className="mt-0.5 text-[11px] uppercase tracking-wide text-stone-400">{rotulo}</div>
     </div>
   );

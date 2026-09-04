@@ -117,7 +117,7 @@ export default function RotinaForm({
           value={tipoAtividade}
           onChange={(e) => setTipoAtividade(e.target.value)}
           placeholder="Ex.: parquinho, natação, bicicleta"
-          className="mt-3 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
+          className="mt-3 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         />
       </Card>
 
@@ -132,7 +132,7 @@ export default function RotinaForm({
               className={cn(
                 "flex flex-col items-center gap-1 rounded-xl border py-2 text-xs font-medium transition",
                 disposicao === valor
-                  ? "border-orange-400 bg-orange-50 text-orange-700"
+                  ? "border-blue-400 bg-blue-50 text-blue-700"
                   : "border-stone-200 text-stone-500 hover:bg-stone-50"
               )}
             >
@@ -146,7 +146,7 @@ export default function RotinaForm({
           onChange={(e) => setObservacao(e.target.value)}
           placeholder="Observações (opcional)"
           rows={2}
-          className="mt-3 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
+          className="mt-3 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         />
       </Card>
 

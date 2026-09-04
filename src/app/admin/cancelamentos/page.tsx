@@ -25,7 +25,7 @@ export default async function CancelamentosPage() {
     <div className="space-y-6">
       <div>
         <h1 className="flex items-center gap-2 text-xl font-bold text-stone-800">
-          <LifeBuoy size={20} className="text-orange-500" /> Cancelamentos
+          <LifeBuoy size={20} className="text-blue-500" /> Cancelamentos
         </h1>
         <p className="mt-1 text-sm text-stone-500">
           {pendentes.length} pendente{pendentes.length === 1 ? "" : "s"} de análise. Aprovar agenda

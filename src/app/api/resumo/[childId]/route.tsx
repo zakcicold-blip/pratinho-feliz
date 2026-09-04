@@ -89,7 +89,7 @@ export async function GET(
               width: 56,
               height: 56,
               borderRadius: 16,
-              background: "#f97316",
+              background: "#3b82f6",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -111,7 +111,7 @@ export async function GET(
             marginTop: 70,
           }}
         >
-          <div style={{ fontSize: 30, color: "#f97316", fontWeight: 600 }}>
+          <div style={{ fontSize: 30, color: "#3b82f6", fontWeight: 600 }}>
             Ciclo {plano.cicloNumero} de {child.nome}
           </div>
           <div
@@ -152,7 +152,7 @@ export async function GET(
                 padding: 32,
               }}
             >
-              <div style={{ fontSize: 84, fontWeight: 800, color: "#f97316", lineHeight: 1 }}>
+              <div style={{ fontSize: 84, fontWeight: 800, color: "#3b82f6", lineHeight: 1 }}>
                 {n.valor}
               </div>
               <div

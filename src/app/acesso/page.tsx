@@ -23,7 +23,7 @@ export default async function AcessoPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#fdfaf6]">
       <header className="mx-auto flex w-full max-w-md items-center gap-2 px-6 py-6 text-base font-bold text-stone-800">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
           <UtensilsCrossed size={16} />
         </span>
         Pratinho Feliz
@@ -46,7 +46,7 @@ export default async function AcessoPage() {
 
         <p className="mt-6 text-center text-sm text-stone-500">
           Já criou sua conta?{" "}
-          <Link href="/login" className="font-semibold text-orange-600 hover:underline">
+          <Link href="/login" className="font-semibold text-blue-600 hover:underline">
             Entrar
           </Link>
         </p>

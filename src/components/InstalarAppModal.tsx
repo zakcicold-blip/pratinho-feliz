@@ -293,7 +293,7 @@ export default function InstalarAppModal() {
               <button
                 type="button"
                 onClick={instalarAgora}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-sm font-semibold text-white transition active:scale-[0.98] hover:bg-orange-600"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 py-3 text-sm font-semibold text-white transition active:scale-[0.98] hover:bg-blue-600"
               >
                 <Download size={16} /> Instalar agora
               </button>
@@ -301,7 +301,7 @@ export default function InstalarAppModal() {
 
             <div className="mt-4 rounded-2xl bg-[#fdfaf6] p-4">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
                   <atual.icon size={19} />
                 </span>
                 <div>
@@ -321,7 +321,7 @@ export default function InstalarAppModal() {
                     key={i}
                     className={cn(
                       "h-1.5 flex-1 rounded-full transition-colors",
-                      i <= passo ? "bg-orange-400" : "bg-stone-200",
+                      i <= passo ? "bg-blue-400" : "bg-stone-200",
                     )}
                   />
                 ))}

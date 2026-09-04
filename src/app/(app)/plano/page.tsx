@@ -182,7 +182,7 @@ export default async function PlanoPage({
 
       <div className="space-y-5 px-4 py-4">
         {/* Herói: progresso do ciclo */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 to-orange-400 p-5 text-white shadow-card-lg">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500 to-blue-400 p-5 text-white shadow-card-lg">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
           <div className="relative flex items-start justify-between">
             <div>
@@ -208,7 +208,7 @@ export default async function PlanoPage({
 
         {/* Atalhos — mais funções */}
         <div className="grid grid-cols-3 gap-3">
-          <Atalho href="/compras" icon={ShoppingCart} tone="text-orange-500 bg-orange-50" label="Lista de compras" />
+          <Atalho href="/compras" icon={ShoppingCart} tone="text-blue-500 bg-blue-50" label="Lista de compras" />
           <Atalho href="/descobertas" icon={Sparkles} tone="text-sky-500 bg-sky-50" label="Descobertas" />
           <Atalho href="/relatorio" icon={BarChart3} tone="text-emerald-500 bg-emerald-50" label="Relatório" />
         </div>
@@ -253,12 +253,12 @@ export default async function PlanoPage({
                       href={`/plano?view=mes&dia=${i}`}
                       className={cn(
                         "flex aspect-square flex-col items-center justify-center rounded-xl border text-center transition",
-                        ativo ? "border-orange-400 bg-orange-500 text-white shadow-card" : heat,
-                        !ativo && ehHoje && "ring-2 ring-orange-300",
+                        ativo ? "border-blue-400 bg-blue-500 text-white shadow-card" : heat,
+                        !ativo && ehHoje && "ring-2 ring-blue-300",
                       )}
                     >
                       <span className="text-sm font-bold leading-none">{data.getUTCDate()}</span>
-                      <span className={cn("mt-0.5 text-[9px] leading-none", ativo ? "text-orange-100" : "opacity-60")}>
+                      <span className={cn("mt-0.5 text-[9px] leading-none", ativo ? "text-blue-100" : "opacity-60")}>
                         dia {i + 1}
                       </span>
                     </Link>
@@ -268,7 +268,7 @@ export default async function PlanoPage({
               <div className="mt-3 flex items-center gap-3 border-t border-stone-100 pt-3 text-[10px] text-stone-400">
                 <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded bg-emerald-500" /> muito aceito</span>
                 <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded bg-emerald-100" /> algum registro</span>
-                <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded ring-2 ring-orange-300" /> hoje</span>
+                <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded ring-2 ring-blue-300" /> hoje</span>
               </div>
             </div>
 
@@ -279,7 +279,7 @@ export default async function PlanoPage({
             {/* Nutrição da semana */}
             <section>
               <h2 className="font-display mb-3 flex items-center gap-2 px-1 text-base font-semibold text-stone-800">
-                <Flame size={16} className="text-orange-500" /> Nutrição da semana
+                <Flame size={16} className="text-blue-500" /> Nutrição da semana
               </h2>
               <div className="rounded-3xl border border-stone-200/60 bg-white p-5 shadow-card">
                 {kcalDia === 0 ? (
@@ -323,7 +323,7 @@ export default async function PlanoPage({
                         )}
                         style={{ height: `${Math.max(6, (s.registros > 0 ? s.pct : 0) * 0.7)}px` }}
                       />
-                      <span className={cn("text-[10px]", semanaNum === s.w + 1 ? "font-bold text-orange-600" : "text-stone-400")}>
+                      <span className={cn("text-[10px]", semanaNum === s.w + 1 ? "font-bold text-blue-600" : "text-stone-400")}>
                         S{s.w + 1}
                       </span>
                     </div>
@@ -394,8 +394,8 @@ export default async function PlanoPage({
           )}
 
           {(cicloEncerrado || diaHojeNoCiclo >= 27) && (
-            <div className="rounded-3xl border border-orange-200 bg-orange-50 p-5 text-center">
-              <TrendingUp className="mx-auto text-orange-500" size={24} />
+            <div className="rounded-3xl border border-blue-200 bg-blue-50 p-5 text-center">
+              <TrendingUp className="mx-auto text-blue-500" size={24} />
               <p className="mt-2 font-semibold text-stone-800">
                 {cicloEncerrado ? "Ciclo completo! Hora de gerar o próximo mês." : `Faltam ${30 - diaHojeClamp} dias para fechar este ciclo.`}
               </p>
@@ -483,10 +483,10 @@ function DiaCompacto({
 }) {
   const ehHoje = diffDiasChave(data, hoje) === 0;
   return (
-    <div className={cn("rounded-3xl border bg-white p-4 shadow-card", ehHoje ? "border-orange-200" : "border-stone-200/60")}>
+    <div className={cn("rounded-3xl border bg-white p-4 shadow-card", ehHoje ? "border-blue-200" : "border-stone-200/60")}>
       <div className="mb-2 flex items-center justify-between">
         <span className="flex items-center gap-2 text-sm font-semibold text-stone-700">
-          <span className={cn("flex h-8 w-10 flex-col items-center justify-center rounded-lg text-center leading-none", ehHoje ? "bg-orange-100 text-orange-700" : "bg-stone-100 text-stone-500")}>
+          <span className={cn("flex h-8 w-10 flex-col items-center justify-center rounded-lg text-center leading-none", ehHoje ? "bg-blue-100 text-blue-700" : "bg-stone-100 text-stone-500")}>
             <span className="text-[9px] uppercase">{formatDiaSemana(data)}</span>
             <span className="text-xs font-bold">{data.getUTCDate()}</span>
           </span>

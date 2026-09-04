@@ -53,7 +53,7 @@ export default async function AdminReceitasPage() {
                 <td className="px-4 py-3 text-right">
                   <Link
                     href={`/admin/receitas/${r.id}`}
-                    className="inline-flex items-center gap-1 text-orange-600 hover:underline"
+                    className="inline-flex items-center gap-1 text-blue-600 hover:underline"
                   >
                     <Pencil size={12} /> Editar
                   </Link>

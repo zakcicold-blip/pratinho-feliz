@@ -64,7 +64,7 @@ export default function BibliotecaReceitas({ receitas }: { receitas: Receita[] }
           value={busca}
           onChange={(e) => ajustarFiltro(() => setBusca(e.target.value))}
           placeholder="Buscar por nome ou ingrediente…"
-          className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-orange-300"
+          className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-blue-300"
         />
       </div>
 
@@ -76,7 +76,7 @@ export default function BibliotecaReceitas({ receitas }: { receitas: Receita[] }
             className={cn(
               "shrink-0 rounded-full px-3 py-1.5 text-sm font-medium transition",
               tipo === t
-                ? "bg-orange-500 text-white shadow-card"
+                ? "bg-blue-500 text-white shadow-card"
                 : "bg-stone-100 text-stone-600 hover:bg-stone-200"
             )}
           >
@@ -94,7 +94,7 @@ export default function BibliotecaReceitas({ receitas }: { receitas: Receita[] }
           <Link
             key={r.id}
             href={`/receita/${r.id}`}
-            className="flex items-center gap-3 rounded-2xl border border-stone-200/70 bg-white p-2.5 shadow-card transition hover:border-orange-200"
+            className="flex items-center gap-3 rounded-2xl border border-stone-200/70 bg-white p-2.5 shadow-card transition hover:border-blue-200"
           >
             <RecipeThumb tipo={r.tipoRefeicao} imagemUrl={r.imagemUrl} nome={r.nome} size={52} />
             <div className="min-w-0 flex-1">
@@ -110,7 +110,7 @@ export default function BibliotecaReceitas({ receitas }: { receitas: Receita[] }
         {faltam > 0 && (
           <button
             onClick={() => setVisiveis((v) => v + POR_PAGINA)}
-            className="w-full rounded-2xl border border-stone-200 bg-white py-3 text-sm font-semibold text-stone-600 transition hover:border-orange-300 hover:text-stone-800"
+            className="w-full rounded-2xl border border-stone-200 bg-white py-3 text-sm font-semibold text-stone-600 transition hover:border-blue-300 hover:text-stone-800"
           >
             Mostrar mais {Math.min(faltam, POR_PAGINA)} de {faltam}
           </button>

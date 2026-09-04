@@ -166,7 +166,7 @@ export default function ModoCozinha({
             key={i}
             className={cn(
               "h-1 flex-1 rounded-full transition",
-              feitos.has(i) ? "bg-emerald-500" : i === indice ? "bg-orange-500" : "bg-stone-200"
+              feitos.has(i) ? "bg-emerald-500" : i === indice ? "bg-blue-500" : "bg-stone-200"
             )}
           />
         ))}
@@ -184,7 +184,7 @@ export default function ModoCozinha({
           </div>
         ) : (
           <>
-            <span className="text-xs font-semibold tracking-wide text-orange-500 uppercase">
+            <span className="text-xs font-semibold tracking-wide text-blue-500 uppercase">
               Passo {indice + 1}
             </span>
             <p className="font-display mt-3 text-[1.65rem] leading-snug font-bold text-balance text-stone-900">
@@ -193,7 +193,7 @@ export default function ModoCozinha({
 
             {minutos !== null && (
               <div className="mt-6 flex items-center gap-3 rounded-2xl border border-stone-200/70 bg-white p-4 shadow-card">
-                <Timer size={20} className="shrink-0 text-orange-500" />
+                <Timer size={20} className="shrink-0 text-blue-500" />
                 <div className="flex-1">
                   <p className="text-xs text-stone-400">Cronômetro do passo</p>
                   <p className="text-2xl font-bold tabular-nums text-stone-900">
@@ -205,7 +205,7 @@ export default function ModoCozinha({
                     if (restante === null) setRestante(minutos * 60);
                     setRodando((r) => !r);
                   }}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white transition active:scale-95"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-500 text-white transition active:scale-95"
                   aria-label={rodando ? "Pausar" : "Iniciar"}
                 >
                   {rodando ? <Pause size={18} /> : <Play size={18} />}
@@ -253,7 +253,7 @@ export default function ModoCozinha({
         ) : (
           <button
             onClick={marcarEAvancar}
-            className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-orange-500 text-base font-semibold text-white transition active:scale-[0.99]"
+            className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-blue-500 text-base font-semibold text-white transition active:scale-[0.99]"
           >
             <Check size={20} /> {ultimo ? "Terminei" : "Feito, próximo"}
           </button>

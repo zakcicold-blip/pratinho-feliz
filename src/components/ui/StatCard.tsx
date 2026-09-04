@@ -4,7 +4,9 @@ import type { LucideIcon } from "lucide-react";
 type Tone = "orange" | "emerald" | "blue" | "indigo" | "amber" | "red";
 
 const TONE_BG: Record<Tone, string> = {
-  orange: "bg-orange-50 text-orange-500",
+  // Mesmo motivo do Badge: "orange" e o slot de marca, agora rosa; "blue" e
+  // um tom semantico independente usado ao lado dele nos mesmos paineis.
+  orange: "bg-pink-50 text-pink-500",
   emerald: "bg-emerald-50 text-emerald-500",
   blue: "bg-blue-50 text-blue-500",
   indigo: "bg-indigo-50 text-indigo-500",

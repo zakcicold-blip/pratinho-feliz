@@ -21,7 +21,7 @@ export default async function ConvitePage({ params }: { params: Promise<{ token:
   return (
     <main className="flex min-h-screen flex-col bg-[#fdfaf6]">
       <header className="mx-auto flex w-full max-w-md items-center gap-2 px-6 py-6 text-base font-bold text-stone-800">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
           <UtensilsCrossed size={16} />
         </span>
         Pratinho Feliz
@@ -37,7 +37,7 @@ export default async function ConvitePage({ params }: { params: Promise<{ token:
             <p className="mt-2 text-sm text-stone-600">{RECUSA_LABEL[validacao.motivo]}</p>
             <Link
               href="/"
-              className="mt-5 inline-block text-sm font-semibold text-orange-600 hover:underline"
+              className="mt-5 inline-block text-sm font-semibold text-blue-600 hover:underline"
             >
               Conhecer o Pratinho Feliz
             </Link>
@@ -58,7 +58,7 @@ export default async function ConvitePage({ params }: { params: Promise<{ token:
             <FormConvite token={validacao.convite.token} />
             <p className="mt-6 text-center text-sm text-stone-500">
               Já tem conta?{" "}
-              <Link href="/login" className="font-semibold text-orange-600 hover:underline">
+              <Link href="/login" className="font-semibold text-blue-600 hover:underline">
                 Entrar
               </Link>
             </p>

@@ -31,7 +31,7 @@ export default function LinhaParceira({
           max="80"
           defaultValue={comissaoPct}
           aria-label={`Comissão de ${nome}`}
-          className="w-16 rounded-lg border border-stone-200 px-2 py-1.5 text-sm text-stone-800 outline-none focus:border-orange-400"
+          className="w-16 rounded-lg border border-stone-200 px-2 py-1.5 text-sm text-stone-800 outline-none focus:border-blue-400"
         />
         <span className="text-sm text-stone-400">%</span>
         <button

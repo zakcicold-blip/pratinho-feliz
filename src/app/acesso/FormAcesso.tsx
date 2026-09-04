@@ -21,7 +21,7 @@ export default function FormAcesso() {
           name="email"
           required
           autoComplete="email"
-          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
           placeholder="voce@email.com"
         />
       </div>
@@ -35,7 +35,7 @@ export default function FormAcesso() {
           inputMode="numeric"
           maxLength={4}
           pattern="[0-9]{4}"
-          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
           placeholder="0000"
         />
         <p className="mt-1 text-[11px] text-stone-400">
@@ -47,7 +47,7 @@ export default function FormAcesso() {
         <input
           name="nome"
           required
-          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
           placeholder="Como podemos te chamar?"
         />
       </div>
@@ -59,7 +59,7 @@ export default function FormAcesso() {
           required
           minLength={8}
           autoComplete="new-password"
-          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
+          className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-400"
           placeholder="Mínimo 8 caracteres"
         />
       </div>
@@ -73,7 +73,7 @@ export default function FormAcesso() {
       <button
         type="submit"
         disabled={pending}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3.5 text-sm font-semibold text-white shadow-sm shadow-orange-900/20 transition active:scale-[0.98] hover:bg-orange-600 disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 py-3.5 text-sm font-semibold text-white shadow-sm shadow-blue-900/20 transition active:scale-[0.98] hover:bg-blue-600 disabled:opacity-60"
       >
         {pending ? "Liberando acesso…" : "Criar conta e entrar"} <ArrowRight size={16} />
       </button>

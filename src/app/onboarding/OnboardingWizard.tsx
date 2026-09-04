@@ -208,7 +208,7 @@ export default function OnboardingWizard({
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-sm font-semibold text-stone-700">
-            <StepIcon size={15} className="text-orange-500" />
+            <StepIcon size={15} className="text-blue-500" />
             {STEPS[step].label}
           </span>
           <span className="text-xs font-medium text-stone-400">
@@ -221,7 +221,7 @@ export default function OnboardingWizard({
               key={s.label}
               className={cn(
                 "h-1.5 flex-1 rounded-full transition-colors duration-300",
-                i <= step ? "bg-orange-500" : "bg-stone-200"
+                i <= step ? "bg-blue-500" : "bg-stone-200"
               )}
             />
           ))}
@@ -257,7 +257,7 @@ export default function OnboardingWizard({
             <div>
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-stone-700">Refeições em casa por dia</label>
-                <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-sm font-bold text-orange-600">
+                <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-bold text-blue-600">
                   {draft.refeicoesPorDia}
                 </span>
               </div>
@@ -267,14 +267,14 @@ export default function OnboardingWizard({
                 max={4}
                 value={draft.refeicoesPorDia}
                 onChange={(e) => setDraft({ ...draft, refeicoesPorDia: Number(e.target.value) })}
-                className="mt-2 w-full accent-orange-500"
+                className="mt-2 w-full accent-blue-500"
               />
               <p className="mt-1 text-xs text-stone-400">De 2 a 4 refeições preparadas em casa.</p>
             </div>
             <div>
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-stone-700">Tempo pra cozinhar</label>
-                <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-sm font-bold text-orange-600">
+                <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-bold text-blue-600">
                   {draft.tempoDisponivel} min
                 </span>
               </div>
@@ -285,7 +285,7 @@ export default function OnboardingWizard({
                 step={5}
                 value={draft.tempoDisponivel}
                 onChange={(e) => setDraft({ ...draft, tempoDisponivel: Number(e.target.value) })}
-                className="mt-2 w-full accent-orange-500"
+                className="mt-2 w-full accent-blue-500"
               />
               <p className="mt-1 text-xs text-stone-400">
                 Quanto tempo você tem, em média, para preparar cada refeição. O cardápio se ajusta ao seu ritmo.
@@ -365,7 +365,7 @@ export default function OnboardingWizard({
                     className={cn(
                       "rounded-2xl border px-3 py-2.5 text-sm font-medium transition active:scale-[0.98]",
                       draft.praticidade === value
-                        ? "border-orange-400 bg-orange-50 text-orange-700"
+                        ? "border-blue-400 bg-blue-50 text-blue-700"
                         : "border-stone-200 text-stone-600 hover:bg-stone-50"
                     )}
                   >
@@ -384,7 +384,7 @@ export default function OnboardingWizard({
                     className={cn(
                       "rounded-2xl border px-3 py-2.5 text-sm font-medium transition active:scale-[0.98]",
                       draft.objetivo === value
-                        ? "border-orange-400 bg-orange-50 text-orange-700"
+                        ? "border-blue-400 bg-blue-50 text-blue-700"
                         : "border-stone-200 text-stone-600 hover:bg-stone-50"
                     )}
                   >
@@ -396,12 +396,12 @@ export default function OnboardingWizard({
                 Nos ajuda a entender por que você usa o app — não muda o cardápio.
               </p>
             </Field>
-            <label className="flex items-start gap-3 rounded-xl bg-orange-50 p-4 text-sm text-stone-700">
+            <label className="flex items-start gap-3 rounded-xl bg-blue-50 p-4 text-sm text-stone-700">
               <input
                 type="checkbox"
                 checked={draft.consentimento}
                 onChange={(e) => setDraft({ ...draft, consentimento: e.target.checked })}
-                className="mt-0.5 accent-orange-500"
+                className="mt-0.5 accent-blue-500"
               />
               <span>
                 Como responsável legal, autorizo o uso destes dados para personalizar a alimentação
@@ -493,7 +493,7 @@ export default function OnboardingWizard({
           transition: border-color 0.15s, box-shadow 0.15s;
         }
         .input:focus {
-          border-color: #fb923c;
+          border-color: #60a5fa;
           box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15);
         }
       `}</style>

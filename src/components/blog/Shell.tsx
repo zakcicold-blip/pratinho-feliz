@@ -11,7 +11,7 @@ export function BlogHeader() {
     <header className="sticky top-0 z-20 border-b border-stone-200/60 bg-[#fdfaf6]/85 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-6 py-4">
         <Link href="/blog" className="flex items-center gap-2 text-base font-bold text-stone-800">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
             <UtensilsCrossed size={16} />
           </span>
           Pratinho Feliz
@@ -65,10 +65,10 @@ export function BlogCTA() {
       <div className="relative overflow-hidden rounded-3xl border border-stone-200/70 bg-gradient-to-br from-stone-900 to-stone-800 px-7 py-10 text-center shadow-card-lg sm:px-12">
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-16 -right-10 h-56 w-56 rounded-full bg-orange-500/20 blur-3xl"
+          className="pointer-events-none absolute -top-16 -right-10 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl"
         />
         <div className="relative">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-orange-200">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-blue-200">
             Acesso imediato
           </span>
           <h2 className="font-display mt-4 text-2xl font-extrabold text-white sm:text-3xl">
@@ -92,7 +92,7 @@ export function BlogFooter() {
     <footer className="border-t border-stone-200/60">
       <div className="mx-auto w-full max-w-5xl px-6 py-10">
         <div className="flex items-center gap-2 text-sm font-bold text-stone-700">
-          <UtensilsCrossed size={16} className="text-orange-500" /> Pratinho Feliz
+          <UtensilsCrossed size={16} className="text-blue-500" /> Pratinho Feliz
         </div>
         <p className="mt-3 max-w-2xl text-sm text-stone-400">
           Conteúdo educativo sobre alimentação e rotina infantil. Não substitui a orientação do

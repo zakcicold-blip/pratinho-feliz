@@ -4,7 +4,7 @@ export default function ProgressBar({
   value,
   max,
   className,
-  barClassName = "bg-orange-500",
+  barClassName = "bg-blue-500",
 }: {
   value: number;
   max: number;

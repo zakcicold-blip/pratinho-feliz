@@ -231,7 +231,7 @@ export default function RecipeForm({
         <button
           type="button"
           onClick={() => setIngredientes((prev) => [...prev, { ingredientId: "", quantidade: "" }])}
-          className="mt-2 text-sm font-medium text-orange-600 hover:underline"
+          className="mt-2 text-sm font-medium text-blue-600 hover:underline"
         >
           + Adicionar ingrediente
         </button>
@@ -242,7 +242,7 @@ export default function RecipeForm({
       <button
         onClick={salvar}
         disabled={saving}
-        className="rounded-xl bg-orange-500 px-6 py-2.5 font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
+        className="rounded-xl bg-blue-500 px-6 py-2.5 font-semibold text-white hover:bg-blue-600 disabled:opacity-60"
       >
         {saving ? "Salvando..." : "Salvar receita"}
       </button>

@@ -132,7 +132,7 @@ export default function ImportForm() {
   return (
     <div className="max-w-3xl space-y-4">
       <Card padding="lg">
-        <label className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-stone-300 px-6 py-10 text-center transition hover:border-orange-300 hover:bg-orange-50/40">
+        <label className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-stone-300 px-6 py-10 text-center transition hover:border-blue-300 hover:bg-blue-50/40">
           <Upload size={26} className="text-stone-400" />
           <span className="text-sm font-semibold text-stone-700">
             Escolher arquivo CSV ou JSON

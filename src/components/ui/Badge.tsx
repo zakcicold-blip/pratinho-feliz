@@ -4,7 +4,11 @@ type Tone = "neutral" | "orange" | "emerald" | "amber" | "red" | "blue" | "indig
 
 const TONES: Record<Tone, string> = {
   neutral: "bg-stone-100 text-stone-600",
-  orange: "bg-orange-50 text-orange-600",
+  // A marca virou duas cores (azul + rosa). O slot "orange" agora e o rosa —
+  // "blue" ja era usado como tom semantico separado em varias telas (paginas
+  // lado a lado com StatCard tone="orange" e tone="blue"), e mapear os dois
+  // para a mesma cor faria elas ficarem indistinguiveis.
+  orange: "bg-pink-50 text-pink-600",
   emerald: "bg-emerald-50 text-emerald-600",
   amber: "bg-amber-50 text-amber-700",
   red: "bg-red-50 text-red-600",

@@ -21,7 +21,7 @@ export default function ResolverButtons({ id }: { id: string }) {
         onChange={(e) => setResposta(e.target.value)}
         maxLength={1000}
         placeholder="Resposta interna (opcional)"
-        className="w-full rounded-lg border border-stone-200 px-3 py-1.5 text-sm outline-none focus:border-orange-300"
+        className="w-full rounded-lg border border-stone-200 px-3 py-1.5 text-sm outline-none focus:border-blue-300"
       />
       <div className="flex gap-2">
         <button
